@@ -48,3 +48,21 @@ body{
     border-right: 1px solid black;
     padding:0 10px 0 10px ;
 }
+.content-login{
+    margin-top: 80px;
+    height: fit-content;
+}
+.btn-user{
+    border-radius: 200px !important;
+    height: 50px;
+    line-height: 35px !important;
+}
+.input-user{
+    border-radius: 200px !important;
+    height: 45px !important ;
+    line-height: 35px !important;
+}
+.item-left{
+    padding: 50px;
+
+}
