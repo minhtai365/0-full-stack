@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Login from './component/Login';
 import Register from './component/Regester';
@@ -11,8 +11,24 @@ import Boxicon from './component/Boxicon';
 import Detail from './component/Detail';
 import Main from './component/Main';
 import Cart from './component/Cart';
+// import Axios from 'axios';
 
-function App() {
+class App extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state={
+//       dt:null
+//     }
+//   }
+//   componentWillMount(){
+//     Axios.get('/product').then(res=> {
+//         this.setState({
+//             dt: res.data
+//         })
+//     })
+// }
+  render(){
+    // console.log(this.state.dt);
   return (
     <Router>
       <div>
@@ -45,5 +61,5 @@ function App() {
     </Router>
   );
 }
-
+}
 export default App;

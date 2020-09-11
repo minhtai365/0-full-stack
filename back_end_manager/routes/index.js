@@ -1,19 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+//connect database
+const mongoose = require('mongoose');
+var Product = require('../models/product');
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("my-database");
-  dbo.collection("product").findOne({pro_name:"Dusicyon thous"}, function(err, result) {
-    if (err) throw err;
-    console.log(result.pro_img);
-    db.close();
-  });
+router.get('/', function (req, res, next) {
+  
+  res.render('index', { title: 'Minh Tài nhé' });
 });
-
+router.get('/product',function(req,res,next){
+  Product.find(function(err,dt){
+    console.log(dt.length);
+    res.send(dt);
+  });
+})
+module.exports = router;
 
 // var MogoCl=require('mongodb').MongoClient;
 // var url="mongodb://localhost:27017/";
@@ -26,11 +28,3 @@ MongoClient.connect(url, function(err, db) {
 //     dt.close();
 //   })
 // })
-/* GET home page.
-"start": "node ./bin/www" 
-    */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Minh Tài nhé' });
-});
-
-module.exports = router;
