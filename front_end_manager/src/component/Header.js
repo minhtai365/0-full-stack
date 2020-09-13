@@ -15,7 +15,7 @@ export default class Header extends Component {
           tranminhtai365@gmail.com</a>
                         </div>
                         <div className=" float-right">
-                            <Link className="link-a ml-2" to="/login.html"><i className="fa fa-user" aria-hidden="true" /> Tài khoản</Link>
+                            <Link className="link-a ml-2" to="/login.html"><i className="fa fa-user" aria-hidden="true" />{this.props.name}</Link>
                             <Link className="link-a ml-2" to="/cart.html"> <span>Giỏ hàng của tôi</span></Link>
                         </div>
                     </div>

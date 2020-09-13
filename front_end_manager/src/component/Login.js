@@ -1,6 +1,49 @@
+
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-export default class Login extends Component {
+import { Link, withRouter } from 'react-router-dom';
+import axios from 'axios';
+var getUser=()=>axios.get('/user').then(res=>res.data);
+class Login extends Component {
+    constructor() {
+        super();
+        this.state={
+            user:[]
+        }
+    }
+    // componentWillMount(){
+    //     getUser().then(res=>{
+    //         this.setState({
+    //             user:res
+    //         })
+    //     })
+    // }
+    isChange=(e)=>{
+        const {name,value}=e.target;
+        console.log(name);
+        console.log(value);
+        this.setState({
+            [name]:value
+        })
+    }
+    isClick=(e)=>{
+        e.preventDefault();
+        console.log('click');
+        var item=[];
+        item.email=this.state.email;
+        item.password=this.state.pass;
+        this.sendDT(item.email,item.password).then(res=>{
+            if(res!=='fail'){
+                console.log(res.username);
+                {this.props.senduser(res.username)}
+                this.props.history.push('/index.html')
+            }
+            else{
+                alert("Sai tài khoản");
+            }
+        });
+       
+    }
+    sendDT=(email,password)=> axios.post('/login',{email,password}).then(res=>res.data)
     render() {
         return (
             <div className="container ">
@@ -19,10 +62,10 @@ export default class Login extends Component {
                             <h3 >Login</h3>
                             <form>
                                 <div className="form-group">
-                                    <input type="email" className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                    <input type="email" onChange={this.isChange} className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
                                 </div>
                                 <div className="form-group">
-                                    <input type="password" className="form-control input-user" name="pass" id placeholder="Password" />
+                                    <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" id placeholder="Password" />
                                 </div>
                                 <div className="form-group">
                                     <div className="custom-control custom-checkbox small">
@@ -30,7 +73,7 @@ export default class Login extends Component {
                                         <label className="custom-control-label text-light" htmlFor="customCheck">Remember Me</label>
                                     </div>
                                 </div>
-                                <Link to="/index.html" className="btn btn-primary btn-user btn-block">Login</Link>
+                                <Link to="/index.html" onClick={this.isClick} className="btn btn-primary btn-user btn-block">Login</Link>
                                 <hr />
                                 <Link to="/index.html" className="btn btn-danger btn-user btn-block">
                                     <i className="fab fa-google fa-fw" /> Login with Google</Link>
@@ -48,3 +91,4 @@ export default class Login extends Component {
         )
     }
 }
+export default withRouter(Login)

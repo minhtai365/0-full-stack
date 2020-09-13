@@ -10,14 +10,14 @@ class Main extends Component {
     }
     componentWillMount() {
         getproduct().then(res => {
-            console.log(res);
+            // console.log(res);
             this.setState({
                 dt: res
             })
         })
     }
     render() {
-        console.log(this.state.dt);
+        // console.log(this.state.dt);
         return (
             <div >
                 <div className="jumbotron jumbotron-fluid">

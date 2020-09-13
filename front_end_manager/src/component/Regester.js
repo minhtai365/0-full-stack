@@ -1,6 +1,33 @@
+import Axios from 'axios';
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 export default class Regester extends Component {
+    isChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    isClick = (e) => {
+        e.preventDefault();
+        console.log('click');
+        if (this.state.pass !== this.state.repass) alert('Mật khẩu không khớp');
+        else {
+            axios.post('/register', {
+                username: this.state.last,
+                password: this.state.pass,
+                name: this.state.first,
+                email: this.state.email
+            })
+                .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                    if (res.data === this.state.email) {
+                        this.props.history.push('/login.html')
+                    }
+                })
+        }
+    }
     render() {
         return (
             <div>
@@ -19,21 +46,21 @@ export default class Regester extends Component {
                                 <h3>Register</h3>
                                 <div className="row">
                                     <div className="col-sm-6 form-group ">
-                                        <input type="text" className="form-control input-user" name="first" id placeholder="First Name" />
+                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="first" id placeholder="Name" />
                                     </div>
                                     <div className="col-sm-6 form-group ">
-                                        <input type="text" className="form-control input-user" name="last" id placeholder="Last Name" />
+                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="last" id placeholder="UserName" />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input type="email" className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                    <input type="email" onChange={this.isChange} className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
                                 </div>
                                 <div className=" row">
                                     <div className="col-sm-6 form-group">
-                                        <input type="password" className="form-control input-user" name="pass" id placeholder="Password" />
+                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" id placeholder="Password" />
                                     </div>
                                     <div className="col-sm-6 form-group">
-                                        <input type="password" className="form-control input-user" name="repass" id placeholder="Repeat Password" />
+                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="repass" id placeholder="Repeat Password" />
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -42,7 +69,7 @@ export default class Regester extends Component {
                                         <label className="custom-control-label text-light" htmlFor="customCheck">Remember Me</label>
                                     </div>
                                 </div>
-                                <Link to="/index.html" className="btn btn-primary btn-user btn-block">
+                                <Link to="/index.html" onClick={this.isClick} className="btn btn-primary btn-user btn-block">
                                     Register account</Link>
                                 <hr />
                                 <Link to="/index.html" className="btn btn-danger btn-user btn-block">
