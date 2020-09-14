@@ -5,6 +5,8 @@ var userSchema=new Schema({
     password:{type:String,required:true},
     email:{type:String,required:true},
     name:{type:String,required:true},
-    created:{type:Date,required:true}
+    created:{type:Date,required:true},
+    role:{type:String,required:true},
+    status:{type:Boolean,required:true}
 });
 module.exports=mongoose.model('User',userSchema,'users');

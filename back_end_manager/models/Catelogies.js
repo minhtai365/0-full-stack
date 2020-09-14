@@ -6,6 +6,7 @@ var catelogySchema=new Schema({
     typeid:{
         type : Schema.Types.ObjectId,
         ref:'Type'
-    }
+    },
+    created:{type:Date,required:true}
 })
-module.exports=mongoose.model('Catelogy',catelogySchema);
+module.exports=mongoose.model('Catelogies',catelogySchema);

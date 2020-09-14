@@ -20,8 +20,7 @@ export default class Regester extends Component {
                 email: this.state.email
             })
                 .then(res => {
-                    console.log(res);
-                    console.log(res.data);
+                    alert(res.data)
                     if (res.data === this.state.email) {
                         this.props.history.push('/login.html')
                     }

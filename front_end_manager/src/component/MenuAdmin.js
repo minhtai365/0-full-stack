@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
-
+import { Link } from 'react-router-dom';
 export default class MenuAdmin extends Component {
     render() {
         return (
             <div>
                 <ul className="navbar-nav pl-2 my-nav bg-gradient-primary text-white">
                     {/* Sidebar - Brand */}
-                    <a className="text-white text-30 d-flex align-items-center justify-content-center" href="index.html">
+                    <Link className="text-white text-30 d-flex align-items-center justify-content-center" to="/index.html">
                         <div className="sidebar-brand-icon rotate-n-15">
                             <i className="fas fa-laugh-wink" />
                         </div>
                         <div className="mx-3">Minh Tai <sup>MT</sup></div>
-                    </a>
+                    </Link>
                     {/* Divider */}
                     <div className="gachtrang" />
                     {/* Nav Item - Dashboard */}
                     <li className="nav-item active ">
-                        <a className="nav-link text-white" href="index.html">
+                        <Link className="nav-link text-white" to="/admin.html">
                             <i className="fas fa-fw fa-tachometer-alt" />
-                            <span>Dashboard</span></a>
+                            <span>Dashboard</span></Link>
                     </li>
                     {/* Divider */}
                     <div className="gachtrang" />
@@ -28,10 +28,10 @@ export default class MenuAdmin extends Component {
   </div>
                     {/* Nav Item - Utilities Collapse Menu */}
                     <li className="nav-item">
-                        <a className="nav-link text-white collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <Link className="nav-link text-white collapsed" to="/account.html" >
                             <i className="fas fa-fw fa-wrench" />
                             <span>Tài khoản</span>
-                        </a>
+                        </Link>
                     </li>
                     {/* Divider */}
                     <div className="gachtrang" />
@@ -48,21 +48,21 @@ export default class MenuAdmin extends Component {
                             <ul className="navbar-nav text-10">
                                 <div className="gachtrang" />
                                 <li className="nav-item ">
-                                    <a className="nav-link text-white" href="tables.html">
+                                    <Link className="nav-link text-white" to="/types.html">
                                         <i className="fas fa-fw fa-table" />
-                                        <span>Loại sản phẩm</span></a>
+                                        <span>Loại sản phẩm</span></Link>
                                 </li>
                                 <div className="gachtrang" />
                                 <li className="nav-item ">
-                                    <a className="nav-link text-white" href="tables.html">
+                                    <Link className="nav-link text-white" to="/catelogys.html">
                                         <i className="fas fa-fw fa-table" />
-                                        <span>Doanh mục sản phẩm</span></a>
+                                        <span>Doanh mục sản phẩm</span></Link>
                                 </li>
                                 <div className="gachtrang" />
                                 <li className="nav-item ">
-                                    <a className="nav-link text-white" href="tables.html">
+                                    <Link className="nav-link text-white" to="/products.html">
                                         <i className="fas fa-fw fa-table" />
-                                        <span>Tất cả sản phẩm</span></a>
+                                        <span>Tất cả sản phẩm</span></Link>
                                 </li>
                                 <div className="gachtrang" />
                             </ul>
@@ -75,9 +75,9 @@ export default class MenuAdmin extends Component {
   </div>
                     {/* Nav Item - Charts */}
                     <li className="nav-item ">
-                        <a className="nav-link text-white" href="charts.html">
+                        <Link className="nav-link text-white" to="/carts.html">
                             <i className="fas fa-fw fa-chart-area" />
-                            <span>Đơn hàng</span></a>
+                            <span>Đơn hàng</span></Link>
                     </li>
                     {/* Divider */}
                     <hr className="sidebar-divider d-none d-md-block" />

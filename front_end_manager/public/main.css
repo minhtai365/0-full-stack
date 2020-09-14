@@ -110,7 +110,7 @@ body,*{
         font-size: 12px;
     }
 }
-
+/* 
 .container {
     width: 100%;
     padding-right: 0.75rem;
@@ -191,10 +191,31 @@ body,*{
     .container-xl {
         max-width: 1140px;
     }
-}
+} */
 
 .item-admin {
     position: relative;
     left: 70%;
 }
 
+  .my-database {
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    
+    border: 1px solid black;
+  }
+ td {
+    cursor: auto;
+    border: 1px solid black;
+    
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+  }
+  th{
+      
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+  }

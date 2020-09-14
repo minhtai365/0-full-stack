@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-const getproduct = () => axios.get('/product').then(res => res.data)
+const getproduct = () => axios.get('/products').then(res => res.data)
 class Main extends Component {
     constructor() {
         super();
