@@ -13,7 +13,8 @@ import Main from './component/Main';
 import Cart from './component/Cart';
 import Admin from './component/Admin';
 // import Axios from 'axios';
-
+// import Model from 'react-modal';
+// Model.setAppElement("#modal");
 class App extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +41,12 @@ class App extends Component {
             </Route>
           <Route path="/register.html" exact component={Register} />
           <Route path="/forgot.html" exact component={Forgot} />
-          <Route path="/index.html" exact>
+          <Route path="/detail.html" exact>
+            <Header name={this.state.name} />
+            <Detail />
+            <Footer />
+          </Route>
+          <Route path="/index.html">
             <Header name={this.state.name} />
             <Carousel />
             <hr/>
@@ -48,11 +54,7 @@ class App extends Component {
             <Main />
             <Footer />
           </Route>
-          <Route path="/detail.html" exact>
-            <Header name={this.state.name} />
-            <Detail />
-            <Footer />
-          </Route>
+          
           <Route path="/cart.html" exact>
             <Header name={this.state.name} />
             <Cart />

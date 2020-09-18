@@ -28,7 +28,7 @@ export default class MenuAdmin extends Component {
   </div>
                     {/* Nav Item - Utilities Collapse Menu */}
                     <li className="nav-item">
-                        <Link className="nav-link text-white collapsed" to="/account.html" >
+                        <Link className="nav-link text-white collapsed" to="/admin.html" >
                             <i className="fas fa-fw fa-wrench" />
                             <span>Tài khoản</span>
                         </Link>

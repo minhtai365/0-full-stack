@@ -184,7 +184,7 @@ export default class Menu extends Component {
                     </div>
                 </div>
 
-                <Main/>
+                {/* <Main /> */}
             </div>
 
         )

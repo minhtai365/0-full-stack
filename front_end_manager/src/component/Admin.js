@@ -23,7 +23,9 @@ export default class Admin extends Component {
                     <MenuAdmin/>
                 </div>
                 <div className="col-9">
-                        <Route exact path="/account.html">
+                    
+                {/* <ContentAccount /> */}
+                        <Route path="/admin.html">
                          <ContentAccount />
                         </Route>
                         <Route exact path="/types.html">

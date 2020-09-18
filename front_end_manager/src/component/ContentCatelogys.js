@@ -1,5 +1,7 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import Model from 'react-modal';
 
 export default class ContentCatelogys extends Component {
     constructor(props) {
@@ -7,7 +9,8 @@ export default class ContentCatelogys extends Component {
         this.state = {
             datacatelogys: [],
             datatypes: [],
-            isShow: false
+            isShow: false,
+            _id: ''
         }
 
     }
@@ -20,8 +23,7 @@ export default class ContentCatelogys extends Component {
             })
             .catch(err => {
                 console.log(err);
-            }
-            )
+            })
         Axios.get('/types')
             .then(res => {
                 this.setState({
@@ -33,27 +35,10 @@ export default class ContentCatelogys extends Component {
             }
             )
     }
-
-    showAdd() {
-        if (this.state.isShow) {
-            return <div className="form-group">
-                <label>Tên danh mục</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="catelogy" aria-describedby="helpId" placeholder="" />
-                <div className="form-group">
-
-                    <label>Loại</label>
-                    <select className="form-control" onChange={this.ischange} name="typeid" id="typeid">
-                        {this.state.datatypes.map(x => {
-                            return <option value={x._id}>{x.typename}</option>
-                        })}
-                    </select>
-                </div>
-
-                <button class="btn btn-primary" type="reset" onClick={this.adddata} role="button">Add</button>
-            </div>
-        }
+    componentDidMount() {
+        Model.setAppElement("#modal");
     }
+
     ischange = (e) => {
         console.log(e.target.name);
         console.log(e.target.value);
@@ -61,14 +46,16 @@ export default class ContentCatelogys extends Component {
             [e.target.name]: e.target.value
         })
     }
-    adddata = () => {
+    setdata = () => {
+
         Axios.post('/addcatelogys', {
+            _id: this.state._id,
             catelogy: this.state.catelogy,
             typeid: this.state.typeid
         })
             .then(res => {
-                if (res.data === 'create ok') {
-                    alert("Thêm thành công");
+                if (res.data === 'create ok' || res.data === "edit ok") {
+                    alert("Thành công");
                     Axios.get('/catelogys')
                         .then(res => {
                             this.setState({
@@ -83,8 +70,33 @@ export default class ContentCatelogys extends Component {
                 alert('Thất bại');
             }
             )
+        this.setState({
+            isShow: !this.state.isShow
+        })
     }
-    addtype = () => {
+    showModal = (id) => {
+        if (id !== '') {
+            this.state.datacatelogys.forEach(item => {
+                if (item._id === id) {
+                    this.setState({
+                        _id: item._id,
+                        catelogy: item.catelogy,
+                        typeid: item.typeid
+
+                    })
+                }
+            })
+        } else {
+            this.setState({
+                _id: '',
+                catelogy: '',
+                typeid: ''
+
+            })
+        }
+        this.changShow();
+    }
+    changShow(){
         this.setState({
             isShow: !this.state.isShow
         })
@@ -110,32 +122,10 @@ export default class ContentCatelogys extends Component {
             })
     }
 
-    // Edit = (id) => {
-    //     console.log(id);
-    //     Axios.post('/editcatelogys', {
-    //         id: id
-    //     })
-    //         .then(res => {
-    //             if (res.data === 'edit ok') {
-    //                 Axios.get('/catelogys').then(res => {
-    //                     this.setState({
-    //                         datacatelogys: res.data
-    //                     })
-    //                 })
-    //                 alert('Thành công');
-    //             }
-    //             else {
-    //                 alert('Khóa thất bại');
-    //             }
-    //         })
-    //         .catch(err => {
-    //             alert('Khóa thất bại');
-    //         })
-
-    // }
     render() {
         return (
-            <div>
+
+            <div >
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li className="nav-item dropdown">
@@ -147,8 +137,42 @@ export default class ContentCatelogys extends Component {
                         </li>
                     </ul>
                 </nav>
-                <div className='container'>
-                    <a class="btn btn-primary" onClick={this.addtype} role="button">Add</a>
+                <Model
+                    isOpen={this.state.isShow}
+                    className="Modal"
+                    overlayClassName="Overlay"
+                // style={{
+                //     overlay: {
+                //         backgroundColor: 'blue'
+                //     },
+                //     content: {
+                //         color: 'red'
+                //     }
+                // }}
+                >
+                    <div className="form-group">
+                        <div className="form-group">
+                            <button class="btn btn-primary" onClick={()=>this.changShow()} >X</button>
+                        </div>
+                        <label>Tên danh mục</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="catelogy" aria-describedby="helpId" defaultValue={this.state.catelogy} />
+                        <div className="form-group">
+
+                            <label>Loại</label>
+                            <select className="form-control" defaultValue={this.state.typeid} onChange={this.ischange} name="typeid" id="typeid">
+                                {this.state.datatypes.map(x => {
+                                    return <option value={x._id}>{x.typename}</option>
+                                })}
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" type="reset" onClick={this.setdata} role="button">Add catelogy</button>
+                    </div>
+                </Model>
+
+                <div className='container' id="modal">
+                    <a class="btn btn-primary" onClick={() => this.showModal("")} role="button">Add</a>
                     <table className="table table-striped table-inverse table-responsive">
                         <thead className="thead-inverse">
                             <tr>
@@ -167,14 +191,14 @@ export default class ContentCatelogys extends Component {
                                         return <td>{z.typename}</td>
                                     })}
                                     <td>{x.created}</td>
-                                    <td><a class="btn btn-primary" onClick={(id) => this.Edit(x._id)} role="button">Edit</a></td>
+                                    <td><a class="btn btn-primary" onClick={(id) => this.showModal(x._id)} role="button">Edit</a></td>
                                     <td><a class="btn btn-warning" onClick={(id) => this.remove(x._id)} role="button">Delete</a></td>
                                 </tr>
 
                             })}
                         </tbody>
                     </table>
-                    {this.showAdd()}
+                    {/* {this.showAdd()} */}
                 </div>
             </div>
         );

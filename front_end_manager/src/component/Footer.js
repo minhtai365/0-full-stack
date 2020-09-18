@@ -8,7 +8,7 @@ export default class Footer extends Component {
                     <div className="bg-dark text-light pt-4 pb-3 mt-5">
                         <div className="container">
                             <div className="row">
-                                <div className="col-md-5 clo-12">
+                                <div className="col-md-4 col-6">
                                     <h5>CÔNG TY VN</h5>
                                     <p>Địa chỉ: Số 9, Phố Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội</p>
                                     <p>Số điện thoại: 0967478588</p>
@@ -20,13 +20,13 @@ export default class Footer extends Component {
                                     <p>Chính sách vận chuyển</p>
                                     <p>Chính sách bảo mật thông tin</p>
                                 </div>
-                                <div className="col-md-4 col-6">
+                                <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>
                                     <div className="footer-content">
-                                        <a className="icon-social" href="#"><i className="fab fa-facebook-f" /></a>
-                                        <a className="icon-social" href="#"><i className="fab fa-youtube" /></a>
-                                        <a className="icon-social" href="#"><i className="fab fa-twitter" /></a>
-                                        <a className="icon-social" href="#"><i className="fab fa-instagram" /></a>
+                                        <a className="icon-social" ><i className="fab fa-facebook-f" /></a>
+                                        <a className="icon-social" ><i className="fab fa-youtube" /></a>
+                                        <a className="icon-social" ><i className="fab fa-twitter" /></a>
+                                        <a className="icon-social" ><i className="fab fa-instagram" /></a>
                                     </div>
                                     <div className="form">
                                         <h4> Đăng ký nhận tin</h4>
@@ -35,8 +35,8 @@ export default class Footer extends Component {
               email của bạn vào ô dưới đây.</p>
                                         <form>
                                             <div className="form-group">
-                                                <label htmlFor>Email</label>
-                                                <input type="email" className="form-control" name id aria-describedby="emailHelpId" placeholder="Your email" />
+                                                <label >Email</label>
+                                                <input type="email" className="form-control"aria-describedby="emailHelpId" placeholder="Your email" />
                                             </div>
                                             <button type="submit" className="btn btn-primary">Submit</button>
                                         </form>

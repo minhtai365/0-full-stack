@@ -24,30 +24,58 @@ router.get('/products', function (req, res, next) {
     res.send(dt);
   });
 })
-router.post('/addproducts',(req,res,next)=>{
-  var now=new Date();
-  var pro={
-    title:req.body.title,
-    description:req.body.description,
-    price:req.body.price,
-    sale:req.body.sale,
-    proNumber:req.body.proNumber,
-    imgPath:req.body.imgPath,
-    catelogyid:req.body.catelogyid,
-    created:now
+router.post('/addproducts', (req, res, next) => {
+
+  console.log(req.body._id);
+  if (req.body._id !== '') {
+    Product.updateOne({ _id: req.body._id }, [{
+      $set: {
+        "title": req.body.title,
+        "description": req.body.description,
+        "price": req.body.price,
+        "sale": req.body.sale,
+        "proNumber": req.body.proNumber,
+        "imgPath": req.body.imgPath,
+        "catelogyid": req.body.catelogyid,
+      }
+    }])
+      .then(re => {
+        res.send('edit ok');
+      })
+      .catch(err => {
+        console.log(err);
+        res.send('fail');
+      })
+  } else {
+    var now = new Date();
+    var pro = {
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      sale: req.body.sale,
+      proNumber: req.body.proNumber,
+      imgPath: req.body.imgPath,
+      catelogyid: req.body.catelogyid,
+      created: now
+    }
+    Product.create(pro)
+      .then(re => {
+        res.send('create ok');
+      })
+      .catch(err => {
+        res.send(err);
+      })
   }
-  Product.create(pro)
-  .then(res.send('create ok'))
-  .catch(res.send('fail'))
-})
-//end product
+}
+)
+//end product///////////////////////////////////////////////////////
 router.get('/user', function (req, res, next) {
   User.find(function (err, dt) {
     res.send(dt);
   })
 })
 
-//xóa
+//xóa user
 router.post('/remove', (req, res, next) => {
   const id = req.body.id;
   User.deleteOne({ _id: id })
@@ -60,7 +88,7 @@ router.post('/remove', (req, res, next) => {
           deleteCate(id);
           res.send('remove ok');
         })
-        .catch(err=>{
+        .catch(err => {
           deleteCate(id);
           deletePro(id);
         }
@@ -78,11 +106,11 @@ function deleteCate(id) {
       res.send('remove ok');
     })
 }
-function deletePro(id){
-  Product.deleteOne({_id:id})
-  .then(resp=>{
-    res.send("remove ok");
-  })
+function deletePro(id) {
+  Product.deleteOne({ _id: id })
+    .then(resp => {
+      res.send("remove ok");
+    })
 }
 //khóa user
 router.post('/change', (req, res, next) => {
@@ -144,7 +172,7 @@ router.post('/register', (req, res) => {
       res.send('err ' + err)
     })
 })
-//end user
+//end user//////////////////////////////////////////////////////////////////////////
 //get type
 router.get('/types', (req, res, next) => {
   Type.find((err, dt) => {
@@ -153,6 +181,20 @@ router.get('/types', (req, res, next) => {
 })
 //create types
 router.post('/addtypes', (req, res, next) => {
+  if(req.body._id!==''){
+    Type.updateOne({_id:req.body._id},[
+      {$set:{
+      'typename':req.body.typename
+    }}
+  ])
+  .then(ress=>{
+    res.send('edit ok');
+  })
+  .catch(err=>{
+    res.send(err);
+  })
+  }
+  else{
   var now = new Date;
   Type.create({
     typename: req.body.typename,
@@ -164,7 +206,7 @@ router.post('/addtypes', (req, res, next) => {
     .catch(err => {
       res.send('fail');
     });
-});
+}});
 //end types
 //get catelogy
 router.get('/catelogys', (req, res, next) => {
@@ -174,23 +216,35 @@ router.get('/catelogys', (req, res, next) => {
 })
 //create catelogy
 router.post('/addcatelogys', (req, res, next) => {
-  console.log(req.body.typeid);
-
-  var now = new Date;
-  Catelogies.create({
-    catelogy: req.body.catelogy,
-    typeid: req.body.typeid,
-    typename: "phụ kiện",
-    created: now
-  })
-    .then(resp => {
-      res.send('create ok');
+  if (req.body._id !== '') {
+    Catelogies.updateOne({ _id: req.body._id }, [{
+      $set: {
+        "typeid": req.body.typeid,
+        "catelogy": req.body.catelogy
+      }
+    }])
+      .then(ress => {
+        res.send("edit ok")
+      })
+      .catch(err => {
+        res.send(err)
+      })
+  }
+  else {
+    var now = new Date;
+    Catelogies.create({
+      catelogy: req.body.catelogy,
+      typeid: req.body.typeid,
+      created: now
     })
-    .catch(err => {
-      console.log(err);
-      res.send(err);
-    }
-    )
+      .then(resp => {
+        res.send('create ok');
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(err);
+      })
+  }
 })
 router.post('/login', function (req, res, next) {
   var email = req.body.email, password = req.body.password;

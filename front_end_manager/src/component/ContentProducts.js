@@ -1,13 +1,15 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 
+import Model from 'react-modal';
 export default class ContentProducts extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dataproducts: [],
             datacatelogys: [],
-            isShow: false
+            isShow: false,
+            _id: ''
         }
     }
     componentWillMount() {
@@ -32,46 +34,8 @@ export default class ContentProducts extends Component {
             }
             )
     }
-
-    showAdd() {
-        if (this.state.isShow) {
-            return <div className="form-group">
-                <label>Tên Sản phẩm</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="title" aria-describedby="helpId" placeholder="" />
-
-                <label>Mô tả</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="description" aria-describedby="helpId" placeholder="" />
-
-                <label>Giá</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="price" aria-describedby="helpId" placeholder="" />
-
-                <label>Giá sale</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="sale" aria-describedby="helpId" placeholder="" />
-
-                <label>Số lượng</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="proNumber" aria-describedby="helpId" placeholder="" />
-                <label>Hình ảnh</label>
-                <input type="text"
-                    className="form-control" onChange={this.ischange} name="imgPath" aria-describedby="helpId" placeholder="" />
-
-                <label>Doanh mục</label>
-                <div className="form-group">
-                    <label htmlFor="typeid" />
-                    <select className="form-control" onChange={this.ischange} name="catelogyid" id="typeid">
-                        {this.state.datacatelogys.map(x => {
-                            return <option value={x._id}>{x.catelogy}</option>
-                        })}
-                    </select>
-                </div>
-
-                <button class="btn btn-primary" type="reset" onClick={this.adddata} role="button">Add</button>
-            </div>
-        }
+    componentDidMount() {
+        Model.setAppElement("#modal");
     }
     ischange = (e) => {
         console.log(e.target.name);
@@ -80,8 +44,9 @@ export default class ContentProducts extends Component {
             [e.target.name]: e.target.value
         })
     }
-    adddata = () => {
+    setData = () => {
         Axios.post('/addproducts', {
+            _id: this.state._id,
             title: this.state.title,
             description: this.state.description,
             price: this.state.price,
@@ -91,14 +56,15 @@ export default class ContentProducts extends Component {
             catelogyid: this.state.catelogyid
         })
             .then(res => {
-                if (res.data === 'create ok') {
-                    alert("Thêm thành công");
+                if (res.data === 'create ok' || res.data === 'edit ok') {
+
                     Axios.get('/products')
                         .then(res => {
                             this.setState({
                                 dataproducts: res.data
                             })
                         })
+                    alert("Thành công");
                 }
                 else alert(res.data)
             })
@@ -107,8 +73,43 @@ export default class ContentProducts extends Component {
                 alert('Thất bại');
             }
             )
+        this.setState({
+            isShow: !this.state.isShow
+        })
     }
-    addtype = () => {
+
+
+    showModel = (id) => {
+        if (id !== '') {
+            this.state.dataproducts.forEach(element => {
+                if (element._id === id) {
+                    this.setState({
+                        _id: element._id,
+                        title: element.title,
+                        description: element.description,
+                        price: element.price,
+                        sale: element.sale,
+                        proNumber: element.proNumber,
+                        imgPath: element.imgPath,
+                        catelogyid: element.catelogyid
+                    })
+                }
+            });
+        } else {
+            this.setState({
+                _id: '',
+                title: '',
+                description: '',
+                price: '',
+                sale: '',
+                proNumber: '',
+                imgPath: '',
+                catelogyid: ''
+            })
+        }
+        this.changShow();
+    }
+    changShow() {
         this.setState({
             isShow: !this.state.isShow
         })
@@ -133,30 +134,6 @@ export default class ContentProducts extends Component {
                 alert(err);
             })
     }
-
-    // Edit = (id) => {
-    //     console.log(id);
-    //     Axios.post('/editproducts', {
-    //         id: id
-    //     })
-    //         .then(res => {
-    //             if (res.data === 'edit ok') {
-    //                 Axios.get('/products').then(res => {
-    //                     this.setState({
-    //                         dataproducts: res.data
-    //                     })
-    //                 })
-    //                 alert('Thành công');
-    //             }
-    //             else {
-    //                 alert('Khóa thất bại');
-    //             }
-    //         })
-    //         .catch(err => {
-    //             alert('Khóa thất bại');
-    //         })
-
-    // }
     render() {
         return (
             <div>
@@ -171,8 +148,62 @@ export default class ContentProducts extends Component {
                         </li>
                     </ul>
                 </nav>
-                <div className='container'>
-                    <a class="btn btn-primary" onClick={this.addtype} role="button">Add</a>
+                <Model
+                    isOpen={this.state.isShow}
+                    className="Modal"
+                    overlayClassName="Overlay"
+                // style={{
+                //     overlay: {
+                //         backgroundColor: 'blue'
+                //     },
+                //     content: {
+                //         color: 'red'
+                //     }
+                // }}
+                >
+                    <div className="form-group">
+
+                        <div className="form-group">
+                            <button class="btn btn-primary" onClick={() => this.changShow()} >X</button>
+                        </div>
+                        <label>Tên Sản phẩm</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="title" aria-describedby="helpId" defaultValue={this.state.title || ""} />
+
+                        <label>Mô tả</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="description" aria-describedby="helpId" defaultValue={this.state.description || ""} />
+
+                        <label>Giá</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="price" aria-describedby="helpId" defaultValue={this.state.price || ""} />
+
+                        <label>Giá sale</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="sale" aria-describedby="helpId" defaultValue={this.state.sale || ""} />
+
+                        <label>Số lượng</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="proNumber" aria-describedby="helpId" defaultValue={this.state.proNumber || ""} />
+                        <label>Hình ảnh</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="imgPath" aria-describedby="helpId" defaultValue={this.state.imgPath || ""} />
+
+                        <label>Doanh mục</label>
+                        <div className="form-group">
+                            <select className="form-control" defaultValue={this.state.catelogyid} onChange={this.ischange} name="catelogyid" id="typeid">
+                                {this.state.datacatelogys.map(x => {
+                                    return <option value={x._id}>{x.catelogy}</option>
+                                })}
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" type="reset" onClick={this.setData} role="button">Add</button>
+                    </div>
+                </Model>
+
+                <div className='container' id="modal">
+                    <a class="btn btn-primary" onClick={() => this.showModel('')} role="button">Add</a>
                     <table className="table table-striped table-inverse table-responsive">
                         <thead className="thead-inverse">
                             <tr>
@@ -182,7 +213,7 @@ export default class ContentProducts extends Component {
                                 <th>Giá trước sale</th>
                                 <th>Giá sau sale</th>
                                 <th>Số lượng</th>
-                                {/* <th>Loại doanh mục</th> */}
+                                <th>Loại doanh mục</th>
                                 <th>Created</th>
                                 <th></th>
                                 <th></th>
@@ -197,17 +228,18 @@ export default class ContentProducts extends Component {
                                     <td>{x.price}</td>
                                     <td>{x.sale}</td>
                                     <td>{x.proNumber}</td>
-                                    {/* {this.state.datacatelogys.filter(y=>y._id===x.t).map(z=>{
-                                        return <td>{z.typename}</td> })} */}
+                                    {this.state.datacatelogys.filter(y => y._id === x.catelogyid).map(z => {
+                                        return <td>{z.catelogy}</td>
+                                    })}
                                     <td>{x.created}</td>
-                                    <td><a class="btn btn-primary" onClick={(id) => this.Edit(x._id)} role="button">Edit</a></td>
+                                    <td><a class="btn btn-primary" onClick={(id) => this.showModel(x._id)} role="button">Edit</a></td>
                                     <td><a class="btn btn-warning" onClick={(id) => this.remove(x._id)} role="button">Delete</a></td>
                                 </tr>
 
                             })}
                         </tbody>
                     </table>
-                    {this.showAdd()}
+                    {/* {this.showAdd()} */}
                 </div>
             </div>
         );
