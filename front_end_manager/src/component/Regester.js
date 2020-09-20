@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -46,21 +45,21 @@ export default class Regester extends Component {
                                 <h3>Register</h3>
                                 <div className="row">
                                     <div className="col-sm-6 form-group ">
-                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="first" id placeholder="Name" />
+                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="first" placeholder="Name" />
                                     </div>
                                     <div className="col-sm-6 form-group ">
-                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="last" id placeholder="UserName" />
+                                        <input type="text" onChange={this.isChange} className="form-control input-user" name="last" placeholder="UserName" />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input type="email" onChange={this.isChange} className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                    <input type="email" onChange={this.isChange} className="form-control input-user" name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
                                 </div>
                                 <div className=" row">
                                     <div className="col-sm-6 form-group">
-                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" id placeholder="Password" />
+                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" placeholder="Password" />
                                     </div>
                                     <div className="col-sm-6 form-group">
-                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="repass" id placeholder="Repeat Password" />
+                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="repass" placeholder="Repeat Password" />
                                     </div>
                                 </div>
                                 <div className="form-group">

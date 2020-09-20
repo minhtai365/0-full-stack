@@ -66,21 +66,10 @@ export default class ContentAccount extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle ml-auto" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
-              <div className="dropdown-menu" aria-labelledby="dropdownId">
-                <a className="dropdown-item" href="#">Đăng xuất</a>
-                <a className="dropdown-item" href="#">Thông tin</a>
-              </div>
-            </li>
-          </ul>
-        </nav>
         <div className='container'>
-          <a  class="btn btn-primary" role="button">Add</a>
-        <table className="table table-striped table-inverse table-responsive">
-          <thead className="thead-inverse">
+          <button  className="btn btn-primary" >Add</button>
+        <table className="table table-bordered table-hover table-inverse table-responsive">
+          <thead className="thead-dark">
             <tr>
               <th>Name</th>
               <th>Username</th>
@@ -89,21 +78,20 @@ export default class ContentAccount extends Component {
               <th>Created</th>
               <th>Status</th>
               <th></th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
-            {this.state.datauser.map(x => {
-              return <tr>
+            {this.state.datauser.map((x,key) => {
+              return <tr key={key}>
                 <td >{x.name}</td>
                 <td>{x.username}</td>
                 <td>{x.email}</td>
                 <td>{x.role}</td>
                 <td>{x.created}</td>
                 {x.status ?  
-                <td><a class="btn btn-primary" onClick={(id)=>this.lock(x._id)} role="button">Open</a></td>: 
-                <td><a class="btn btn-danger" onClick={(id)=>this.lock(x._id)} role="button">Lock</a></td>}
-                <td><a class="btn btn-warning" onClick={(id)=>this.remove(x._id)} role="button">Delete</a></td>
+                <td><button className="btn btn-primary" onClick={(id)=>this.lock(x._id)}>Open</button></td>: 
+                <td><button className="btn btn-danger" onClick={(id)=>this.lock(x._id)}>Lock</button></td>}
+                <td><button className="btn btn-warning" onClick={(id)=>this.remove(x._id)}>Delete</button></td>
               </tr>
 
             })}

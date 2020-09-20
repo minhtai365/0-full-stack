@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { createStore } from 'redux';
 const oldState = {
     dt: [],
@@ -25,6 +25,6 @@ const myReducer = (state = oldState, action) => {
 }
 
 
-const getproduct = () => axios.get('/products').then(res => res.data)
+// const getproduct = () => axios.get('/products').then(res => res.data)
 const Store = createStore(myReducer);
 export default Store;

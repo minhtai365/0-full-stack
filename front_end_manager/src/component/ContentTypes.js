@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 
 import Model from 'react-modal';
+import { Link } from 'react-router-dom';
 
 export default class ContentTypes extends Component {
     constructor(props) {
@@ -105,32 +106,11 @@ export default class ContentTypes extends Component {
     render() {
         return (
             <div>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle ml-auto"  id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
-                            <div className="dropdown-menu" aria-labelledby="dropdownId">
-                                <a className="dropdown-item" >Đăng xuất</a>
-                                <a className="dropdown-item" >Thông tin</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
                 <Model
                     isOpen={this.state.isShow}
                     className="Modal"
-                    overlayClassName="Overlay"
-                // style={{
-                //     overlay: {
-                //         backgroundColor: 'blue'
-                //     },
-                //     content: {
-                //         color: 'red'
-                //     }
-                // }}
-                >
+                    overlayClassName="Overlay">
                     <div className="form-group">
-
                         <div className="form-group">
                             <button class="btn btn-primary" onClick={() => this.changShow()} >X</button>
                         </div>
@@ -138,14 +118,14 @@ export default class ContentTypes extends Component {
                         <input type="text"
                             className="form-control" onChange={this.ischange} name="typename" aria-describedby="helpId" defaultValue={this.state.typename} />
 
-                        <button class="btn btn-primary" type="reset" onClick={this.setdata} role="button">Add</button>
+                        <button class="btn btn-primary" type="reset" onClick={this.setdata}>Add</button>
                     </div>
                 </Model>
 
                 <div className='container' id="modal">
-                    <a class="btn btn-primary" onClick={()=>this.showModal('')} role="button">Add</a>
-                    <table className="table table-striped table-inverse table-responsive">
-                        <thead className="thead-inverse">
+                    <button class="btn btn-primary" onClick={()=>this.showModal('')}>Add</button>
+        <table className="table table-bordered table-hover table-inverse table-responsive">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Name</th>
                                 <th>Created</th>
@@ -158,8 +138,8 @@ export default class ContentTypes extends Component {
                                 return <tr>
                                     <td >{x.typename}</td>
                                     <td>{x.created}</td>
-                                    <td><a class="btn btn-primary" onClick={(id) => this.showModal(x._id)} role="button">Edit</a></td>
-                                    <td><a class="btn btn-warning" onClick={(id) => this.remove(x._id)} role="button">Delete</a></td>
+                                    <td><button class="btn btn-primary" onClick={(id) => this.showModal(x._id)}>Edit</button></td>
+                                    <td><button class="btn btn-warning" onClick={(id) => this.remove(x._id)}>Delete</button></td>
                                 </tr>
 
                             })}

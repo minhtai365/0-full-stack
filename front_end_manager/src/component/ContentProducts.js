@@ -48,7 +48,9 @@ export default class ContentProducts extends Component {
         Axios.post('/addproducts', {
             _id: this.state._id,
             title: this.state.title,
-            description: this.state.description,
+            type: this.state.type,
+            color: this.state.color,
+            size: this.state.size,
             price: this.state.price,
             sale: this.state.sale,
             imgPath: this.state.imgPath,
@@ -86,11 +88,13 @@ export default class ContentProducts extends Component {
                     this.setState({
                         _id: element._id,
                         title: element.title,
-                        description: element.description,
+                        type: element.type,
+                        size: element.size,
                         price: element.price,
                         sale: element.sale,
                         proNumber: element.proNumber,
                         imgPath: element.imgPath,
+                        color: element.color,
                         catelogyid: element.catelogyid
                     })
                 }
@@ -137,17 +141,6 @@ export default class ContentProducts extends Component {
     render() {
         return (
             <div>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle ml-auto" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
-                            <div className="dropdown-menu" aria-labelledby="dropdownId">
-                                <a className="dropdown-item" href="#">Đăng xuất</a>
-                                <a className="dropdown-item" href="#">Thông tin</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
                 <Model
                     isOpen={this.state.isShow}
                     className="Modal"
@@ -162,29 +155,44 @@ export default class ContentProducts extends Component {
                 // }}
                 >
                     <div className="form-group">
+                        <div className=" d-flex justify-content-end">
+                            <button className="text-danger " onClick={() => this.changShow()} ><i className="far fa-times-circle"></i></button>
 
-                        <div className="form-group">
-                            <button class="btn btn-primary" onClick={() => this.changShow()} >X</button>
                         </div>
                         <label>Tên Sản phẩm</label>
                         <input type="text"
                             className="form-control" onChange={this.ischange} name="title" aria-describedby="helpId" defaultValue={this.state.title || ""} />
 
-                        <label>Mô tả</label>
+                        <label>Kích thước</label>
                         <input type="text"
-                            className="form-control" onChange={this.ischange} name="description" aria-describedby="helpId" defaultValue={this.state.description || ""} />
+                            className="form-control" onChange={this.ischange} name="size" aria-describedby="helpId" defaultValue={this.state.size || ""} />
+                        <label>Chất liệu</label>
+                        <input type="text"
+                            className="form-control" onChange={this.ischange} name="type" aria-describedby="helpId" defaultValue={this.state.type || ""} />
+                        <div className="form-group d-flex">
+                            <div>
+                                <label>Màu sắc</label>
+                                <input type="text"
+                                    className="form-control" onChange={this.ischange} name="color" aria-describedby="helpId" defaultValue={this.state.color || ""} />
+                            </div>
+                            <div>
+                                <label>Số lượng</label>
+                                <input type="text"
+                                    className="form-control" onChange={this.ischange} name="proNumber" aria-describedby="helpId" defaultValue={this.state.proNumber || ""} />
+                            </div>
+                        </div>
+                        <div className="form-group d-flex">
+                            <div>
+                                <label>Giá</label>
+                                <input type="text" className="form-control" onChange={this.ischange} name="price" aria-describedby="helpId" defaultValue={this.state.price || ""} />
+                            </div>
+                            <div>
+                                <label>Giá sale</label>
+                                <input type="text" className="form-control" onChange={this.ischange} name="sale" aria-describedby="helpId" defaultValue={this.state.sale || ""} />
+                            </div>
+                        </div>
 
-                        <label>Giá</label>
-                        <input type="text"
-                            className="form-control" onChange={this.ischange} name="price" aria-describedby="helpId" defaultValue={this.state.price || ""} />
 
-                        <label>Giá sale</label>
-                        <input type="text"
-                            className="form-control" onChange={this.ischange} name="sale" aria-describedby="helpId" defaultValue={this.state.sale || ""} />
-
-                        <label>Số lượng</label>
-                        <input type="text"
-                            className="form-control" onChange={this.ischange} name="proNumber" aria-describedby="helpId" defaultValue={this.state.proNumber || ""} />
                         <label>Hình ảnh</label>
                         <input type="text"
                             className="form-control" onChange={this.ischange} name="imgPath" aria-describedby="helpId" defaultValue={this.state.imgPath || ""} />
@@ -192,31 +200,34 @@ export default class ContentProducts extends Component {
                         <label>Doanh mục</label>
                         <div className="form-group">
                             <select className="form-control" defaultValue={this.state.catelogyid} onChange={this.ischange} name="catelogyid" id="typeid">
-                                {this.state.datacatelogys.map(x => {
-                                    return <option value={x._id}>{x.catelogy}</option>
+                                {this.state.datacatelogys.map((x,key) => {
+                                    return <option key={key} value={x._id}>{x.catelogy}</option>
                                 })}
                             </select>
                         </div>
 
-                        <button class="btn btn-primary" type="reset" onClick={this.setData} role="button">Add</button>
+                        <button className="btn btn-primary" type="reset" onClick={this.setData} >OK</button>
                     </div>
                 </Model>
 
                 <div className='container' id="modal">
-                    <a class="btn btn-primary" onClick={() => this.showModel('')} role="button">Add</a>
-                    <table className="table table-striped table-inverse table-responsive">
-                        <thead className="thead-inverse">
+                    <button className="btn btn-primary" onClick={() => this.showModel('')} ><i className="fas fa-plus-circle"></i></button>
+        <table className="table table-bordered table-hover table-inverse table-responsive">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Hình ảnh</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Mô tả</th>
+                                <th>Màu sắc</th>
+                                <th>Kích cỡ</th>
+                                <th>Chất liệu</th>
                                 <th>Giá trước sale</th>
                                 <th>Giá sau sale</th>
                                 <th>Số lượng</th>
                                 <th>Loại doanh mục</th>
-                                <th>Created</th>
+                                <th>Lượt xem</th>
+                                {/* <th>Created</th> */}
                                 <th></th>
-                                <th></th>
+                                {/* <th></th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -224,16 +235,21 @@ export default class ContentProducts extends Component {
                                 return <tr>
                                     <td ><img src={x.imgPath} width={50} alt="Hình ảnh sản phẩm" /></td>
                                     <td>{x.title}</td>
-                                    <td>---</td>
+                                    <td>{x.color}</td>
+                                    <td>{x.size}</td>
+                                    <td>{x.type}</td>
                                     <td>{x.price}</td>
                                     <td>{x.sale}</td>
                                     <td>{x.proNumber}</td>
                                     {this.state.datacatelogys.filter(y => y._id === x.catelogyid).map(z => {
                                         return <td>{z.catelogy}</td>
                                     })}
-                                    <td>{x.created}</td>
-                                    <td><a class="btn btn-primary" onClick={(id) => this.showModel(x._id)} role="button">Edit</a></td>
-                                    <td><a class="btn btn-warning" onClick={(id) => this.remove(x._id)} role="button">Delete</a></td>
+                                    <td>{x.view}</td>
+                                    {/* <td>{x.created}</td> */}
+                                    <td><div className="text-info" onClick={(id) => this.showModel(x._id)} ><i className="fas fa-edit"></i></div>
+                                        <hr />
+                                        <div className="text-danger" onClick={(id) => this.remove(x._id)} ><i className="far fa-trash-alt"></i></div></td>
+                                    {/* <td></td> */}
                                 </tr>
 
                             })}

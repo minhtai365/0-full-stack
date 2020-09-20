@@ -1,3 +1,4 @@
+import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -14,13 +15,27 @@ class Detail extends Component {
     formatMoney(t) {
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+    onChose = (e) => {
+        console.log(e.target.value);
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    componentWillMount(){
+        Axios.post('/viewitem',{
+            id:this.props.match.params.id
+        })
+        .then(res=>{
+            // console.log(res.data);
+        })
+    }
     render() {
         // let {id}=useParams();
         return (
             <div>
                 <Header />
-                {this.props.dataproducts.filter(y => y._id === this.props.match.params.id).map(x =>
-                    <div className="container content-chitiet">
+                {this.props.dataproducts.filter(y => y._id === this.props.match.params.id).map((x,key) =>
+                    <div key={key} className="container content-chitiet">
                         <div className="d-flex mb-4">
                             <li className="list-ds"><Link to="index.html">Trang chủ &gt;</Link></li>
                             <li className="list-ds"><Link to="#">Trang phục &gt;</Link></li>
@@ -41,7 +56,7 @@ class Detail extends Component {
                                         </a> */}
                                     </div>
                                     <div>
-                                        <img src={x.imgPath} data-zoom-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" />
+                                        <img src={x.imgPath} data-zoom-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" alt="Ảnh chi tiết" />
                                         <div className="imageNav">
                                             <div className="icon icon-imgnext" />
                                             <div className="icon icon-imgprev" />
@@ -65,11 +80,21 @@ class Detail extends Component {
                                     </li>
                                     <hr />
                                     <li className="list-ds">
-                                        <div className="mb-4">Chọn thời gian</div>
+                                        <div className="mb-2">Chọn thời gian</div>
                                         <div id="day" className="float-left">
-                                            <label size-id={1} size-name="S" className="btn btn border-primary"><a href>1</a></label>
-                                            <label size-id={2} size-name="M" className="btn btn border-primary"><a href>3</a></label>
-                                            <label size-id={4} size-name="L" className="btn btn border-primary"><a href>7</a></label>
+                                            <div >
+                                                {/* </div>
+                                            <div className="btn-group" data-toggle="buttons"> */}
+                                                <label className="btn btn-info">
+                                                    <div><input type="radio" value="1" name="day" onChange={this.onChose} /> 1 ngày</div>
+                                                </label>
+                                                <label className="btn btn-info">
+                                                    <div><input type="radio" value="3" name="day" onChange={this.onChose} /> 3 ngày</div>
+                                                </label>
+                                                <label className="btn btn-info">
+                                                    <div><input type="radio" value="7" name="day" onChange={this.onChose} /> 7 ngày</div>
+                                                </label>
+                                            </div>
                                         </div>
                                         <label className="float-right">
                                             <span id="viewsizeguide">Size Guide</span>
@@ -90,41 +115,35 @@ class Detail extends Component {
                                     </li>
                                     <hr />
                                     <div id="chitiet" role="tablist" aria-multiselectable="true">
-                                        <div className role="tab" id="mota">
+                                        <div role="tab" id="mota">
                                             <h5 className="mb-0">
                                                 <a className="collap-item" data-toggle="collapse" data-parent="#chitiet" href="#motasp" aria-expanded="true" aria-controls="chitiet">
-                                                    Mô tả sản phẩm
-              </a>
+                                                    Mô tả sản phẩm</a>
                                             </h5>
                                         </div>
                                         <div id="motasp" className="collapse in" role="tabpanel" aria-labelledby="mota">
                                             <div className="content product--content">
-                                                <p><strong>SKU</strong> : 60623</p>
-                                                <p style={{ whiteSpace: 'pre-line' }}>Màu sắc: đỏ mận
-                Phù hợp mặc đi chơi, dạo phố</p>
                                                 <div className="form-group row">
-                                                    <label htmlFor="inputPassword3" className="col-sm-4 control-label">Chiều dài sản
-                  phẩm</label>
-                                                    <label htmlFor="inputPassword3" className="col-sm-8 control-label"> </label>
+                                                    <label className="col-sm-4 control-label">Màu sắc: </label>
+                                                <label className="col-sm-8 control-label text-uppercase border-left">{x.color}</label>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label htmlFor="inputPassword3" className="col-sm-4 control-label">Có lót</label>
-                                                    <label htmlFor="inputPassword3" className="col-sm-8 control-label">Không</label>
+                                                    <label className="col-sm-4 control-label">Kích thước: </label>
+                                                    <label className="col-sm-8 control-label text-uppercase border-left">{x.size}</label>
+                                                </div>
+
+                                                <div className="form-group row">
+                                                    <label className="col-sm-4 control-label">Chất liệu sản phẩm :</label>
+                                                    <label className="col-sm-8 control-label text-uppercase border-left">{x.type}</label>
                                                 </div>
                                                 <div className="form-group row">
-                                                    <label htmlFor="inputPassword3" className="col-sm-4 control-label">Có co
-                  giãn</label>
-                                                    <label htmlFor="inputPassword3" className="col-sm-8 control-label">Không</label>
-                                                </div>
-                                                <div className="form-group row">
-                                                    <label htmlFor="inputPassword3" className="col-sm-4 control-label">Chất liệu sản
-                  phẩm</label>
-                                                    <label htmlFor="inputPassword3" className="col-sm-8 control-label">Kate</label>
+                                                    <label className="col-sm-4 control-label">Số lượng kho :</label>
+                                                    <label className="col-sm-8 control-label text-uppercase border-left">{x.proNumber}</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className role="tab" id="doitrasp">
+                                        <div role="tab" id="doitrasp">
                                             <h5 className="mb-0">
                                                 <a className="collap-item" data-toggle="collapse" data-parent="#chitiet" href="#doitra" aria-expanded="true" aria-controls="doitra">
                                                     Chính sách đổi trả
@@ -132,7 +151,7 @@ class Detail extends Component {
                                             </h5>
                                         </div>
                                         <div id="doitra" className="collapse in" role="tabpanel" aria-labelledby="doitrasp">
-                                            <div className>
+                                            <div >
                                                 <div className="content">
                                                     FEROSH chấp nhận đổi/trả hàng trong thời gian 03 ngày làm việc, áp dụng không
                                                     đồng đều đối
@@ -144,7 +163,7 @@ class Detail extends Component {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className role="tab" id="thanhtoansp">
+                                        <div role="tab" id="thanhtoansp">
                                             <h5 className="mb-0">
                                                 <a className="collap-item" data-toggle="collapse" data-parent="#chitiet" href="#thanhtoan" aria-expanded="true" aria-controls="thanhtoan">
                                                     Chính sách thanh toán
@@ -152,7 +171,7 @@ class Detail extends Component {
                                             </h5>
                                         </div>
                                         <div id="thanhtoan" className="collapse in" role="tabpanel" aria-labelledby="thanhtoansp">
-                                            <div className>
+                                            <div >
                                                 <div className="content">
                                                     FEROSH cung cấp 4 hình thức thanh toán cho quý khách: Thanh toán khi nhận hàng
                                                     (COD), Chuyển
@@ -163,7 +182,7 @@ class Detail extends Component {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className role="tab" id="giaohangsp">
+                                        <div role="tab" id="giaohangsp">
                                             <h5 className="mb-0">
                                                 <a className="collap-item" data-toggle="collapse" data-parent="#chitiet" href="#giaohang" aria-expanded="true" aria-controls="giaohang">
                                                     Chính sách giao hàng
@@ -171,7 +190,7 @@ class Detail extends Component {
                                             </h5>
                                         </div>
                                         <div id="giaohang" className="collapse in" role="tabpanel" aria-labelledby="giaohangsp">
-                                            <div className>
+                                            <div >
                                                 <div className="content">
                                                     Đơn hàng sẽ được giao cho Quý khách trong vòng 07 - 10 ngày làm việc kể từ ngày
                                                     đặt đơn. Quý
@@ -185,12 +204,12 @@ class Detail extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <li class="list-ds">
-                          <div class="upcase share">
+                                    {/* <li className="list-ds">
+                          <div className="upcase share">
                           <span>Share</span>
-                          <a class="icon icon-fb" href="#"></a>
-                          <a class="icon icon-in" href="#"></a>
-                          <a class="icon icon-mail" href="#"></a>
+                          <a className="icon icon-fb" href="#"></a>
+                          <a className="icon icon-in" href="#"></a>
+                          <a className="icon icon-mail" href="#"></a>
                           </div>
                       </li> */}
                                 </ul>

@@ -23,10 +23,10 @@ export default class Footer extends Component {
                                 <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>
                                     <div className="footer-content">
-                                        <a className="icon-social" ><i className="fab fa-facebook-f" /></a>
-                                        <a className="icon-social" ><i className="fab fa-youtube" /></a>
-                                        <a className="icon-social" ><i className="fab fa-twitter" /></a>
-                                        <a className="icon-social" ><i className="fab fa-instagram" /></a>
+                                        <button className="btn btn-link text-primary" ><i className="fab fa-facebook-f" /></button>
+                                        <button className="btn btn-link text-danger" ><i className="fab fa-youtube" /></button>
+                                        <button className="btn btn-link text-info" ><i className="fab fa-twitter" /></button>
+                                        <button className="btn btn-link text-light" ><i className="fab fa-instagram" /></button>
                                     </div>
                                     <div className="form">
                                         <h4> Đăng ký nhận tin</h4>
@@ -48,9 +48,8 @@ export default class Footer extends Component {
                     <div className="bg-secondary">
                         <div className="container text-light">
                             <div className="d-flex justify-content-between flex-md-row flex-column">
-                                <div>Copyright 2020 © keyweb.vn</div>
-                                <img className="dmca" src="http://theme266v5.demov5.keyweb.vn/userdata/7192/wp-content/themes/keyweb/css/images/dmca.png" />
-                                <div>Thiết kế website bởi Keyweb.vn</div>
+                                <div>Copyright 2020 © Minh Tài</div>
+                                <div>Thiết kế website bởi Minh Tài</div>
                             </div>
                         </div>
                     </div>

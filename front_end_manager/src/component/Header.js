@@ -10,22 +10,22 @@ class Header extends Component {
             datatypes: [],
             datacatelogys: [],
             dataproducts: [],
-            search:''
+            search: ''
         }
     }
     componentWillMount() {
         Axios.get('/products')
-        .then(res => {
-            if(this.props.dataproducts.length===0){
-                this.setState({
-                    dataproducts: res.data
-                })
-                this.props.sendProducts(res.data);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(res => {
+                if (this.props.dataproducts.length === 0) {
+                    this.setState({
+                        dataproducts: res.data
+                    })
+                    this.props.sendProducts(res.data);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
         Axios.get('/catelogys')
             .then(res => {
                 this.setState({
@@ -47,8 +47,8 @@ class Header extends Component {
                 console.log(err);
             })
     }
-    sendIDCate=(id)=>{
-        
+    sendIDCate = (id) => {
+
         this.props.clickItem(id);
         // this.props.history.push('/index.html');
     }
@@ -80,14 +80,14 @@ class Header extends Component {
         // return
         return str;
     }
-    inputValue=(e)=>{
+    inputValue = (e) => {
         // console.log(e.target.value);
         this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
         console.log(this.state.search);
     }
-    clickSearch(){
+    clickSearch() {
         // console.log(this.state.search);
         this.props.search("sơ");
     }
@@ -96,49 +96,50 @@ class Header extends Component {
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                 <div className="fixed-top top-nav">
                     <div className="container  pt-2">
-                        <div className=" float-left">
-                            <a className="link-a ml-2" ><i className="fa fa-map-marker" aria-hidden="true" /> Liên hệ</a>
-                            <a className="link-a ml-2" href="callto:0352268668"><i className="fa fa-phone" aria-hidden="true" />
-          0352268668</a>
-                            <a className="link-a ml-2" href="mailto:tranminhtai365@gmail.com"><i className="fa fa-envelope" aria-hidden="true" />
+                        <div className="d-flex justify-content-start">
+                            <div className="link-a mx-2" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
+                            <div className="link-a mx-2" href="callto:0352268668"><i className="fa fa-phone mx-2" aria-hidden="true" />
+          0352268668</div>
+                            <a className="link-a mx-2" href="mailto:tranminhtai365@gmail.com"><i className="fa fa-envelope mx-2" aria-hidden="true" />
           tranminhtai365@gmail.com</a>
                         </div>
-                        <div className=" float-right">
-                            <Link className="link-a ml-2" to="/login.html"><i className="fa fa-user" aria-hidden="true" />{this.props.name}</Link>
-                            <Link className="link-a ml-2" to="/cart.html"> <span>Giỏ hàng của tôi</span></Link>
+                        <div className="d-flex justify-content-end">
+                            <Link className="link-a mx-2" to="/login.html"><i className="fa fa-user" aria-hidden="true" />{this.props.name}</Link>
+                            <Link className="link-a mx-2" to="/cart.html"> <span>Giỏ hàng của tôi</span></Link>
                         </div>
                     </div>
                 </div>
                 <div className="container bottom-nav">
-                    <a className="navbar-brand" ><i className="fa fa-user icon-logo" aria-hidden="true" /></a>
+                    <div  className="navbar-brand" ><i className="fa fa-user icon-logo" aria-hidden="true" /></div>
                     <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation" />
                     <div className="collapse navbar-collapse" id="collapsibleNavId">
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="nav-item active">
+                            <li className="nav-item">
                                 <Link className="nav-link " to="/index">Trang chủ</Link>
                             </li>
-                            {this.state.datatypes.map((x,key) => {
+                            {this.state.datatypes.map((x, key) => {
                                 return (
-                                    <li  key={key} className="nav-item dropdown">
-                                        <a className="nav-link  dropdown-toggle" id={x._id} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{x.typename}</a>
+                                    <li key={key} className="nav-item dropdown">
+                                        <div className="nav-link dropdown-toggle" id={x._id} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{x.typename}</div>
                                         <div className="dropdown-menu" aria-labelledby={x.id}>
-                                            {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z,key) => {
-                                                return (<Link key={key} to={"/index/" +this.to_slug(z.catelogy)+"/"+z._id+ ".html"} className="dropdown-item" onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>)
+                                            {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
+                                                return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"} 
+                                                className="dropdown-item" onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>)
                                             })}
                                         </div>
                                     </li>
                                 )
                             })}
-                            <li className="nav-item active">
-                                <a className="nav-link " >Bảng giá</a>
+                            <li className="nav-item">
+                                <Link to="/index" className="nav-link " >Bảng giá</Link>
                             </li>
-                            <li className="nav-item active">
-                                <a className="nav-link " >Hướng dẫn dịch vụ</a>
+                            <li className="nav-item">
+                            <Link to="/index" className="nav-link " >Hướng dẫn dịch vụ</Link>
                             </li>
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2 botron30" name="search" onChange={(e)=>this.inputValue(e)} type="text" placeholder="Search" />
-                            <button className="btn btn-outline-primary botron30 my-2 my-sm-0" onClick={()=>this.props.search(this.state.search)}>Search</button>
+                            <input className="form-control mr-sm-2 botron30" name="search" onChange={(e) => this.inputValue(e)} type="text" placeholder="Search" />
+                            <button className="btn btn-outline-primary botron30 my-2 my-sm-0" onClick={() => this.props.search(this.state.search)}>Search</button>
                         </div>
                     </div>
                 </div>
@@ -149,7 +150,7 @@ class Header extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        dataproducts:state.dataproducts
+        dataproducts: state.dataproducts
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

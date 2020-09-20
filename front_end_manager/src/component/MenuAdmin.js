@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default class MenuAdmin extends Component {
     render() {
         return (
-            <div>
+            <div className="position-fixed">
                 <ul className="navbar-nav pl-2 my-nav bg-gradient-primary text-white">
                     {/* Sidebar - Brand */}
                     <Link className="text-white text-30 d-flex align-items-center justify-content-center" to="/index.html">

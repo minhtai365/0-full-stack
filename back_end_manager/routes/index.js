@@ -36,6 +36,10 @@ router.post('/addproducts', (req, res, next) => {
         "sale": req.body.sale,
         "proNumber": req.body.proNumber,
         "imgPath": req.body.imgPath,
+        "color": req.body.color,
+        "size": req.body.size,
+        "type": req.body.type,
+        // "view": 0,
         "catelogyid": req.body.catelogyid,
       }
     }])
@@ -48,14 +52,18 @@ router.post('/addproducts', (req, res, next) => {
       })
   } else {
     var now = new Date();
+    console.log(now);
     var pro = {
       title: req.body.title,
-      description: req.body.description,
       price: req.body.price,
       sale: req.body.sale,
       proNumber: req.body.proNumber,
       imgPath: req.body.imgPath,
       catelogyid: req.body.catelogyid,
+      color: req.body.color,
+      size: req.body.size,
+      type: req.body.type,
+      view: 0,
       created: now
     }
     Product.create(pro)
@@ -68,6 +76,16 @@ router.post('/addproducts', (req, res, next) => {
   }
 }
 )
+router.post('/viewitem', (req, res, next) => {
+  console.log(req.body.id);
+  Product.updateOne({ _id: req.body.id }, { $inc: { view: + 1 } })
+    .then(item => {
+      res.send(item);
+    })
+    .catch(err => {
+      res.send(err)
+    })
+})
 //end product///////////////////////////////////////////////////////
 router.get('/user', function (req, res, next) {
   User.find(function (err, dt) {
@@ -181,32 +199,35 @@ router.get('/types', (req, res, next) => {
 })
 //create types
 router.post('/addtypes', (req, res, next) => {
-  if(req.body._id!==''){
-    Type.updateOne({_id:req.body._id},[
-      {$set:{
-      'typename':req.body.typename
-    }}
-  ])
-  .then(ress=>{
-    res.send('edit ok');
-  })
-  .catch(err=>{
-    res.send(err);
-  })
+  if (req.body._id !== '') {
+    Type.updateOne({ _id: req.body._id }, [
+      {
+        $set: {
+          'typename': req.body.typename
+        }
+      }
+    ])
+      .then(ress => {
+        res.send('edit ok');
+      })
+      .catch(err => {
+        res.send(err);
+      })
   }
-  else{
-  var now = new Date;
-  Type.create({
-    typename: req.body.typename,
-    created: now
-  })
-    .then(cre => {
-      res.send('create ok');
+  else {
+    var now = new Date;
+    Type.create({
+      typename: req.body.typename,
+      created: now
     })
-    .catch(err => {
-      res.send('fail');
-    });
-}});
+      .then(cre => {
+        res.send('create ok');
+      })
+      .catch(err => {
+        res.send('fail');
+      });
+  }
+});
 //end types
 //get catelogy
 router.get('/catelogys', (req, res, next) => {

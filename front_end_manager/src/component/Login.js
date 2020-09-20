@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Footer from './Footer';
 import Header from './Header';
-var getUser = () => axios.get('/user').then(res => res.data);
+// var getUser = () => axios.get('/user').then(res => res.data);
 class Login extends Component {
     constructor() {
         super();
@@ -36,8 +36,8 @@ class Login extends Component {
         this.sendDT(item.email, item.password).then(res => {
             if (res !== 'fail') {
                 console.log(res.username);
-                { this.props.senduser(res.username) }
-                this.props.history.push('/index.html')
+                this.props.senduser(res.username);
+                this.props.history.push('/index.html');
             }
             else {
                 alert("Sai tài khoản");
@@ -63,10 +63,10 @@ class Login extends Component {
                                 <h3 >Login</h3>
                                 <form>
                                     <div className="form-group">
-                                        <input type="email" onChange={this.isChange} className="form-control input-user" name="email" id aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                        <input type="email" onChange={this.isChange} className="form-control input-user" name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
                                     </div>
                                     <div className="form-group">
-                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" id placeholder="Password" />
+                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" placeholder="Password" />
                                     </div>
                                     <div className="form-group">
                                         <div className="custom-control custom-checkbox small">

@@ -67,8 +67,8 @@ class MainFilter extends Component {
                 <div className="col-3" style={{ float: 'left' }}>
                     <div className="list-group ">
                         {this.props.datacates.filter(y => y.typeid === dt._id).map((x, key) => (
-                            <a key={key} className="dropdown-item border-left border-bottom"
-                                onClick={() => this.props.clickItem(x._id)} >{x.catelogy}</a>))}
+                            <button key={key} className="dropdown-item border-left border-bottom"
+                                onClick={() => this.props.clickItem(x._id)} >{x.catelogy}</button>))}
 
                     </div>
                 </div>

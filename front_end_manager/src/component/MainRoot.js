@@ -67,7 +67,7 @@ class MainRoot extends Component {
            mydt = mydt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
            
         }
-        if (mydt.length == 0) {
+        if (mydt.length === 0) {
             cate.forEach(cate => {
                 this.props.dataproducts.forEach(pro => {
                     if (pro.catelogyid === cate._id) {
@@ -97,8 +97,8 @@ class MainRoot extends Component {
     loadCates(id) {
         return (
             this.props.datacates.filter(x => x.typeid === id).map((y, key) =>
-                <a key={key} className="dropdown-item border-left border-bottom"
-                    onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</a>)
+                <button key={key} className="dropdown-item border-left border-bottom"
+                    onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</button>)
         )
     }
     loadForm() {

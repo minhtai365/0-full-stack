@@ -3,10 +3,13 @@ var Schema=mongoose.Schema;
 var productSchema=new Schema({
     imgPath:{type:String},
     title:{type:String,required:true},
-    description:{type:String,required:true},
+    color:{type:String},
+    size:{type:String},
+    type:{type:String},
     price:{type:String,required:true},
     sale:{type:String},
     proNumber:{type:Number,required:true},
+    view:{type:Number,required:true},
     catelogyid:{
         type : Schema.Types.ObjectId,
         ref:'Catelogies'

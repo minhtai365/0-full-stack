@@ -96,7 +96,7 @@ export default class ContentCatelogys extends Component {
         }
         this.changShow();
     }
-    changShow(){
+    changShow() {
         this.setState({
             isShow: !this.state.isShow
         })
@@ -126,17 +126,6 @@ export default class ContentCatelogys extends Component {
         return (
 
             <div >
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle ml-auto" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
-                            <div className="dropdown-menu" aria-labelledby="dropdownId">
-                                <a className="dropdown-item" href="#">Đăng xuất</a>
-                                <a className="dropdown-item" href="#">Thông tin</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
                 <Model
                     isOpen={this.state.isShow}
                     className="Modal"
@@ -152,7 +141,7 @@ export default class ContentCatelogys extends Component {
                 >
                     <div className="form-group">
                         <div className="form-group">
-                            <button class="btn btn-primary" onClick={()=>this.changShow()} >X</button>
+                            <button className="btn btn-primary" onClick={() => this.changShow()} >X</button>
                         </div>
                         <label>Tên danh mục</label>
                         <input type="text"
@@ -167,14 +156,14 @@ export default class ContentCatelogys extends Component {
                             </select>
                         </div>
 
-                        <button class="btn btn-primary" type="reset" onClick={this.setdata} role="button">Add catelogy</button>
+                        <button className="btn btn-primary" type="reset" onClick={this.setdata}>Add catelogy</button>
                     </div>
                 </Model>
 
                 <div className='container' id="modal">
-                    <a class="btn btn-primary" onClick={() => this.showModal("")} role="button">Add</a>
-                    <table className="table table-striped table-inverse table-responsive">
-                        <thead className="thead-inverse">
+                    <button className="btn btn-primary" onClick={() => this.showModal("")}>Add</button>
+        <table className="table table-bordered table-hover table-inverse table-responsive">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Name</th>
                                 <th>Type</th>
@@ -191,8 +180,8 @@ export default class ContentCatelogys extends Component {
                                         return <td>{z.typename}</td>
                                     })}
                                     <td>{x.created}</td>
-                                    <td><a class="btn btn-primary" onClick={(id) => this.showModal(x._id)} role="button">Edit</a></td>
-                                    <td><a class="btn btn-warning" onClick={(id) => this.remove(x._id)} role="button">Delete</a></td>
+                                    <td><button className="btn btn-primary" onClick={(id) => this.showModal(x._id)}>Edit</button></td>
+                                    <td><button className="btn btn-warning" onClick={(id) => this.remove(x._id)}>Delete</button></td>
                                 </tr>
 
                             })}
