@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import Footer from './Footer';
+import Header from './Header';
 
 export default class Forgot extends Component {
     render() {
         return (
             <div>
-                <div className="container">
+                <Header />
+                <div className="container mt-5 pt-5">
                     <div className="card mt-sm-5 bg-info">
                         <div className="row text-center ">
                             <div className="col-md-6 col-12 p-5 ">
-                                <div className="card text-white bg-danger h-100 ">
-                                    <div className="card-body item-left">
-                                        <h4 className="card-title">Webcom to my website</h4>
-                                        <p className="card-text">Lest go</p>
-                                    </div>
+                                <div className="card text-white">
+                                    
+                                <img src="./demo_html/img/forget.svg" height="200" alt=""/>
                                 </div>
                             </div>
                             <div className="col-md-6 col-12 p-5">
@@ -31,7 +32,7 @@ export default class Forgot extends Component {
                         </div>
                     </div>
                 </div>
-
+                <Footer />
             </div>
         
         )

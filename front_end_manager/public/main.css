@@ -7,6 +7,7 @@ body,*{
 .top-nav{
     height: 40px;
     background: rgb(94, 5, 236);
+    /* margin-bottom: 40px; */
 }
 .link-a{
     color: white;

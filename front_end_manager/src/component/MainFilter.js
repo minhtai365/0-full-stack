@@ -1,0 +1,139 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Footer from './Footer';
+import Header from './Header';
+import Carousel from './Carousel';
+import Boxicon from './Boxicon';
+class MainFilter extends Component {
+    constructor() {
+        super();
+        this.state = {
+            dt: []
+        }
+    }
+    to_slug(str) {
+        // Chuyển hết sang chữ thường
+        str = str.toLowerCase();
+
+        // xóa dấu
+        str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+        str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+        str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+        str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+        str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+        str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+        str = str.replace(/(đ)/g, 'd');
+
+        // Xóa ký tự đặc biệt
+        str = str.replace(/([^0-9a-z-\s])/g, '');
+
+        // Xóa khoảng trắng thay bằng ký tự -
+        str = str.replace(/(\s+)/g, '-');
+
+        // xóa phần dự - ở đầu
+        str = str.replace(/^-+/g, '');
+
+        // xóa phần dư - ở cuối
+        str = str.replace(/-+$/g, '');
+
+        // return
+        return str;
+    }
+    formatMoney(t) {
+        return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    loadTitle() {
+        var dt = [];
+        this.props.datacates.forEach(ca => {
+            if (ca._id === this.props.match.params.id) {
+                this.props.datatypes.forEach(ty => {
+                    if (ty._id === ca.typeid) {
+                        dt = ty
+                    }
+                })
+            }
+        });
+        return <div>
+            <div className="jumbotron jumbotron-fluid">
+                <div className="container">
+
+                    <h5 className="display-3 text-center">{dt.typename}</h5>
+                    <hr className="my-2" />
+                </div>
+            </div>
+
+            <div className="container">
+                <div className="col-3" style={{ float: 'left' }}>
+                    <div className="list-group ">
+                        {this.props.datacates.filter(y => y.typeid === dt._id).map((x, key) => (
+                            <a key={key} className="dropdown-item border-left border-bottom"
+                                onClick={() => this.props.clickItem(x._id)} >{x.catelogy}</a>))}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    loadProducts() {
+        var mydt=this.props.dt;
+        if(this.props.search!==''){
+            mydt=this.props.dt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
+        }
+        return (
+            mydt.map((x, key) =>
+                <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
+                    <div className="card" style={{ height: '100%' }}>
+                        <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
+                            <img className="card-img-top" src={x.imgPath} alt="" />
+                            <div className="card-body">
+                                <h4 className="card-title">{x.title}</h4>
+                                <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
+                                <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt(x.price - x.sale) / x.price * 100}%</p>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+            )
+        )
+    }
+    render() {
+        return (
+            <div>
+                <Header />
+                <Carousel />
+                <hr />
+                <Boxicon />
+                {this.loadTitle()}
+                <div className="container">
+                    <div className="col-9" style={{ float: 'right' }}>
+                        <div className="row">
+                            {this.loadProducts()}
+                        </div>
+                    </div>
+
+                </div>
+                <div className="clearfix" />
+
+                <Footer />
+            </div>
+
+        );
+    }
+}
+const mapStateToProps = (state, ownProps) => {
+    return {
+        dt: state.dt,
+        datacates: state.datacates,
+        datatypes: state.datatypes,
+        search:state.search
+    }
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        clickItem: (id) => {
+            dispatch({ type: 'GET_ID_CATELOGY', id: id })
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MainFilter)
