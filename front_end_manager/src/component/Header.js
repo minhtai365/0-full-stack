@@ -93,6 +93,8 @@ class Header extends Component {
     }
     render() {
         return (
+
+
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                 <div className="fixed-top top-nav">
                     <div className="container  pt-2">
@@ -110,31 +112,42 @@ class Header extends Component {
                     </div>
                 </div>
                 <div className="container bottom-nav">
-                    <div  className="navbar-brand" ><i className="fa fa-user icon-logo" aria-hidden="true" /></div>
+                    <div className="navbar-brand" ><i className="fa fa-user icon-logo" aria-hidden="true" /></div>
                     <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation" />
                     <div className="collapse navbar-collapse" id="collapsibleNavId">
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="nav-item">
-                                <Link className="nav-link " to="/index">Trang chủ</Link>
+                            <li className="list-group-item nav-link btn btn-link">
+                                <Link className="nav-link" to="/index">Trang chủ</Link>
                             </li>
                             {this.state.datatypes.map((x, key) => {
                                 return (
-                                    <li key={key} className="nav-item dropdown">
-                                        <div className="nav-link dropdown-toggle" id={x._id} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{x.typename}</div>
-                                        <div className="dropdown-menu" aria-labelledby={x.id}>
+                                    <li key={key} className="list-group-item nav-link btn btn-link "><Link to="/index" className="nav-link" >{x.typename}</Link>
+
+                                        <ul className="list-group item-title list-sub position-absolute">
                                             {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"} 
-                                                className="dropdown-item" onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>)
+                                                return (<li key={key} className="list-group-item nav-link"><Link  to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                    onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
+                                                </li>)
                                             })}
-                                        </div>
+                                        </ul>
                                     </li>
                                 )
                             })}
-                            <li className="nav-item">
+                            {/* <li key={key} className="nav-item dropdown">
+                                <div className="nav-link dropdown-toggle" id={x._id} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{x.typename}</div>
+                                <div className="dropdown-menu" aria-labelledby={x.id}>
+                                    {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
+                                        return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                            className="dropdown-item" onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>)
+                                    })}
+                                </div>
+                            </li> */}
+
+                            <li className="list-group-item nav-link btn btn-link ">
                                 <Link to="/index" className="nav-link " >Bảng giá</Link>
                             </li>
-                            <li className="nav-item">
-                            <Link to="/index" className="nav-link " >Hướng dẫn dịch vụ</Link>
+                            <li className="list-group-item nav-link btn btn-link ">
+                                <Link to="/index" className="nav-link " >Hướng dẫn dịch vụ</Link>
                             </li>
                         </ul>
                         <div className="form-inline my-2 my-lg-0">

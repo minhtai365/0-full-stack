@@ -1,6 +1,32 @@
+import Axios from 'axios'
 import React, { Component } from 'react'
 
 export default class Cart extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dt: [],
+            item: []
+
+        }
+    }
+
+    componentWillMount() {
+        Axios.get('/cartcustomer')
+            .then(res => {
+                var dt = res.data.filter(x => x.userid === localStorage.getItem("userID"));
+                var data = Object.assign({}, dt)
+                console.log(data[0].item);
+                // console.log(data[0]);
+                this.setState({
+                    dt: data[0],
+                    item: data[0].item
+                })
+            })
+            .catch(err => {
+                alert(err);
+            })
+    }
     render() {
         return (
             <div>
@@ -24,28 +50,32 @@ export default class Cart extends Component {
                                     <tr>
                                         <th />
                                         <th>Sản phẩm</th>
-                                        <th>Kích thước</th>
-                                        <th>Số lượng</th>
                                         <th>Đơn giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Ngày thuê</th>
                                         <th>Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    {this.state.item.map((x, key) =>
+                                        <tr >
+                                            <td><i className="fa fa-user icon-logo" aria-hidden="true" /></td>
+                                            <td scope="row">{x.name}</td>
+                                            <td>{x.price}</td>
+                                            <td>{x.qty}</td>
+                                            {x.buy='0'?<td>Mua</td>:<td>{x.buy}</td>}
+                                            
+                                        </tr>
+
+                                    )}
                                     <tr>
-                                        <td><i className="fa fa-user icon-logo" aria-hidden="true" /></td>
-                                        <td scope="row">Áo Xám Kẻ Sọc Dây Sát Nách</td>
-                                        <td>M</td>
-                                        <td>6</td>
-                                        <td>100.000</td>
-                                        <td>600.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i className="fa fa-user icon-logo" aria-hidden="true" /></td>
-                                        <td scope="row">Váy midi trơn xoè trắng</td>
-                                        <td>M</td>
-                                        <td>6</td>
-                                        <td>100.000</td>
-                                        <td>600.000</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    <td>{this.state.dt.totalprice}</td>
                                     </tr>
                                 </tbody>
                             </table>

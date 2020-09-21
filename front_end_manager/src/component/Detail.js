@@ -1,11 +1,18 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
 
 class Detail extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            day:''
+        }
+    }
+    
     // componentWillMount() {
     //     const { id } = this.props.match.params;
     //     this.setState({
@@ -21,20 +28,45 @@ class Detail extends Component {
             [e.target.name]: e.target.value
         })
     }
-    componentWillMount(){
-        Axios.post('/viewitem',{
-            id:this.props.match.params.id
+    componentWillMount() {
+        Axios.post('/viewitem', {
+            id: this.props.match.params.id
         })
-        .then(res=>{
-            // console.log(res.data);
-        })
+            .then(res => {
+                // console.log(res.data);
+            })
+    }
+    clickAdd = (item) => {
+        if(localStorage.getItem("userID")===null){
+            alert("Vui lòng đăng nhập để thêm vào giỏ hàng");
+            // console.log(item._id);
+        }
+        if(this.state.day===''){
+            alert('Vui lòng chọn thời gian thuê')
+        }
+        else{
+            Axios.post('/addtocart',{
+                userid:localStorage.getItem('userID'),
+                productid:item._id,
+                price:item.sale,
+                name:item.title,
+                buy:this.state.day
+            })
+            .then(res=>{
+                // this.props.history.push(res.da);
+                alert(res.data);
+            })
+            .catch(err=>{
+                alert(err);
+            })
+        }
     }
     render() {
         // let {id}=useParams();
         return (
             <div>
                 <Header />
-                {this.props.dataproducts.filter(y => y._id === this.props.match.params.id).map((x,key) =>
+                {this.props.dataproducts.filter(y => y._id === this.props.match.params.id).map((x, key) =>
                     <div key={key} className="container content-chitiet">
                         <div className="d-flex mb-4">
                             <li className="list-ds"><Link to="index.html">Trang chủ &gt;</Link></li>
@@ -94,6 +126,9 @@ class Detail extends Component {
                                                 <label className="btn btn-info">
                                                     <div><input type="radio" value="7" name="day" onChange={this.onChose} /> 7 ngày</div>
                                                 </label>
+                                                <label className="btn btn-info">
+                                                    <div><input type="radio" value="0" name="day" onChange={this.onChose} /> Chọn mua</div>
+                                                </label>
                                             </div>
                                         </div>
                                         <label className="float-right">
@@ -106,10 +141,10 @@ class Detail extends Component {
                                     <li className="list-ds mb-4">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <input type="button" className="btn btn-primary form-control" defaultValue="Đặt mua" />
+                                                <button className="btn btn-primary" onClick={()=>this.clickAdd(x)}>Thêm vào giỏ hàng</button>
                                             </div>
                                             <div className="col-md-6">
-                                                <input type="button" className="btn btn-secondary form-control" defaultValue="Đặt thuê" />
+                                                <button className="btn btn-secondary">Đặt thuê</button>
                                             </div>
                                         </div>
                                     </li>
@@ -125,7 +160,7 @@ class Detail extends Component {
                                             <div className="content product--content">
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 control-label">Màu sắc: </label>
-                                                <label className="col-sm-8 control-label text-uppercase border-left">{x.color}</label>
+                                                    <label className="col-sm-8 control-label text-uppercase border-left">{x.color}</label>
                                                 </div>
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 control-label">Kích thước: </label>
@@ -226,4 +261,4 @@ const mapStateToProps = (state, ownProps) => {
         dataproducts: state.dataproducts
     }
 }
-export default connect(mapStateToProps)(Detail)
+export default connect(mapStateToProps)(withRouter(Detail))

@@ -3,6 +3,10 @@ body,*{
     padding: 0;
     box-sizing: border-box;
     font-family: 'Times New Roman', Times, serif;
+    /* overflow-x: hidden; */
+}
+body{
+    
     overflow-x: hidden;
 }
 .top-nav{
@@ -250,3 +254,39 @@ body,*{
     display: flex;
     align-items: center;
   }
+  
+
+
+
+
+
+li a{
+    border:none;
+    color:rgb(94, 5, 236);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.item-title{
+    width: 150px;
+    background: blue !important;
+    margin-left: -10px;
+    
+}
+.list-group{
+
+}
+.list-sub{
+    box-shadow: 0 -2px 5px white;
+    margin-top: 0;
+    text-align: left;
+    background-color: #333 !important;
+    border-radius: 10px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+.list-group-item:hover .list-sub{
+    opacity: 1;
+    visibility: visible;
+}

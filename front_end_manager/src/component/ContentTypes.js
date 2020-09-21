@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 
 import Model from 'react-modal';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 export default class ContentTypes extends Component {
     constructor(props) {

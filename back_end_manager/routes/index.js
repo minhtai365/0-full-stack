@@ -12,6 +12,7 @@ var User = require('../models/user');
 
 var Type = require('../models/type');
 var Catelogies = require('../models/Catelogies');
+var Cartcustomer = require('../models/Cartcustomer');
 
 
 router.get('/', function (req, res, next) {
@@ -20,7 +21,7 @@ router.get('/', function (req, res, next) {
 });
 router.get('/products', function (req, res, next) {
   Product.find(function (err, dt) {
-    console.log(dt.length);
+    // console.log(dt.length);
     res.send(dt);
   });
 })
@@ -87,6 +88,78 @@ router.post('/viewitem', (req, res, next) => {
     })
 })
 //end product///////////////////////////////////////////////////////
+// start cart
+router.get('/cartcustomer', (req, res, next) => {
+  Cartcustomer.find((err, dt) => {
+    res.send(dt)
+  })
+})
+router.post('/addtocart', (req, res, next) => {
+  // console.log(req.body.userid);
+  var item = {
+    productid: req.body.productid,
+    qty: 1,
+    price: req.body.price,
+    name: req.body.name,
+    buy: req.body.buy,
+  }
+  Cartcustomer.findOne({ userid: req.body.userid }).then(u => {
+    if (u === null) {
+      var cart = new Cartcustomer({
+        userid: req.body.userid,
+
+        totalprice: req.body.price,
+      });
+
+      cart.item.push(item)
+      console.log(cart);
+      Cartcustomer.create(cart)
+        .then(cre => {
+          res.send('Thành công');
+        })
+        .catch(err => {
+          console.log('null');
+          res.send('lỗi thêm mới luôn')
+        });
+    }
+    else {
+      Cartcustomer.findOne({ 'item.productid': req.body.productid }).then(p => {
+        if (p === null) {
+          cart.item.push(item)
+          Cartcustomer.create(cart)
+            .then(cre => {
+              res.send('Chèn Thành công');
+            })
+            .catch(err => {
+              console.log('null');
+              res.send('lỗi chèn')
+            });
+        }
+        else {
+          console.log(p);
+          Cartcustomer.updateOne({'item.productid':req.body.productid},{$inc:{qty:+1}})
+          .then(r=>{
+            console.log('inc ok');
+          })
+          .catch(err=>{
+            console.log('lỗi');
+          })
+        }
+      })
+        .catch(err => {
+          console.log(err);
+        })
+      console.log("3");
+    }
+  });
+  // if(finduser.length===0)
+  // if(finduser)
+  // Cartcustomer.
+})
+
+
+
+
 router.get('/user', function (req, res, next) {
   User.find(function (err, dt) {
     res.send(dt);

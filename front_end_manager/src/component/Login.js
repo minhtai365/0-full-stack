@@ -29,15 +29,15 @@ class Login extends Component {
     }
     isClick = (e) => {
         e.preventDefault();
-        console.log('click');
         var item = [];
         item.email = this.state.email;
         item.password = this.state.pass;
         this.sendDT(item.email, item.password).then(res => {
             if (res !== 'fail') {
+                localStorage.setItem("userID",res._id);
                 console.log(res.username);
                 this.props.senduser(res.username);
-                this.props.history.push('/index.html');
+                this.props.history.push('/index');
             }
             else {
                 alert("Sai tài khoản");
