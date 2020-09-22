@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Footer from './Footer';
 import Header from './Header';
+import { connect } from 'react-redux';
 // var getUser = () => axios.get('/user').then(res => res.data);
 class Login extends Component {
     constructor() {
@@ -12,13 +13,6 @@ class Login extends Component {
             user: []
         }
     }
-    // componentWillMount(){
-    //     getUser().then(res=>{
-    //         this.setState({
-    //             user:res
-    //         })
-    //     })
-    // }
     isChange = (e) => {
         const { name, value } = e.target;
         console.log(name);
@@ -34,10 +28,12 @@ class Login extends Component {
         item.password = this.state.pass;
         this.sendDT(item.email, item.password).then(res => {
             if (res !== 'fail') {
-                localStorage.setItem("userID",res._id);
-                console.log(res.username);
+                sessionStorage.setItem("userID",res._id);
+                // console.log(res.username);
                 this.props.senduser(res.username);
-                this.props.history.push('/index');
+                if(res.role==='1')
+                this.props.history.push('/admin.html');
+                else  this.props.history.push('/index');
             }
             else {
                 alert("Sai tài khoản");
@@ -95,4 +91,16 @@ class Login extends Component {
         )
     }
 }
-export default withRouter(Login)
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        senduser: (user) => {
+            dispatch({type:"GET_USER_LOGIN",user})
+        }
+    }
+}
+const mapStateToProps = (state, ownProps) => {
+    return {
+        // prop: state.prop
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

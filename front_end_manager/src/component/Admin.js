@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import ContentAccount from './ContentAccount';
 import MenuAdmin from './MenuAdmin';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Switch,withRouter, BrowserRouter as Router } from 'react-router-dom';
 // import Axios from 'axios';
 import ContentTypes from './ContentTypes';
 import ContentCatelogys from './ContentCatelogys';
 import ContentProducts from './ContentProducts';
 
-export default class Admin extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: []
-        }
+class Admin extends Component {
+    
+    componentWillMount(){
+        if(sessionStorage.getItem('userID')!=='5f5c99dbd2571c0cbc9f44f9'){
+            alert('Truy cập bị từ chối!!!');
+        this.props.history.push('/index');
+    }
+       
+    }
+    clickOut=()=>{
+        sessionStorage.removeItem("userID");
+        this.props.history.push('/index');
+
     }
     render() {
         return (
@@ -25,7 +32,7 @@ export default class Admin extends Component {
                                 
                                 {/* </div> */}
                                 <div className="dropdown-menu" aria-labelledby="dropdownId">
-                                    <button className="dropdown-item">Đăng xuất</button>
+                                    <button onClick={()=>this.clickOut()} className="dropdown-item">Đăng xuất</button>
                                     <button className="dropdown-item">Thông tin</button>
                                 </div>
                             </li>
@@ -60,3 +67,4 @@ export default class Admin extends Component {
         )
     }
 }
+export default withRouter(Admin)

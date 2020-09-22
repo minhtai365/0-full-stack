@@ -91,8 +91,6 @@ class MainRoot extends Component {
                 </div>
             </div>
         )
-
-
     }
     loadCates(id) {
         return (

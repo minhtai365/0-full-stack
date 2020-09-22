@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 // withRouter(
 class Header extends Component {
     constructor(props) {
@@ -91,23 +91,35 @@ class Header extends Component {
         // console.log(this.state.search);
         this.props.search("sơ");
     }
+    clickOut = () => {
+        sessionStorage.removeItem("userID");
+        this.props.history.push('/index');
+    }
     render() {
         return (
 
 
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                 <div className="fixed-top top-nav">
-                    <div className="container  pt-2">
-                        <div className="d-flex justify-content-start">
-                            <div className="link-a mx-2" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
-                            <div className="link-a mx-2" href="callto:0352268668"><i className="fa fa-phone mx-2" aria-hidden="true" />
+                    <div className="container pt-2">
+
+                        {/* <div className='con'> */}
+                        <div className="d-flex justify-content-start con">
+                            <div className="link-a px-2  border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
+                            <div className="link-a px-2  border-right" href="callto:0352268668"><i className="fa fa-phone mx-2" aria-hidden="true" />
           0352268668</div>
-                            <a className="link-a mx-2" href="mailto:tranminhtai365@gmail.com"><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                            <a className="link-a px-2" href="mailto:tranminhtai365@gmail.com"><i className="fa fa-envelope mx-2" aria-hidden="true" />
           tranminhtai365@gmail.com</a>
+                            {/* </div> */}
                         </div>
-                        <div className="d-flex justify-content-end">
-                            <Link className="link-a mx-2" to="/login.html"><i className="fa fa-user" aria-hidden="true" />{this.props.name}</Link>
-                            <Link className="link-a mx-2" to="/cart.html"> <span>Giỏ hàng của tôi</span></Link>
+                        <div className="d-flex justify-content-end con">
+                            <div className="flex-column acc">
+                                <Link className="link-a p-2 border-right" to="/login.html"><i className="fa fa-user mr-2 " aria-hidden="true" />{this.props.username !== '' ? this.props.username : "Tài khoản"}</Link>
+                                {sessionStorage.getItem('userID') &&
+                                    <div onClick={() => this.clickOut()} className="link-a p-2 text-right logout">Đăng xuất</div>}
+
+                            </div>
+                            <Link className="link-a mx-2" to="/cart.html"> <i className="fas fa-shopping-bag mr-2"></i>Giỏ hàng của tôi</Link>
                         </div>
                     </div>
                 </div>
@@ -125,7 +137,7 @@ class Header extends Component {
 
                                         <ul className="list-group item-title list-sub position-absolute">
                                             {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                return (<li key={key} className="list-group-item nav-link"><Link  to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                return (<li key={key} className="list-group-item nav-link"><Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
                                                     onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
                                                 </li>)
                                             })}
@@ -163,7 +175,8 @@ class Header extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        dataproducts: state.dataproducts
+        dataproducts: state.dataproducts,
+        username: state.username
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -185,4 +198,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))

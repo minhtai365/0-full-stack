@@ -22,12 +22,7 @@ class Detail extends Component {
     formatMoney(t) {
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-    onChose = (e) => {
-        console.log(e.target.value);
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
+    
     componentWillMount() {
         Axios.post('/viewitem', {
             id: this.props.match.params.id
@@ -37,7 +32,7 @@ class Detail extends Component {
             })
     }
     clickAdd = (item) => {
-        if(localStorage.getItem("userID")===null){
+        if(sessionStorage.getItem("userID")===null){
             alert("Vui lòng đăng nhập để thêm vào giỏ hàng");
             // console.log(item._id);
         }
@@ -46,10 +41,8 @@ class Detail extends Component {
         }
         else{
             Axios.post('/addtocart',{
-                userid:localStorage.getItem('userID'),
-                productid:item._id,
-                price:item.sale,
-                name:item.title,
+                userid:sessionStorage.getItem('userID'),
+                product:item,
                 buy:this.state.day
             })
             .then(res=>{
@@ -111,12 +104,10 @@ class Detail extends Component {
                                         </div>
                                     </li>
                                     <hr />
-                                    <li className="list-ds">
+                                    {/* <li className="list-ds">
                                         <div className="mb-2">Chọn thời gian</div>
                                         <div id="day" className="float-left">
                                             <div >
-                                                {/* </div>
-                                            <div className="btn-group" data-toggle="buttons"> */}
                                                 <label className="btn btn-info">
                                                     <div><input type="radio" value="1" name="day" onChange={this.onChose} /> 1 ngày</div>
                                                 </label>
@@ -136,7 +127,7 @@ class Detail extends Component {
                                         </label>
                                         <div className="clearfix" />
                                         <div className="validator hide">Vui lòng chọn thời gian khi đặt thuê</div>
-                                    </li>
+                                    </li> */}
                                     <hr />
                                     <li className="list-ds mb-4">
                                         <div className="row">

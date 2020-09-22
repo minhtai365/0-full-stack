@@ -33,7 +33,7 @@ router.post('/addproducts', (req, res, next) => {
       $set: {
         "title": req.body.title,
         "description": req.body.description,
-        "price": req.body.price,
+        "price": req.body.product.sale,
         "sale": req.body.sale,
         "proNumber": req.body.proNumber,
         "imgPath": req.body.imgPath,
@@ -56,7 +56,7 @@ router.post('/addproducts', (req, res, next) => {
     console.log(now);
     var pro = {
       title: req.body.title,
-      price: req.body.price,
+      price: req.body.product.sale,
       sale: req.body.sale,
       proNumber: req.body.proNumber,
       imgPath: req.body.imgPath,
@@ -97,68 +97,102 @@ router.get('/cartcustomer', (req, res, next) => {
 router.post('/addtocart', (req, res, next) => {
   // console.log(req.body.userid);
   var item = {
-    productid: req.body.productid,
+    productid: req.body.product._id,
     qty: 1,
-    price: req.body.price,
-    name: req.body.name,
+    img: req.body.product.imgPath,
+    price: req.body.product.sale,
+    name: req.body.product.title,
     buy: req.body.buy,
   }
   Cartcustomer.findOne({ userid: req.body.userid }).then(u => {
-    if (u === null) {
+    if (u === null) {//user chưa có gì trong giỏ
       var cart = new Cartcustomer({
-        userid: req.body.userid,
-
-        totalprice: req.body.price,
+        userid: req.body.userid
       });
-
       cart.item.push(item)
-      console.log(cart);
       Cartcustomer.create(cart)
         .then(cre => {
           res.send('Thành công');
         })
-        .catch(err => {
-          console.log('null');
-          res.send('lỗi thêm mới luôn')
-        });
     }
     else {
-      Cartcustomer.findOne({ 'item.productid': req.body.productid }).then(p => {
-        if (p === null) {
-          cart.item.push(item)
-          Cartcustomer.create(cart)
-            .then(cre => {
-              res.send('Chèn Thành công');
+      //tìm kiếm sp thêm có trong giỏ hay chưa
+      Cartcustomer.findOne({ userid: req.body.userid, 'item.productid': req.body.product._id }).then(p => {
+        if (p === null) {//chưa
+          Cartcustomer.updateOne({ userid: req.body.userid }, { $push: { item: item } })
+            .then(ew => {
+              res.send("Thành công");
             })
-            .catch(err => {
-              console.log('null');
-              res.send('lỗi chèn')
-            });
+            .catch(e => {
+              // console.log(e);
+            })
         }
         else {
-          console.log(p);
-          Cartcustomer.updateOne({'item.productid':req.body.productid},{$inc:{qty:+1}})
-          .then(r=>{
-            console.log('inc ok');
-          })
-          .catch(err=>{
-            console.log('lỗi');
-          })
+          var count = req.body.product.proNumber;
+          Cartcustomer.updateOne({ userid: req.body.userid, item: { $elemMatch: { productid: req.body.product._id, qty: { $lt: count } } } }, { $inc: { "item.$.qty": +1 } })
+            .then(r => {
+              if (r.n === 0)
+                res.send("Hết hàng");
+              else
+                res.send("Thêm thành công");
+            })
+            .catch(err => {
+              console.log(err);
+            })
+          // }
+          // )
+
         }
       })
         .catch(err => {
           console.log(err);
         })
-      console.log("3");
+      // console.log("3");
     }
   });
-  // if(finduser.length===0)
-  // if(finduser)
-  // Cartcustomer.
+
 })
 
+router.post('/setPrice', (req, res, next) => {
+    Cartcustomer.updateOne({'item._id':req.body.id },{ $set:{ "item.$.price":req.body.price }})
+      .then(r => {
+        console.log('ollll');
+        if (r.n === 0)
+          console.log("Hết hàng");
+        else
+          console.log("Thêm thành công");
+      })
+      .catch(err => {
+        console.log(err);
+      })
 
+})
+router.post('/setQty', (req, res, next) => {
+  
+  Product.findById({ _id: req.body.productid }, function (err, dt) {
+    var max = dt.proNumber;
+    if(req.body.num===1){
+      max=max-1
+    }
+    else max=max
+    var min = 1;
+    if (min + req.body.num === 0) {
+      min = 2;
+    }
+    else min = 1
+    Cartcustomer.updateOne({ userid: req.body.userid, item: { $elemMatch: { productid: req.body.productid, qty: { $gte: min, $lte: max } } } }, { $inc: { "item.$.qty": +req.body.num } })
+      .then(r => {
+        if (r.n === 0)
+          res.send("Hết hàng");
+        else
+          res.send("Thêm thành công");
+      })
+      .catch(err => {
+        console.log(err);
+      })
 
+  });
+})
 
 router.get('/user', function (req, res, next) {
   User.find(function (err, dt) {

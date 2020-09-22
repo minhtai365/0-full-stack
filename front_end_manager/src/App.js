@@ -16,20 +16,7 @@ import Admin from './component/Admin';
 // import Model from 'react-modal';
 // Model.setAppElement("#modal");
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'Tài khoản'
-    }
-
-  }
-
-  loaduser = (user) => {
-    console.log(user);
-    this.setState({
-      name: user
-    })
-  }
+ 
   render() {
     // console.log(this.state.dt);
     return (
@@ -37,7 +24,7 @@ class App extends Component {
         <div>
           <Switch>
             <Route path="/login.html" exact>
-              <Login senduser={user => this.loaduser(user)} />
+              <Login />
             </Route>
             <Route path="/register.html" exact component={Register} />
             <Route path="/forgot.html" exact component={Forgot} />
@@ -47,7 +34,7 @@ class App extends Component {
             </Route>
             
             <Route path="/cart.html" exact>
-              <Header name={this.state.name} />
+              <Header/>
               <Cart />
               <hr />
               <Boxicon />
