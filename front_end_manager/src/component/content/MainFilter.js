@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Footer from './Footer';
-import Header from './Header';
-import Carousel from './Carousel';
-import Boxicon from './Boxicon';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
+import Carousel from '../layout/Carousel';
+import Boxicon from '../layout/Boxicon';
 class MainFilter extends Component {
     constructor() {
         super();
@@ -77,15 +77,15 @@ class MainFilter extends Component {
     }
     loadProducts() {
         var mydt=this.props.dt;
-        if(this.props.search!==''){
-            mydt=this.props.dt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
-        }
+        // if(this.props.search!==''){
+        //     mydt=this.props.dt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
+        // }
         return (
             mydt.map((x, key) =>
                 <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
                     <div className="card" style={{ height: '100%' }}>
                         <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
-                            <img className="card-img-top" src={x.imgPath} alt="" />
+                            <img className="card-img-top img-zoom" src={x.imgPath} alt="" />
                             <div className="card-body">
                                 <h4 className="card-title">{x.title}</h4>
                                 <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
@@ -126,7 +126,7 @@ const mapStateToProps = (state, ownProps) => {
         dt: state.dt,
         datacates: state.datacates,
         datatypes: state.datatypes,
-        search:state.search
+        // search:state.search
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

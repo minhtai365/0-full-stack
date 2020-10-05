@@ -9,11 +9,11 @@ var productSchema=new Schema({
     price:{type:String,required:true},
     sale:{type:String},
     proNumber:{type:Number,required:true},
-    view:{type:Number,required:true},
+    view:{type:Number},
     catelogyid:{
         type : Schema.Types.ObjectId,
         ref:'Catelogies'
     },
-    created:{type:Date,required:true}
+    created:{type:Date}
 });
 module.exports=mongoose.model('Product',productSchema);

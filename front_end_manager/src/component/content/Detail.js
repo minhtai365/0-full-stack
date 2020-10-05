@@ -2,14 +2,14 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link,withRouter } from 'react-router-dom';
-import Footer from './Footer';
-import Header from './Header';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 
 class Detail extends Component {
     constructor(props) {
         super(props);
         this.state={
-            day:''
+            // day:''
         }
     }
     
@@ -24,7 +24,7 @@ class Detail extends Component {
     }
     
     componentWillMount() {
-        Axios.post('/viewitem', {
+        Axios.post('/products/viewitem', {
             id: this.props.match.params.id
         })
             .then(res => {
@@ -40,10 +40,10 @@ class Detail extends Component {
             alert('Vui lòng chọn thời gian thuê')
         }
         else{
-            Axios.post('/addtocart',{
+            Axios.post('/cart/add',{
                 userid:sessionStorage.getItem('userID'),
-                product:item,
-                buy:this.state.day
+                product:item
+                // buy:this.state.day
             })
             .then(res=>{
                 // this.props.history.push(res.da);
@@ -128,26 +128,14 @@ class Detail extends Component {
                                         <div className="clearfix" />
                                         <div className="validator hide">Vui lòng chọn thời gian khi đặt thuê</div>
                                     </li> */}
-                                    <hr />
-                                    <li className="list-ds mb-4">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <button className="btn btn-primary" onClick={()=>this.clickAdd(x)}>Thêm vào giỏ hàng</button>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <button className="btn btn-secondary">Đặt thuê</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <hr />
-                                    <div id="chitiet" role="tablist" aria-multiselectable="true">
-                                        <div role="tab" id="mota">
+
+                                     <div role="tab" id="mota">
                                             <h5 className="mb-0">
                                                 <a className="collap-item" data-toggle="collapse" data-parent="#chitiet" href="#motasp" aria-expanded="true" aria-controls="chitiet">
                                                     Mô tả sản phẩm</a>
                                             </h5>
                                         </div>
-                                        <div id="motasp" className="collapse in" role="tabpanel" aria-labelledby="mota">
+                                        <div id="motasp" className="collapse in show" role="tabpanel" aria-labelledby="mota">
                                             <div className="content product--content">
                                                 <div className="form-group row">
                                                     <label className="col-sm-4 control-label">Màu sắc: </label>
@@ -168,6 +156,20 @@ class Detail extends Component {
                                                 </div>
                                             </div>
                                         </div>
+                                    <hr />
+                                    <li className="list-ds mb-4">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <button className="btn btn-primary" onClick={()=>this.clickAdd(x)}>Thêm vào giỏ hàng</button>
+                                            </div>
+                                            {/* <div className="col-md-6">
+                                                <button className="btn btn-secondary">Đặt thuê</button>
+                                            </div> */}
+                                        </div>
+                                    </li>
+                                    <hr />
+                                    <div id="chitiet" role="tablist" aria-multiselectable="true">
+                                       
                                         <hr />
                                         <div role="tab" id="doitrasp">
                                             <h5 className="mb-0">
@@ -179,11 +181,7 @@ class Detail extends Component {
                                         <div id="doitra" className="collapse in" role="tabpanel" aria-labelledby="doitrasp">
                                             <div >
                                                 <div className="content">
-                                                    FEROSH chấp nhận đổi/trả hàng trong thời gian 03 ngày làm việc, áp dụng không
-                                                    đồng đều đối
-                                                    với từng mặt hàng và sản phẩm khác nhau. Quý khách vui lòng kiểm tra chi tiết về
-                                                    chính sách
-                                                    đổi và trả hàng theo link.
+                                                    {this.props.info.dtra}
                 <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-doi-tra.html">Xem chi tiết</a></div>
                                                 </div>
                                             </div>
@@ -199,9 +197,8 @@ class Detail extends Component {
                                         <div id="thanhtoan" className="collapse in" role="tabpanel" aria-labelledby="thanhtoansp">
                                             <div >
                                                 <div className="content">
-                                                    FEROSH cung cấp 4 hình thức thanh toán cho quý khách: Thanh toán khi nhận hàng
-                                                    (COD), Chuyển
-                                                    khoản, Thanh toán qua thẻ tín dụng, Thanh toán qua thẻ ATM.
+                                                    
+                                                {this.props.info.ttoan}
                 <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-thanh-toan.html">Xem chi tiết</a>
                                                     </div>
                                                 </div>
@@ -218,12 +215,8 @@ class Detail extends Component {
                                         <div id="giaohang" className="collapse in" role="tabpanel" aria-labelledby="giaohangsp">
                                             <div >
                                                 <div className="content">
-                                                    Đơn hàng sẽ được giao cho Quý khách trong vòng 07 - 10 ngày làm việc kể từ ngày
-                                                    đặt đơn. Quý
-                                                    khách có thể liên hệ với Ferosh qua Email, Điện thoại, Facebook để được biết về
-                                                    lộ trình đơn
-                                                    hàng của mình . Chi tiết về chính sách giao hàng Quý khách vui lòng click vào
-                                                    link.
+                                                   
+                                                {this.props.info.vchuyen}
                 <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-giao-hang.html">Xem chi tiết</a>
                                                     </div>
                                                 </div>
@@ -249,7 +242,8 @@ class Detail extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        dataproducts: state.dataproducts
+        dataproducts: state.dataproducts,
+        info:state.info
     }
 }
 export default connect(mapStateToProps)(withRouter(Detail))

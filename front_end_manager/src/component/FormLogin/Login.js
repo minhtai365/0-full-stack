@@ -2,10 +2,8 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import Footer from './Footer';
-import Header from './Header';
-import { connect } from 'react-redux';
-// var getUser = () => axios.get('/user').then(res => res.data);
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 class Login extends Component {
     constructor() {
         super();
@@ -27,10 +25,10 @@ class Login extends Component {
         item.email = this.state.email;
         item.password = this.state.pass;
         this.sendDT(item.email, item.password).then(res => {
+            console.log(res);
             if (res !== 'fail') {
                 sessionStorage.setItem("userID",res._id);
-                // console.log(res.username);
-                this.props.senduser(res.username);
+                sessionStorage.setItem("username",res.username);
                 if(res.role==='1')
                 this.props.history.push('/admin.html');
                 else  this.props.history.push('/index');
@@ -41,7 +39,7 @@ class Login extends Component {
         });
 
     }
-    sendDT = (email, password) => axios.post('/login', { email, password }).then(res => res.data)
+    sendDT = (email, password) => axios.post('/user/login', { email, password }).then(res => res.data)
     render() {
         return (
             <div>
@@ -91,16 +89,16 @@ class Login extends Component {
         )
     }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        senduser: (user) => {
-            dispatch({type:"GET_USER_LOGIN",user})
-        }
-    }
-}
-const mapStateToProps = (state, ownProps) => {
-    return {
-        // prop: state.prop
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//     return {
+//         senduser: (user) => {
+//             dispatch({type:"GET_USER_LOGIN",user})
+//         }
+//     }
+// }
+// const mapStateToProps = (state, ownProps) => {
+//     return {
+//         // prop: state.prop
+//     }
+// }
+export default withRouter(Login);

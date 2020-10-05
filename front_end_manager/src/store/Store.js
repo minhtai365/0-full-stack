@@ -5,7 +5,8 @@ const oldState = {
     dataproducts: [],
     datacates: [],
     datatypes: [],
-    username:'',
+    info: [],
+    // username:'',
     search: ''
 }
 const myReducer = (state = oldState, action) => {
@@ -20,8 +21,8 @@ const myReducer = (state = oldState, action) => {
             return { ...state, datatypes: action.dt }
         case "GET_DATA_SEARCH":
             return { ...state, search: action.data }
-        case "GET_USER_LOGIN":
-            return { ...state, username: action.user }
+            case "GET_DATA_INFO":
+                return { ...state, info: action.dt }
         default:
             return state
     }

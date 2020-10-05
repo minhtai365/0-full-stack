@@ -10,10 +10,18 @@ class Header extends Component {
             datatypes: [],
             datacatelogys: [],
             dataproducts: [],
+            info:[],
             search: ''
         }
     }
     componentWillMount() {
+        Axios.get('/info')
+        .then(res=>{
+            this.setState({
+                info:res.data[0]
+            })
+            this.props.sendInfo(res.data[0]);
+        })
         Axios.get('/products')
             .then(res => {
                 if (this.props.dataproducts.length === 0) {
@@ -89,11 +97,17 @@ class Header extends Component {
     }
     clickSearch() {
         // console.log(this.state.search);
-        this.props.search("sơ");
+        this.props.search(this.state.search);
     }
     clickOut = () => {
         sessionStorage.removeItem("userID");
+        sessionStorage.removeItem("username");
         this.props.history.push('/index');
+    }
+    goLogin=(e)=>{
+        if(sessionStorage.getItem('userID')!==null){
+            e.preventDefault();
+        }
     }
     render() {
         return (
@@ -106,15 +120,17 @@ class Header extends Component {
                         {/* <div className='con'> */}
                         <div className="d-flex justify-content-start con">
                             <div className="link-a px-2  border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
-                            <div className="link-a px-2  border-right" href="callto:0352268668"><i className="fa fa-phone mx-2" aria-hidden="true" />
-          0352268668</div>
-                            <a className="link-a px-2" href="mailto:tranminhtai365@gmail.com"><i className="fa fa-envelope mx-2" aria-hidden="true" />
-          tranminhtai365@gmail.com</a>
+                            <div className="link-a px-2  border-right" href={"callto:"+this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+        {this.state.info.phone}</div>
+                            <a className="link-a px-2" href={"mailto:"+this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                            {this.state.info.email}</a>
                             {/* </div> */}
                         </div>
                         <div className="d-flex justify-content-end con">
                             <div className="flex-column acc">
-                                <Link className="link-a p-2 border-right" to="/login.html"><i className="fa fa-user mr-2 " aria-hidden="true" />{this.props.username !== '' ? this.props.username : "Tài khoản"}</Link>
+                                <Link className="link-a p-2 border-right" onClick={(e)=>this.goLogin(e)} to="/login.html"><i className="fa fa-user mr-2 " aria-hidden="true" />{sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                {sessionStorage.getItem('userID') &&
+                                    <Link to="/properties.html" className="link-a p-2 text-right logout">Thông tin</Link>}
                                 {sessionStorage.getItem('userID') &&
                                     <div onClick={() => this.clickOut()} className="link-a p-2 text-right logout">Đăng xuất</div>}
 
@@ -129,15 +145,15 @@ class Header extends Component {
                     <div className="collapse navbar-collapse" id="collapsibleNavId">
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li className="list-group-item nav-link btn btn-link">
-                                <Link className="nav-link" to="/index">Trang chủ</Link>
+                                <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
                             </li>
                             {this.state.datatypes.map((x, key) => {
                                 return (
-                                    <li key={key} className="list-group-item nav-link btn btn-link "><Link to="/index" className="nav-link" >{x.typename}</Link>
+                                    <li key={key} className="list-group-item nav-link btn btn-link "><Link to="/index" className="nav-link nav-bd" >{x.typename}</Link>
 
                                         <ul className="list-group item-title list-sub position-absolute">
                                             {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                return (<li key={key} className="list-group-item nav-link"><Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                return (<li key={key} className="list-group-item nav-link nav-bd"><Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
                                                     onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
                                                 </li>)
                                             })}
@@ -145,26 +161,17 @@ class Header extends Component {
                                     </li>
                                 )
                             })}
-                            {/* <li key={key} className="nav-item dropdown">
-                                <div className="nav-link dropdown-toggle" id={x._id} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{x.typename}</div>
-                                <div className="dropdown-menu" aria-labelledby={x.id}>
-                                    {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                        return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
-                                            className="dropdown-item" onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>)
-                                    })}
-                                </div>
-                            </li> */}
 
                             <li className="list-group-item nav-link btn btn-link ">
-                                <Link to="/index" className="nav-link " >Bảng giá</Link>
+                                <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link>
                             </li>
                             <li className="list-group-item nav-link btn btn-link ">
-                                <Link to="/index" className="nav-link " >Hướng dẫn dịch vụ</Link>
+                                <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link>
                             </li>
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
                             <input className="form-control mr-sm-2 botron30" name="search" onChange={(e) => this.inputValue(e)} type="text" placeholder="Search" />
-                            <button className="btn btn-outline-primary botron30 my-2 my-sm-0" onClick={() => this.props.search(this.state.search)}>Search</button>
+                            <Link className="btn btn-outline-primary botron30 my-2 my-sm-0" to='/index/search' onClick={() => this.props.search(this.state.search)}>Search</Link>
                         </div>
                     </div>
                 </div>
@@ -192,6 +199,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         sendProducts: (data) => {
             dispatch({ type: 'GET_DATA_PRODUCTS', data })
+        },
+        sendInfo: (dt) => {
+            dispatch({ type: 'GET_DATA_INFO', dt })
         },
         search: (data) => {
             dispatch({ type: 'GET_DATA_SEARCH', data })

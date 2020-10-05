@@ -30,6 +30,9 @@ body{
     text-transform: uppercase;
     color: rgb(94, 5, 236) !important;
 }
+.nav-bd:hover{
+    border-bottom: 2px violet solid;
+}
 .botron30{
     /* background: blue; */
     border-radius: 50px;
@@ -242,7 +245,14 @@ body{
     border-radius: 20px;
     box-shadow: 5px 5px 0 0 black, 0 0 5px 5px black ;
   }
-
+  .modal-order {
+    position: absolute;
+    background-color: rgb(131, 131, 170);
+    width: fit-content;
+    height: fit-content;
+    left: 20%;
+    box-shadow: 5px 5px 0 0 black, 0 0 5px 5px black ;
+  }
   .Overlay {
       text-align: center;
       color: white;
@@ -273,15 +283,18 @@ li a{
     margin-left: -10px;
     
 }
-.list-group{
-
+.item-con:hover{
+ background: blue;
 }
 .list-sub{
     box-shadow: 0 -2px 5px white;
     margin-top: 0;
     text-align: left;
-    border-radius: 10px;
+    list-style: none;
+    margin-top: 20px;
     opacity: 0;
+    width: max-content;
+    background: rgba(19, 78, 187, 0.829) !important;
     visibility: hidden;
 }
 .list-group-item:hover .list-sub{
@@ -342,4 +355,13 @@ li a{
      position: relative;
      display: inline-block !important;
      top: -15px !important;
+ }
+
+ .card:hover .img-zoom{
+    opacity: 0.8;
+    transform: scale(1.07);
+    border-bottom: blue 4px solid ;
+ }
+ .card-form{
+     overflow: hidden;
  }

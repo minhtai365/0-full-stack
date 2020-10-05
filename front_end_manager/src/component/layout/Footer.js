@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-
-export default class Footer extends Component {
+import { connect } from 'react-redux';
+class Footer extends Component {
     render() {
         return (
             <div>
@@ -9,16 +9,16 @@ export default class Footer extends Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-4 col-6">
-                                    <h5>CÔNG TY VN</h5>
-                                    <p>Địa chỉ: Số 9, Phố Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội</p>
-                                    <p>Số điện thoại: 0967478588</p>
-                                    <p>Email: hotro@keyweb.vn</p>
+        <h5>{this.props.info.name}</h5>
+                                    <p>Địa chỉ: {this.props.info.address}</p>
+                                    <p>Số điện thoại: {this.props.info.phone}</p>
+                                    <p>Email: {this.props.info.email}</p>
                                 </div>
                                 <div className="col-md-3 col-6">
                                     <h5>CHÍNH SÁCH</h5>
                                     <p>Chính sách thanh toán</p>
-                                    <p>Chính sách vận chuyển</p>
-                                    <p>Chính sách bảo mật thông tin</p>
+                                    <p>Chính sách đổi trả</p>
+                                    <p>Chính sách giao hàng</p>
                                 </div>
                                 <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>
@@ -36,7 +36,7 @@ export default class Footer extends Component {
                                         <form>
                                             <div className="form-group">
                                                 <label >Email</label>
-                                                <input type="email" className="form-control"aria-describedby="emailHelpId" placeholder="Your email" />
+                                                <input type="email" className="form-control" aria-describedby="emailHelpId" placeholder="Your email" />
                                             </div>
                                             <button type="submit" className="btn btn-primary">Submit</button>
                                         </form>
@@ -59,3 +59,9 @@ export default class Footer extends Component {
         )
     }
 }
+const mapStateToProps = (state, ownProps) => {
+    return {
+        info:state.info
+    }
+}
+export default connect(mapStateToProps)(Footer)

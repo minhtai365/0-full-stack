@@ -5,6 +5,11 @@ var userSchema=new Schema({
     password:{type:String,required:true},
     email:{type:String,required:true},
     name:{type:String,required:true},
+    phone:{type:String},
+    cmnd:{type:String},
+    address:{type:String},
+    quan:{type:String},
+    tp:{type:String},
     created:{type:Date,required:true},
     role:{type:String,required:true},
     status:{type:Boolean,required:true}

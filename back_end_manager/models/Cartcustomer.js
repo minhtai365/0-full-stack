@@ -6,9 +6,10 @@ var Cartcustomer=new Schema({
     productid:{type:Schema.Types.ObjectId,ref:'Product'},
     qty:{type:Number,required:true},
     price:{type:String,required:true},
-    buy:{type:String,required:true},
+    // buy:{type:String,required:true},
     img:{type:String,required:true},
-    name:{type:String,required:true}
+    name:{type:String,required:true},
+    typeorder:{type:String,required:true}
     }]
 });
 

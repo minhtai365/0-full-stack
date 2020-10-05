@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import Footer from './Footer';
-import Header from './Header';
+import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 
 export default class Forgot extends Component {
     render() {
@@ -20,7 +20,8 @@ export default class Forgot extends Component {
                             <div className="col-md-6 col-12 p-5">
                                 <h3>Forgot Password</h3>
                                 <div className="form-group">
-                                    <input type="email" className="form-control input-user" name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                    <input type="email" className="form-control input-user"
+                                    name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
                                 </div>
                                 <Link to="/index" className="btn btn-primary btn-user btn-block">
                                     Reset password</Link>

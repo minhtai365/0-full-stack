@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../layout/Header';
+import Footer from '../layout/Footer';
 export default class Regester extends Component {
     isChange = (e) => {
         this.setState({
@@ -14,7 +14,7 @@ export default class Regester extends Component {
         console.log('click');
         if (this.state.pass !== this.state.repass) alert('Mật khẩu không khớp');
         else {
-            axios.post('/register', {
+            axios.post('/user/register', {
                 username: this.state.last,
                 password: this.state.pass,
                 name: this.state.first,
