@@ -6,19 +6,6 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 
 class Detail extends Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            // day:''
-        }
-    }
-    
-    // componentWillMount() {
-    //     const { id } = this.props.match.params;
-    //     this.setState({
-    //         dataproducts: this.props.dataproducts.filter(x => x._id === id)
-    //     })
-    // }
     formatMoney(t) {
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
@@ -34,16 +21,11 @@ class Detail extends Component {
     clickAdd = (item) => {
         if(sessionStorage.getItem("userID")===null){
             alert("Vui lòng đăng nhập để thêm vào giỏ hàng");
-            // console.log(item._id);
         }
-        if(this.state.day===''){
-            alert('Vui lòng chọn thời gian thuê')
-        }
-        else{
+        else if(item.proNumber!==0){
             Axios.post('/cart/add',{
                 userid:sessionStorage.getItem('userID'),
                 product:item
-                // buy:this.state.day
             })
             .then(res=>{
                 // this.props.history.push(res.da);
@@ -52,6 +34,9 @@ class Detail extends Component {
             .catch(err=>{
                 alert(err);
             })
+        }
+        else{
+            alert('Sản phẩm hết hàng')
         }
     }
     render() {

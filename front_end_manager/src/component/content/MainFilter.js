@@ -67,7 +67,7 @@ class MainFilter extends Component {
                 <div className="col-3" style={{ float: 'left' }}>
                     <div className="list-group ">
                         {this.props.datacates.filter(y => y.typeid === dt._id).map((x, key) => (
-                            <button key={key} className="dropdown-item border-left border-bottom"
+                            <button key={key} className="dropdown-item item-click border-left border-bottom"
                                 onClick={() => this.props.clickItem(x._id)} >{x.catelogy}</button>))}
 
                     </div>
@@ -83,7 +83,7 @@ class MainFilter extends Component {
         return (
             mydt.map((x, key) =>
                 <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
-                    <div className="card" style={{ height: '100%' }}>
+                    <div className="card card-form" style={{ height: '100%' }}>
                         <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
                             <img className="card-img-top img-zoom" src={x.imgPath} alt="" />
                             <div className="card-body">

@@ -14,10 +14,10 @@ router.get('/', (req, res, next) => {
 })
 //add order
 router.post('/add', (req, res, next) => {
-  const { userid, item, name, sdt, address, tp, quan, cmnd, total } = req.body;
+  const { userid, item, name, phone, address, tp, quan, cmnd, total } = req.body;
   var con = {
     name: name,
-    sdt: sdt,
+    phone: phone,
     address: address,
     tp: tp,
     quan: quan,
@@ -29,6 +29,7 @@ router.post('/add', (req, res, next) => {
     total: total,
     item: item,
     contact: con,
+    status:1,
     date: now
   });
 

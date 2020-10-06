@@ -42,7 +42,7 @@ router.get('/', (req, res, next) => {
               .catch(e => {
               })
           }
-          else {
+          else {//có
             var count = req.body.product.proNumber;
             Cart.updateOne({
               userid: req.body.userid,
@@ -55,7 +55,7 @@ router.get('/', (req, res, next) => {
             }, { $inc: { "item.$.qty": +1 } })
               .then(r => {
                 if (r.n === 0)
-                  res.send("Hết hàng");
+                  res.send("Số lượng tối đa đã có trong giỏ hàng của bạn");
                 else
                   res.send("Thêm thành công");
               })

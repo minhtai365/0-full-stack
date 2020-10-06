@@ -93,9 +93,16 @@ class MainRoot extends Component {
     }
     loadCates(id) {
         return (
+           
             this.props.datacates.filter(x => x.typeid === id).map((y, key) =>
-                <button key={key} className="dropdown-item border-left border-bottom"
-                    onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</button>)
+            <div className="form-check">
+            <label class="form-check-label">
+                <input type="radio" className="item-click form-check-input" name="optradio" />
+                <div key={key} className="dropdown-item item-bg border-left border-bottom"
+                    onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</div>
+                </label>
+            </div>
+                )
         )
     }
     loadForm() {
@@ -113,7 +120,7 @@ class MainRoot extends Component {
 
                         <div className="container">
                             <div className="col-3" style={{ float: 'left' }}>
-                                <div className="list-group ">
+                                <div className="list-group">
                                     {this.loadCates(types._id)}
                                 </div>
                             </div>

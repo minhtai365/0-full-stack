@@ -106,6 +106,7 @@ export default class ContentCarts extends Component {
                                     <th>Thành phố/Tỉnh</th>
                                     <th>Tổng cộng</th>
                                     <th>Ngày đặt</th>
+                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,16 +114,20 @@ export default class ContentCarts extends Component {
                                     return <tr>
                                         <td>{x.contact.cmnd}</td>
                                         <td>{x.contact.name}</td>
-                                        <td>{x.contact.sdt}</td>
+                                        <td>{x.contact.phone}</td>
                                         <td>{x.contact.address}</td>
                                         <td>{x.contact.quan}</td>
                                         <td>{x.contact.tp}</td>
                                         <td>{x.total}</td>
                                         <td>{x.date}</td>
-
+                                        {x.status===1?
                                         <td><div className="text-info" onClick={(id) => this.showModel(x._id)} ><i className="fas fa-edit"></i></div>
-                                            <hr />
-                                            <div className="text-danger" onClick={(id) => this.remove(x._id)} ><i className="far fa-trash-alt"></i></div></td>
+                                        <div className="text-info" onClick={(id) => this.showModel(x._id)} ><i className="fas fa-save"></i></div></td>:"ok"
+                                    }
+                                         {/* <td><div className="btn btn-warning" onClick={(id) => this.showModel(x._id)} 
+                                         >{x.status===1?"Chờ xác nhận":x.status===2?'Đang giao':
+                                 x.status===3?'Đã giao':'Đã hủy'} </div></td> */}
+                                        <td><div className="text-info" onClick={(id) => this.showModel(x._id)} ><i className="fas fa-edit"></i></div></td>
                                     </tr>
 
                                 })}

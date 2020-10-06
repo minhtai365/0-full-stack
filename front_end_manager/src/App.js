@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Login from './component/FormLogin/Login';
 import Register from './component/FormLogin/Regester';
 import Forgot from './component/FormLogin/Forgot';
@@ -22,6 +22,9 @@ class App extends Component {
       <Router>
         <div>
           <Switch>
+            <Route path="/" exact>
+              <Redirect to="index" />
+            </Route>
             <Route path="/login.html" exact>
               <Login />
             </Route>
@@ -29,9 +32,9 @@ class App extends Component {
             <Route path="/forgot.html" exact component={Forgot} />
             <Route path="/properties.html" exact component={Properties} />
             <Route path="/chi-tiet/:slug/:id.html" exact component={Detail} />
-            <Route path="/index" component={Main}/>
-            <Route path="/cart.html" exact component={Cart}/>
-            <Route path="/u/order.html" exact component={Order}/>
+            <Route path="/index" component={Main} />
+            <Route path="/cart.html" exact component={Cart} />
+            <Route path="/u/order" exact component={Order} />
             <Route path="/admin.html" exact component={InfoAdmin} />
             <Route path="/account.html" exact component={ContentAccount} />
             <Route path="/types.html">

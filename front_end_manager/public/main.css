@@ -365,3 +365,17 @@ li a{
  .card-form{
      overflow: hidden;
  }
+ .item-bg{
+     padding-left: 2rem;
+     width: 10rem !important;
+ }
+ .item-click{
+     display: none;
+ }
+ .item-click:checked ~ .item-bg{
+    background: blueviolet !important;
+ }
+
+
+ 
+ 

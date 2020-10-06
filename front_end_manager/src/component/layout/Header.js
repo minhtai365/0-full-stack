@@ -136,7 +136,7 @@ class Header extends Component {
 
                             </div>
                             <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
-                            <Link className="link-a mr-2" to="/u/order.html"> <i className="fas mx-2 fa-shopping-bag"></i>Đơn hàng</Link>
+                            <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shopping-bag"></i>Đơn hàng</Link>
                         </div>
                     </div>
                 </div>

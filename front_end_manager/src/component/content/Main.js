@@ -8,6 +8,7 @@ export default class Main extends Component {
     render() {
         return (
             <div>
+                
                 <Switch>
                 <Route path='/index' exact component={MainRoot}/>
                 <Route path='/index/search' component={ResultSearch}/>
