@@ -2,7 +2,6 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 
 import Model from 'react-modal';
-import MenuAdmin from './MenuAdmin';
 import NavAdmin from './NavAdmin';
 // import { Link } from 'react-router-dom';
 

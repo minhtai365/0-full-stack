@@ -128,14 +128,15 @@ class Header extends Component {
                         </div>
                         <div className="d-flex justify-content-end con">
                             <div className="flex-column acc">
-                                <Link className="link-a p-2 border-right" onClick={(e)=>this.goLogin(e)} to="/login.html"><i className="fa fa-user mr-2 " aria-hidden="true" />{sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                <Link className="link-a p-2 mr-2 border-right" onClick={(e)=>this.goLogin(e)} to="/login.html"><i className="fa fa-user mx-2" aria-hidden="true" />{sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
                                 {sessionStorage.getItem('userID') &&
-                                    <Link to="/properties.html" className="link-a p-2 text-right logout">Thông tin</Link>}
+                                    <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
                                 {sessionStorage.getItem('userID') &&
-                                    <div onClick={() => this.clickOut()} className="link-a p-2 text-right logout">Đăng xuất</div>}
+                                    <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
 
                             </div>
-                            <Link className="link-a mx-2" to="/cart.html"> <i className="fas fa-shopping-bag mr-2"></i>Giỏ hàng của tôi</Link>
+                            <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                            <Link className="link-a mr-2" to="/u/order.html"> <i className="fas mx-2 fa-shopping-bag"></i>Đơn hàng</Link>
                         </div>
                     </div>
                 </div>

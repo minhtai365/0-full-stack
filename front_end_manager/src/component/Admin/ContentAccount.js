@@ -1,6 +1,5 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
-import MenuAdmin from './MenuAdmin';
 import NavAdmin from './NavAdmin';
 class ContentAccount extends Component {
   constructor(props) {

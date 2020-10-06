@@ -2,7 +2,6 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 
 import Model from 'react-modal';
-import MenuAdmin from './MenuAdmin';
 import NavAdmin from './NavAdmin';
 // import { Link } from 'react-router-dom';
 
@@ -19,10 +18,10 @@ export default class ContentCarts extends Component {
     componentWillMount() {
         Axios.get('/order')
             .then(res => {
-                var dt = { ...res.data }
-                res.data.map(x => {
-                    console.log(x.item);
-                })
+                // var dt = { ...res.data }
+                // res.data.map(x => {
+                //     console.log(x.item);
+                // })
                 this.setState({
                     datacarts: res.data
                 })

@@ -14,6 +14,7 @@ import ContentTypes from './component/Admin/ContentTypes';
 import ContentCatelogys from './component/Admin/ContentCatelogys';
 import ContentProducts from './component/Admin/ContentProducts';
 import ContentOrder from './component/Admin/ContentOrder';
+import Order from './component/content/Order';
 class App extends Component {
 
   render() {
@@ -30,6 +31,7 @@ class App extends Component {
             <Route path="/chi-tiet/:slug/:id.html" exact component={Detail} />
             <Route path="/index" component={Main}/>
             <Route path="/cart.html" exact component={Cart}/>
+            <Route path="/u/order.html" exact component={Order}/>
             <Route path="/admin.html" exact component={InfoAdmin} />
             <Route path="/account.html" exact component={ContentAccount} />
             <Route path="/types.html">
