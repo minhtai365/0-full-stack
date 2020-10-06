@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var Cartcustomer = require('../models/Cartcustomer');
+var Cart = require('../models/Cart');
 const Product = require('../models/product');
 
 // start cart
 router.get('/', (req, res, next) => {
-    Cartcustomer.find((err, dt) => {
+    Cart.find((err, dt) => {
       res.send(dt)
     })
   })
@@ -20,22 +20,22 @@ router.get('/', (req, res, next) => {
       name: req.body.product.title,
       typeorder: '1'
     }
-    Cartcustomer.findOne({ userid: req.body.userid }).then(u => {
+    Cart.findOne({ userid: req.body.userid }).then(u => {
       if (u === null) {//user chưa có gì trong giỏ
-        var cart = new Cartcustomer({
+        var cart = new Cart({
           userid: req.body.userid
         });
         cart.item.push(item)
-        Cartcustomer.create(cart)
+        Cart.create(cart)
           .then(cre => {
             res.send('Thành công');
           })
       }
       else {
         //tìm kiếm sp thêm có trong giỏ hay chưa
-        Cartcustomer.findOne({ userid: req.body.userid, 'item.productid': req.body.product._id }).then(p => {
+        Cart.findOne({ userid: req.body.userid, 'item.productid': req.body.product._id }).then(p => {
           if (p === null) {//chưa
-            Cartcustomer.updateOne({ userid: req.body.userid }, { $push: { item: item } })
+            Cart.updateOne({ userid: req.body.userid }, { $push: { item: item } })
               .then(ew => {
                 res.send("Thành công");
               })
@@ -44,7 +44,7 @@ router.get('/', (req, res, next) => {
           }
           else {
             var count = req.body.product.proNumber;
-            Cartcustomer.updateOne({
+            Cart.updateOne({
               userid: req.body.userid,
               item: {
                 $elemMatch: {
@@ -73,7 +73,7 @@ router.get('/', (req, res, next) => {
   router.post('/setprice', (req, res, next) => {
     Product.findById({ _id: req.body.id }, (err, dt) => {
       var price = parseInt(dt.sale * req.body.price);
-      Cartcustomer.updateOne({ 'item.productid': req.body.id, userid: req.body.userid },
+      Cart.updateOne({ 'item.productid': req.body.id, userid: req.body.userid },
         { $set: { "item.$.price": price, "item.$.typeorder": req.body.price } })
         .then(r => {
           res.status(200).json({ mess: 'ok' })
@@ -99,7 +99,7 @@ router.get('/', (req, res, next) => {
         min = 2;
       }
       else min = 1
-      Cartcustomer.updateOne({
+      Cart.updateOne({
         userid: req.body.userid,
         item: {
           $elemMatch: {
@@ -125,7 +125,7 @@ router.get('/', (req, res, next) => {
   router.post('/remove', (req, res, next) => {
     var proid = req.body.id;
     var userid = req.body.userid;
-    Cartcustomer.updateOne({ 'item.productid': proid, userid: userid }, { $pull: { item: { productid: proid } } })
+    Cart.updateOne({ 'item.productid': proid, userid: userid }, { $pull: { item: { productid: proid } } })
       .then(ress => {
       })
       .catch(e => {

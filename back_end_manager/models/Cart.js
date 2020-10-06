@@ -1,6 +1,6 @@
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
-var Cartcustomer=new Schema({
+var cartSchema=new Schema({
     userid:{type:Schema.Types.ObjectId,ref:'User'},
     item:[{
     productid:{type:Schema.Types.ObjectId,ref:'Product'},
@@ -13,7 +13,7 @@ var Cartcustomer=new Schema({
     }]
 });
 
-// module.exports= Cartcustomer.method.addToCart=function(userid,pro){
+// module.exports= Cart.method.addToCart=function(userid,pro){
 //     console.log(userid);
 //     // let cart=this.item;
 //     if(userid!==this.userid){
@@ -25,4 +25,4 @@ var Cartcustomer=new Schema({
 //         console.log('tồn tại');
 //     }
 // }
-module.exports=mongoose.model('Cartcustomer',Cartcustomer);
+module.exports=mongoose.model('Cart',cartSchema);
