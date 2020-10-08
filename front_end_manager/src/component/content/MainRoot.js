@@ -95,8 +95,8 @@ class MainRoot extends Component {
         return (
            
             this.props.datacates.filter(x => x.typeid === id).map((y, key) =>
-            <div className="form-check">
-            <label class="form-check-label">
+            <div key={key} className="form-check">
+            <label className="form-check-label">
                 <input type="radio" className="item-click form-check-input" name="optradio" />
                 <div key={key} className="dropdown-item item-bg border-left border-bottom"
                     onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</div>
@@ -109,8 +109,8 @@ class MainRoot extends Component {
         return (
             <div>
                 {this.props.datatypes.map((types, key) =>
-                    <div key={key}>
-                        <div className="jumbotron jumbotron-fluid mt-5">
+                    <div id={types._id} key={key}>
+                        <div  className="jumbotron jumbotron-fluid mt-5">
                             <div className="container">
 
                                 <h5 className="display-3 text-center">{types.typename}</h5>

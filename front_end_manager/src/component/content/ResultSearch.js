@@ -48,11 +48,10 @@ class ResultSearch extends Component {
         })
     }
     render() {
-        console.log('rrrrrrrrrr');
         return (
             <div>
                 <Header/>
-                <div className="jumbotron jumbotron-fluid mt-5 pt-5">
+                <div className="jumbotron jumbotron-fluid content-chitiet">
                     <div className="container mt-5 pt-5">
 
                         <h5 className="display-3 text-center">Kết quả tìm kiếm</h5>

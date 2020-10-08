@@ -4,7 +4,7 @@ export default class Carousel extends Component {
     render() {
         return (
             <div>
-                <div className="container" style={{ marginTop: '150px' }}>
+                <div className="container" style={{ paddingTop: '150px' }}>
                     <div id="myslide" className="carousel slide" data-ride="carousel">
                         <ol className="carousel-indicators">
                             <li data-target="#myslide" data-slide-to={0} className="active" />

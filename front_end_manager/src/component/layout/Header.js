@@ -2,6 +2,9 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
+import Headroom from 'react-headroom'
+
+// import { rhythm } from 'utils/typography'
 // withRouter(
 class Header extends Component {
     constructor(props) {
@@ -10,18 +13,19 @@ class Header extends Component {
             datatypes: [],
             datacatelogys: [],
             dataproducts: [],
-            info:[],
+            info: [],
             search: ''
         }
+
     }
     componentWillMount() {
         Axios.get('/info')
-        .then(res=>{
-            this.setState({
-                info:res.data[0]
+            .then(res => {
+                this.setState({
+                    info: res.data[0]
+                })
+                this.props.sendInfo(res.data[0]);
             })
-            this.props.sendInfo(res.data[0]);
-        })
         Axios.get('/products')
             .then(res => {
                 if (this.props.dataproducts.length === 0) {
@@ -91,9 +95,9 @@ class Header extends Component {
     inputValue = (e) => {
         // console.log(e.target.value);
         this.setState({
+
             [e.target.name]: e.target.value
         })
-        console.log(this.state.search);
     }
     clickSearch() {
         // console.log(this.state.search);
@@ -104,80 +108,123 @@ class Header extends Component {
         sessionStorage.removeItem("username");
         this.props.history.push('/index');
     }
-    goLogin=(e)=>{
-        if(sessionStorage.getItem('userID')!==null){
+    find = (e) => {
+        if (e.key == "Enter") {
+            this.props.history.push('/index/search')
+            this.props.search(this.state.search)
+        }
+    }
+    goLogin = (e) => {
+        if (sessionStorage.getItem('userID') !== null) {
             e.preventDefault();
         }
     }
     render() {
         return (
 
-
-            <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                <div className="fixed-top top-nav">
-                    <div className="container pt-2">
-
-                        {/* <div className='con'> */}
-                        <div className="d-flex justify-content-start con">
-                            <div className="link-a px-2  border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
-                            <div className="link-a px-2  border-right" href={"callto:"+this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
-        {this.state.info.phone}</div>
-                            <a className="link-a px-2" href={"mailto:"+this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
-                            {this.state.info.email}</a>
-                            {/* </div> */}
-                        </div>
-                        <div className="d-flex justify-content-end con">
-                            <div className="flex-column acc">
-                                <Link className="link-a p-2 mr-2 border-right" onClick={(e)=>this.goLogin(e)} to="/login.html"><i className="fa fa-user mx-2" aria-hidden="true" />{sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
-                                {sessionStorage.getItem('userID') &&
-                                    <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
-                                {sessionStorage.getItem('userID') &&
-                                    <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
-
+            <Headroom
+                onPin={() => console.log('pinned')}
+                onUnpin={() => console.log('unpinned')}
+                wrapperStyle={{ marginTop: '0' }}
+                // upTolerance="100px"
+                // downTolerance='100px'
+                
+                style={{
+                    // marginTop: '-150px',
+                    transition: 'all .5s ease-in-out'
+                }}
+            >
+                <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                    <div className="fixed-top top-nav">
+                        <div className="container pt-2">
+                            {/* <div className='con'> */}
+                            <div className="d-flex justify-content-start con">
+                                <div className="link-a px-2  border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
+                                <div className="link-a px-2  border-right" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+                                    {this.state.info.phone}</div>
+                                <a className="link-a px-2" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                                    {this.state.info.email}</a>
+                                {/* </div> */}
                             </div>
-                            <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
-                            <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shopping-bag"></i>Đơn hàng</Link>
+                            <div className="d-flex justify-content-end con">
+                                <div className="flex-column acc">
+                                    <Link className="link-a p-2 mr-2 border-right" onClick={(e) => this.goLogin(e)} to="/login.html">
+                                        <i className="fa fa-user mx-2" aria-hidden="true" />
+                                        {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                    {sessionStorage.getItem('userID') &&
+                                        <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
+                                    {sessionStorage.getItem('userID') &&
+                                        <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
+
+                                </div>
+                                <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                                <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
+                            </div>
+                        </div>
+                        <div className="center-nav">
+                            <div className="d-flex container  justify-content-between">
+                                <div className="content-left">
+                                    {/* <div className="navbar-brand" >
+                    ,rounded-right,rounded-bottom,rounded-left,,|rounded-top rounded-circle
+                    <i className="fas fa-store icon-logo" aria-hidden="true" />
+                </div> */}
+                                    <div className="logo">
+                                        Minh Tài <sup>MT</sup>
+                                    </div>
+                                </div>
+                                <div className="content-right sea d-flex justify-content-end">
+                                    <div className="form-inline p-1">
+
+                                        {this.state.search === '' ? <Link className=" fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
+
+                                        <input className="form-control shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={this.find} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
+
+                                        {this.state.search !== '' ? <Link className=" fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className=" bottom-nav ">
+                            <div className="container">
+                                <ul className=" row ml-auto">
+                                    <div className="row">
+                                        <li className="list-group-item nav-link btn btn-link">
+                                            <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
+                                        </li>
+                                        {this.state.datatypes.map((x, key) => {
+                                            return (
+                                                <li key={key} className="list-group-item nav-link btn btn-link "><a href={'#' + x._id} className="nav-link nav-bd" >{x.typename}</a>
+
+                                                    <ul className="list-group item-title list-sub position-absolute">
+                                                        {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
+                                                            return (<li key={key} className="list-group-item sub-item nav-link nav-bd">
+                                                                <Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                                    onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
+                                                            </li>)
+                                                        })}
+                                                    </ul>
+                                                </li>
+                                            )
+                                        })}
+
+                                        <li className="list-group-item nav-link btn btn-link ">
+                                            <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link>
+                                        </li>
+                                        <li className="list-group-item nav-link btn btn-link ">
+                                            <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="container bottom-nav">
-                    <div className="navbar-brand" ><i className="fa fa-user icon-logo" aria-hidden="true" /></div>
-                    <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation" />
-                    <div className="collapse navbar-collapse" id="collapsibleNavId">
-                        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="list-group-item nav-link btn btn-link">
-                                <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
-                            </li>
-                            {this.state.datatypes.map((x, key) => {
-                                return (
-                                    <li key={key} className="list-group-item nav-link btn btn-link "><Link to="/index" className="nav-link nav-bd" >{x.typename}</Link>
 
-                                        <ul className="list-group item-title list-sub position-absolute">
-                                            {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                return (<li key={key} className="list-group-item nav-link nav-bd"><Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
-                                                    onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
-                                                </li>)
-                                            })}
-                                        </ul>
-                                    </li>
-                                )
-                            })}
 
-                            <li className="list-group-item nav-link btn btn-link ">
-                                <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link>
-                            </li>
-                            <li className="list-group-item nav-link btn btn-link ">
-                                <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link>
-                            </li>
-                        </ul>
-                        <div className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2 botron30" name="search" onChange={(e) => this.inputValue(e)} type="text" placeholder="Search" />
-                            <Link className="btn btn-outline-primary botron30 my-2 my-sm-0" to='/index/search' onClick={() => this.props.search(this.state.search)}>Search</Link>
-                        </div>
-                    </div>
-                </div>
-            </nav>
 
+                </nav>
+            </Headroom>
         )
     }
 }

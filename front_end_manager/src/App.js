@@ -23,7 +23,7 @@ class App extends Component {
         <div>
           <Switch>
             <Route path="/" exact>
-              <Redirect to="index" />
+              <Redirect to="/index" />
             </Route>
             <Route path="/login.html" exact>
               <Login />

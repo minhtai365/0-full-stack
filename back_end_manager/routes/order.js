@@ -12,6 +12,45 @@ router.get('/', (req, res, next) => {
     res.send(dt);
   })
 })
+router.post('/cancel',(req,res)=>{
+    Order.updateOne({_id:req.body.id},[
+      {
+        $set:{
+          'status':0
+        }
+    }
+  ])
+  .then(re=>{
+   req.body.item.map(x=>{
+      Product.updateOne({_id:x.productid},{$inc:{proNumber: + x.qty}})
+      .then(ress=>{
+        res.status(200).json({mess:'ok'})
+      })
+   })
+  })
+})
+router.post('/complete',(req,res)=>{
+  Order.updateOne({_id:req.body.id},[
+    {
+      $set:{
+        'status':4
+      }
+  }
+])
+.then(re=>{
+ 
+  res.status(200).json({mess:'ok'});
+})
+})
+
+router.post('/confirm',(req,res)=>{
+  Order.updateOne({_id:req.body.id},{$inc:{status: + 1}})
+  .then(re=>{
+    res.status(200).json({mess:'ok'});
+  }).catch(er=>{
+    res.status(400).json({mess:'fail'});
+  })
+})
 //add order
 router.post('/add', (req, res, next) => {
   const { userid, item, name, phone, address, tp, quan, cmnd, total } = req.body;
