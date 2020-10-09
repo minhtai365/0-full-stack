@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import GoogleMap from './GoogleMap';
 class Footer extends Component {
     render() {
         return (
@@ -13,6 +14,7 @@ class Footer extends Component {
                                     <p>Địa chỉ: {this.props.info.address}</p>
                                     <p>Số điện thoại: {this.props.info.phone}</p>
                                     <p>Email: {this.props.info.email}</p>
+                                    <GoogleMap/>
                                 </div>
                                 <div className="col-md-3 col-6">
                                     <h5>CHÍNH SÁCH</h5>

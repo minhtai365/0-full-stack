@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken');
 
 process.env.MY_KEY = 'secret';
 router.get('/', function (req, res, next) {
-    User.find(function (err, dt) {
+    User.find().sort('-created').exec((err, dt)=> {
       res.send(dt);
     })
   })
@@ -55,7 +55,8 @@ router.post('/change', (req, res, next) => {
   })
   //đăng ký
   router.post('/register', (req, res) => {
-    const now = new Date();
+    var now =new Date();
+    var nowlc =new Date().toLocaleString()
     const userdt = {
       name: req.body.name,
       username: req.body.username,
@@ -63,7 +64,8 @@ router.post('/change', (req, res, next) => {
       email: req.body.email,
       role: "0",
       status: true,
-      created: now
+      created: now,
+      createdlc: nowlc,
     }
     User.findOne({
       $or: [{ email: req.body.email }, { username: req.body.username }]

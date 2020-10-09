@@ -6,8 +6,8 @@ var Catelogies = require('../models/Catelogies');
 
 //get catelogy
 router.get('/', (req, res, next) => {
-    Catelogies.find((err, resp) => {
-      res.send(resp)
+    Catelogies.find((err, dt) => {
+      res.send(dt)
     })
   })
   //create catelogy
@@ -28,10 +28,12 @@ router.get('/', (req, res, next) => {
     }
     else {
       var now = new Date;
+      var nowlc = new Date().toLocaleString();
       Catelogies.create({
         catelogy: req.body.catelogy,
         typeid: req.body.typeid,
-        created: now
+        created: now,
+        createdlc: nowlc
       })
         .then(resp => {
           res.send('create ok');

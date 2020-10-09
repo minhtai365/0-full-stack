@@ -7,6 +7,8 @@ var catelogySchema=new Schema({
         type : Schema.Types.ObjectId,
         ref:'Type'
     },
-    created:{type:Date,required:true}
+    created:{type:Date,required:true},
+    
+    createdlc:{type:String,required:true},
 })
 module.exports=mongoose.model('Catelogies',catelogySchema);

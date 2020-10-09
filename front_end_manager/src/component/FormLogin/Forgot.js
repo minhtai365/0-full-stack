@@ -8,8 +8,8 @@ export default class Forgot extends Component {
         return (
             <div>
                 <Header />
-                <div className="container mt-5 pt-5">
-                    <div className="card mt-sm-5 bg-info">
+                <div className="container content-chitiet">
+                    <div className="card mt-sm-5  bg-info">
                         <div className="row text-center ">
                             <div className="col-md-6 col-12 p-5 ">
                                 <div className="card text-white">

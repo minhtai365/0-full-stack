@@ -11,6 +11,7 @@ var userSchema=new Schema({
     quan:{type:String},
     tp:{type:String},
     created:{type:Date,required:true},
+    createdlc:{type:String,required:true},
     role:{type:String,required:true},
     status:{type:Boolean,required:true}
 });

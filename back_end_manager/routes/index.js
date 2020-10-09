@@ -18,6 +18,7 @@ router.post('/remove', (req, res, next) => {
       Type.deleteOne({ _id: id })
         .then(resp => {
           deleteCate(id);
+
           res.send('remove ok');
         })
         .catch(err => {
@@ -27,19 +28,24 @@ router.post('/remove', (req, res, next) => {
         )
     )
 })
-//dele catelogy
 function deleteCate(id) {
   Catelogies.deleteOne({ _id: id })
     .then(resp => {
+      
+      deletePro(id);
       res.send('remove ok');
     })
-  Catelogies.deleteOne({ typeid: id })
+  Catelogies.deleteMany({ typeid: id })
     .then(resp => {
       res.send('remove ok');
     })
 }
 function deletePro(id) {
   Product.deleteOne({ _id: id })
+    .then(resp => {
+      res.send("remove ok");
+    })
+    Product.deleteMany({ catelogyid: id })
     .then(resp => {
       res.send("remove ok");
     })

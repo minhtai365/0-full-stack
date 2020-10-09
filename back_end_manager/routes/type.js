@@ -28,9 +28,11 @@ router.get('/', (req, res, next) => {
     }
     else {
       var now = new Date;
+      var nowlc = new Date().toLocaleString();
       Type.create({
         typename: req.body.typename,
-        created: now
+        created: now,
+        createdlc: nowlc
       })
         .then(cre => {
           res.send('create ok');

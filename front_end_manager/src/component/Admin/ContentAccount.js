@@ -94,7 +94,7 @@ class ContentAccount extends Component {
                       <td>{x.username}</td>
                       <td>{x.email}</td>
                       <td>{x.role}</td>
-                      <td>{x.created}</td>
+                      <td>{x.createdlc}</td>
                       {x.status ?
                         <td><button className="btn btn-primary" onClick={(id) => this.lock(x._id)}>Open</button></td> :
                         <td><button className="btn btn-danger" onClick={(id) => this.lock(x._id)}>Lock</button></td>}
@@ -108,7 +108,10 @@ class ContentAccount extends Component {
           </div>
         </div>
       </div>
-    );
+   
+   
+   
+   );
   }
 }
 export default ContentAccount

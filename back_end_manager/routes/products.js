@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Product = require('../models/product');
 router.get('/', function (req, res, next) {
-    Product.find(function (err, dt) {
+    Product.find().sort('-created').exec((err, dt)=> {
       res.send(dt);
     });
   })
@@ -32,6 +32,7 @@ router.get('/', function (req, res, next) {
         })
     } else {
       var now = new Date();
+      var nowlc = new Date().toLocaleString();
       var pro = {
         title: req.body.title,
         price: req.body.price,
@@ -43,7 +44,8 @@ router.get('/', function (req, res, next) {
         size: req.body.size,
         type: req.body.type,
         view: 0,
-        created: now
+        created: now,
+        createdlc: nowlc
       }
       Product.create(pro)
         .then(re => {

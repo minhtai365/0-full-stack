@@ -109,8 +109,8 @@ class Header extends Component {
         this.props.history.push('/index');
     }
     find = (e) => {
-        if (e.key == "Enter") {
-            this.props.history.push('/index/search')
+        if (e.key === "Enter") {
+            this.props.history.push('/index/search?search='+this.state.search)
             this.props.search(this.state.search)
         }
     }

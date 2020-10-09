@@ -6,12 +6,17 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import Carousel from '../layout/Carousel';
 import Boxicon from '../layout/Boxicon';
+import { Typography,Box } from '@material-ui/core';
+// import {Pagination} from '@material-ui/lab';
+
+import { Pagination } from '@material-ui/lab';
 // const getproduct = () => axios.get('/products').then(res => res.data)
 class MainRoot extends Component {
     constructor() {
         super();
         this.state = {
-            types: []
+            types: [],
+            page:1
         }
     }
     // async function handleSearch() {
@@ -93,16 +98,16 @@ class MainRoot extends Component {
     }
     loadCates(id) {
         return (
-           
+
             this.props.datacates.filter(x => x.typeid === id).map((y, key) =>
-            <div key={key} className="form-check">
-            <label className="form-check-label">
-                <input type="radio" className="item-click form-check-input" name="optradio" />
-                <div key={key} className="dropdown-item item-bg border-left border-bottom"
-                    onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</div>
-                </label>
-            </div>
-                )
+                <div key={key} className="form-check">
+                    <label className="form-check-label">
+                        <input type="radio" className="item-click form-check-input" name="optradio" />
+                        <div key={key} className="dropdown-item item-bg border-left border-bottom"
+                            onClick={() => this.props.clickItem(y._id)} >{y.catelogy}</div>
+                    </label>
+                </div>
+            )
         )
     }
     loadForm() {
@@ -110,7 +115,7 @@ class MainRoot extends Component {
             <div>
                 {this.props.datatypes.map((types, key) =>
                     <div id={types._id} key={key}>
-                        <div  className="jumbotron jumbotron-fluid mt-5">
+                        <div className="jumbotron jumbotron-fluid mt-5">
                             <div className="container">
 
                                 <h5 className="display-3 text-center">{types.typename}</h5>
@@ -131,11 +136,23 @@ class MainRoot extends Component {
                             </div>
                         </div>
                         <div className="clearfix" />
+                        {/* <div className="d-flex justify-end"> */}
+                        <Box display="flex" justifyContent="flex-start">
+                        </Box>
+                        <Box display="flex" justifyContent="flex-end">
+                        <Pagination page={this.state.page} onChange={(e)=>this.handelPage(e)} count={10} />
+                        </Box>
+                        {/* </div> */}
+                        {/* page={page}{page} */}
                     </div>
                 )}
 
             </div>
         );
+    }
+    handelPage=(e)=>{
+        console.log(e.page);
+        // console.log(value);
     }
     render() {
         return (

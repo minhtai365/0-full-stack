@@ -184,7 +184,7 @@ export default class ContentCatelogys extends Component {
                                         {this.state.datatypes.filter(y => y._id === x.typeid).map(z => {
                                             return <td>{z.typename}</td>
                                         })}
-                                        <td>{x.created}</td>
+                                        <td>{x.createdlc}</td>
                                         <td><button className="btn btn-primary" onClick={(id) => this.showModal(x._id)}>Edit</button></td>
                                         <td><button className="btn btn-warning" onClick={(id) => this.remove(x._id)}>Delete</button></td>
                                     </tr>

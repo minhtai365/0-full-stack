@@ -124,7 +124,7 @@ class Cart extends Component {
     }
     render() {
         return (
-            <div>
+            <div >
                 <Header />
                 <div className="container content-chitiet">
                     <div className="d-flex mb-4">
@@ -164,9 +164,9 @@ class Cart extends Component {
                         <div className="input-group-text value">{x.qty}</div>
                         <div onClick={() => this.setQty(1, x.productid)} className="triangle triangle--right"></div></td>
                     <td><div className="form-group">
-                        <select onChange={(e, id) => this.onChose(e, x.productid, x.price)} 
+                        <select onChange={(e, id) => this.onChose(e, x.productid)} 
                         className="form-control" defaultValue={x.typeorder} name="typeorder">
-                            <option value='1'>Mua</option>
+                            {/* <option value='1'>Mua</option> */}
                             <option value='0.3'>1 Ngày</option>
                             <option value='0.5'>3 Ngày</option>
                             <option value='0.7'>7 Ngày</option>
@@ -197,7 +197,8 @@ class Cart extends Component {
 
 
                                 <div className="text-right">
-                                    <div>Thành tiền     :   {this.formatMoney(this.state.total)} VNĐ</div>
+                                <div>Thành tiền     :   {this.formatMoney(this.state.total)} VNĐ</div>
+                                <div>Nếu bạn không đến shop trong vòng 24h tới để thuê sản phẩm hệ thống sẽ tự động hủy đơn hàng của bạn</div>
                                     <div className="">
                                         <button onClick={(e) => this.isClick(e)} className="btn btn-primary" >Đặt hàng</button>
                                     </div>

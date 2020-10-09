@@ -11,7 +11,8 @@ export default class ContentCarts extends Component {
         this.state = {
             datacarts: [],
             isShow: false,
-            item: []
+            item: [],
+            typed:'Ngày đặt'
         }
 
     }
@@ -28,15 +29,15 @@ export default class ContentCarts extends Component {
     }
     changShow() {
         Axios.get('/order')
-        .then(res => {
-            this.setState({
-                datacarts: res.data,
-                isShow: !this.state.isShow
+            .then(res => {
+                this.setState({
+                    datacarts: res.data,
+                    isShow: !this.state.isShow
+                })
             })
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .catch(err => {
+                console.log(err);
+            })
     }
     componentDidMount() {
         Model.setAppElement("#modal");
@@ -59,34 +60,57 @@ export default class ContentCarts extends Component {
                 this.changShow();
                 alert(res.data.mess);
                 Axios.get('/order')
-                .then(res => {
-                    var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                    
-                    this.setState({
-                        dt: dt
-                    })
-
-                })
-            })
-    }
-    clickCancel = () => {
-        Axios.post("/order/cancel", {
-            id: this.state.orderID,
-            item:this.state.item
-        })
-            .then(res => {
-                Axios.get('/order')
                     .then(res => {
-                        this.changShow();
                         var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                        
-                alert(res.data.mess);
+
                         this.setState({
                             dt: dt
                         })
 
                     })
             })
+    }
+    clickComplete = () => {
+        Axios.post("/order/complete", {
+            id: this.state.orderID
+        })
+            .then(res => {
+                Axios.get('/order')
+                    .then(res => {
+                        this.changShow();
+                        var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
+
+                        alert(res.data.mess);
+                        this.setState({
+                            dt: dt
+                        })
+
+                    })
+            })
+    }
+    clickCancel = () => {
+        Axios.post("/order/cancel", {
+            id: this.state.orderID,
+            item: this.state.item
+        })
+            .then(res => {
+                Axios.get('/order')
+                    .then(res => {
+                        this.changShow();
+                        var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
+
+                        alert(res.data.mess);
+                        this.setState({
+                            dt: dt
+                        })
+
+                    })
+            })
+    }
+    ischange = (e) => {
+        this.setState({
+            typed:e.target.value
+        })
     }
     render() {
         return (
@@ -130,20 +154,12 @@ export default class ContentCarts extends Component {
                                 </tbody>
                             </table>
                             {this.state.status === 1 && <div><button className="btn btn-danger" type="reset" onClick={() => this.clickCancel()} >Hủy</button>
-                                <button className="btn btn-primary" type="reset" onClick={() => this.setData()} >Xác nhận</button></div>}
-                                {this.state.status === 2 &&<button className="btn btn-primary" type="reset" onClick={() => this.setData()} >Đã giao hàng</button>}
+                                <button className="btn btn-primary" type="reset" onClick={() => this.setData()} >Khách nhận hàng</button></div>}
+                            {this.state.status === 2 && <button className="btn btn-primary" type="reset" onClick={() => this.clickComplete()} >Khách bàn giao</button>}
                         </div>
                     </Model>
 
                     <div className='mx-5' id="modal">
-
-
-
-
-
-
-
-
 
 
                         <table className="table table-bordered table-hover table-inverse table-responsive">
@@ -157,7 +173,17 @@ export default class ContentCarts extends Component {
                                     <th>Quận/Huyện</th>
                                     <th>Thành phố/Tỉnh</th>
                                     <th>Tổng cộng</th>
-                                    <th>Ngày đặt</th>
+                                    <th>
+                                        <div className="form-group">
+                                            <select  onChange={(e) => this.ischange(e)} className="form-control" name="typed" id>
+                                                <option>Ngày đặt</option>
+                                                <option>Ngày nhận</option>
+                                                <option>Ngày bàn giao</option>
+                                                <option>Ngày hủy</option>
+                                            </select>
+                                        </div>
+
+                                    </th>
                                     <th>Trạng thái</th>
                                 </tr>
                             </thead>
@@ -172,9 +198,12 @@ export default class ContentCarts extends Component {
                                         <td>{x.contact.quan}</td>
                                         <td>{x.contact.tp}</td>
                                         <td>{x.total}</td>
-                                        <td>{x.date}</td>
-                                        <td className="text-primary">{x.status === 1 ? "Chờ xác nhận" : x.status === 2 ? 'Đang giao' :
-                                            x.status === 3 ? 'Đã giao' : x.status === 3 ? 'Hoàn thành' : 'Đã hủy'}</td>
+                                       {this.state.typed==='Ngày đặt' &&  <td>{x.datelc}</td>}
+                                       {this.state.typed==='Ngày bàn giao' &&  <td>{x.datecom}</td>}
+                                       {this.state.typed==='Ngày nhận' &&  <td>{x.dateget}</td>}
+                                       {this.state.typed==='Ngày hủy' &&  <td>{x.datecan}</td>}
+                                        <td className="text-primary">{x.status === 1 ? "Chờ nhận" : x.status === 2 ? 'Đã nhận' :
+                                            x.status === 3 ? 'Đã bàn giao' : x.status === 4 ? 'Hoàn thành' : 'Đã hủy'}</td>
                                         {/* <td><div className="btn btn-warning" onClick={(id) => this.showModel(x._id)} 
                                          >{x.status===1?"Chờ xác nhận":x.status===2?'Đang giao':
                                  x.status===3?'Đã giao':'Đã hủy'} </div></td> */}

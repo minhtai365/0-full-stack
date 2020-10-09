@@ -6,7 +6,7 @@ const Product = require('../models/product');
 
 // start cart
 router.get('/', (req, res, next) => {
-    Cart.find((err, dt) => {
+    Cart.find().sort().exec((err, dt)=> {
       res.send(dt)
     })
   })
@@ -16,9 +16,9 @@ router.get('/', (req, res, next) => {
       productid: req.body.product._id,
       qty: 1,
       img: req.body.product.imgPath,
-      price: req.body.product.sale,
+      price: req.body.product.sale * 0.7,
       name: req.body.product.title,
-      typeorder: '1'
+      typeorder: '0.7'
     }
     Cart.findOne({ userid: req.body.userid }).then(u => {
       if (u === null) {//user chưa có gì trong giỏ

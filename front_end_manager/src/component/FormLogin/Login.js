@@ -44,7 +44,7 @@ class Login extends Component {
         return (
             <div>
                 <Header />
-                <div className="container mt-5 pt-5">
+                <div className="container" style={{paddingTop:'120px'}}>
                     {/* {document.body.style.backgroundColor = "blue"} */}
                     <div className="card mt-sm-5 bg-info">
                         <div className="row text-center ">

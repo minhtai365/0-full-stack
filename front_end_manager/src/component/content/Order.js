@@ -1,10 +1,8 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
 import { Switch, Route, Link, withRouter } from 'react-router-dom';
-import Boxicon from '../layout/Boxicon'
 import Footer from '../layout/Footer'
 import Header from '../layout/Header'
-import contentOrder from './contentOrder'
 class Order extends Component {
     constructor(props) {
         super(props);
@@ -49,23 +47,7 @@ class Order extends Component {
                     })
             })
     }
-    clickComplete = (id) => {
-        Axios.post("/order/complete", {
-            id: id
-        })
-            .then(res => {
-                alert(res.data.mess);
-                Axios.get('/order')
-                    .then(res => {
-                        var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                        console.log(dt);
-                        this.setState({
-                            dt: dt
-                        })
-
-                    })
-            })
-    }
+    
     clickAddCart = (item) => {
         Axios.post('/cart/again', {
             item: item,
@@ -119,9 +101,14 @@ else{
         return dt.map((x, key) =>
             <div key={key} className="bg-white shadow rounded">
                 <div className="d-flex justify-content-between">
-                    <div className=" pl-4">Ngày đặt :<span className="text-danger px-3">{x.date}</span></div>
-                    <div>Trạng thái :<span className="text-danger px-3">{x.status === 1 ? "Chờ xác nhận" : x.status === 2 ? 'Đang giao' :
-                        x.status === 3 ? 'Đã giao' : x.status === 4 ? 'Hoàn thành' : 'Đã hủy'} </span></div>
+                {x.dateca!==undefined?<div className=" pl-4">Ngày hủy :<span className="text-danger px-3">{x.datecan}</span></div>:
+                x.datecom!==undefined?<div className=" pl-4">Ngày bàn giao :<span className="text-danger px-3">{x.datecom}</span></div>:
+                x.dateget!==undefined?<div className=" pl-4">Ngày nhận :<span className="text-danger px-3">{x.dateget}</span></div>:
+                <div className=" pl-4">Ngày đặt :<span className="text-danger px-3">{x.datelc}</span></div>
+            }
+                    
+                    <div>Trạng thái :<span className="text-danger px-3">{x.status === 1 ? "Chờ nhận" : x.status === 2 ? 'Đã nhận' :
+                        x.status === 3 ? 'Đã bàn giao' : x.status === 4 ? 'Hoàn thành' : 'Đã hủy'} </span></div>
                 </div>
 
                 {x.item.map((y, k) =>
@@ -154,7 +141,7 @@ else{
                 <div className="d-flex justify-content-end">
                     {x.status === 1 && <button type="button" onClick={() => this.clickCancel(x._id, x.item)} className="btn btn-danger">Hủy</button>}
                     {/* {x.status === 0 && <button type="button" onClick={() => this.clickAddCart(x.item)} className="btn btn-danger">Thêm giỏ hàng</button>} */}
-                    {x.status === 3 && <button type="button" onClick={() => this.clickComplete(x._id)} className="btn btn-primary">Xác nhận đã nhận được hàng</button>}
+                    {/* {x.status === 3 && <button type="button" onClick={() => this.clickComplete(x._id)} className="btn btn-primary">Xác nhận đã nhận được hàng</button>} */}
                     {/* <button type="button" className="btn btn-primary">Đã nhận</button> */}
                 </div>
 
@@ -171,9 +158,9 @@ else{
     }
     render() {
         return (
-            <div>
-                <Header />
-                <div className="content-chitiet">
+            <div >
+                <Header  />
+                <div  className="content-chitiet">
 
                 </div>
                 <div className="pt-1">
@@ -192,19 +179,19 @@ else{
                         <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(1)} className="form-check-input d-none  typeshow" name="typeshow" />
-                                <div className="typetext">Chờ xác nhận</div>
+                                <div className="typetext">Chờ bạn đến nhận</div>
     </label>
                         </div>
                         <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(2)} className="form-check-input d-none  typeshow" name="typeshow" />
-                                <div className="typetext">Đang giao</div>
+                                <div className="typetext">Đã nhận</div>
     </label>
                         </div>
                         <div className="form-check-inline">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(3)} className="form-check-input d-none  typeshow" name="typeshow" />
-                                <div className="typetext">Đã giao</div>
+                                <div className="typetext">Đã bàn giao</div>
     </label>
                         </div>
                         <div className="form-check-inline">

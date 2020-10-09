@@ -412,7 +412,7 @@ li a{
  .card:hover .img-zoom{
     opacity: 0.8;
     transform: scale(1.07);
-    border-bottom: blue 4px solid ;
+    border-bottom: blue 1px solid ;
  }
  .card-form{
      overflow: hidden;

@@ -14,6 +14,8 @@ var productSchema=new Schema({
         type : Schema.Types.ObjectId,
         ref:'Catelogies'
     },
-    created:{type:Date}
+    created:{type:Date},
+    
+    createdlc:{type:String,required:true},
 });
 module.exports=mongoose.model('Product',productSchema);
