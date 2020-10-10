@@ -123,8 +123,8 @@ class Header extends Component {
         return (
 
             <Headroom
-                onPin={() => console.log('pinned')}
-                onUnpin={() => console.log('unpinned')}
+                // onPin={() => console.log('pinned')}
+                // onUnpin={() => console.log('unpinned')}
                 wrapperStyle={{ marginTop: '0' }}
                 // upTolerance="100px"
                 // downTolerance='100px'
@@ -136,18 +136,20 @@ class Header extends Component {
             >
                 <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                     <div className="fixed-top top-nav">
-                        <div className="container pt-2">
+                        <div className="container-md pt-2">
                             {/* <div className='con'> */}
-                            <div className="d-flex justify-content-start con">
-                                <div className="link-a px-2  border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div>
+                            
+                            {/* <div className="d-flex flex-wrap justify-content-between"> */}
+                            <div className="d-flex justify-content-center justify-content-lg-start con">
+                                {/* <div className="link-a px-2 oka border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
                                 <div className="link-a px-2  border-right" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
                                     {this.state.info.phone}</div>
                                 <a className="link-a px-2" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
                                     {this.state.info.email}</a>
                                 {/* </div> */}
                             </div>
-                            <div className="d-flex justify-content-end con">
-                                <div className="flex-column acc">
+                            <div className="d-flex justify-content-center justify-content-md-end my-right con">
+                                <div className="flex-column  ">
                                     <Link className="link-a p-2 mr-2 border-right" onClick={(e) => this.goLogin(e)} to="/login.html">
                                         <i className="fa fa-user mx-2" aria-hidden="true" />
                                         {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
@@ -160,6 +162,7 @@ class Header extends Component {
                                 <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
                                 <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
                             </div>
+                            {/* </div> */}
                         </div>
                         <div className="center-nav">
                             <div className="d-flex container  justify-content-between">

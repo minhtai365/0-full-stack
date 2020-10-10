@@ -171,30 +171,30 @@ else{
                     <hr />
 
                     <div className="d-flex justify-content-around bg-white shadow p-3 mb-5">
-                        <div className="form-check-inline">
+                        <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(5)} className="form-check-input d-none  typeshow " name="typeshow" />                                <div className="typetext">Tất cả</div>
     </label>
                         </div>
-                        <div className="form-check-inline">
+                        <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(1)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Chờ bạn đến nhận</div>
     </label>
                         </div>
-                        <div className="form-check-inline">
+                        <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(2)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã nhận</div>
     </label>
                         </div>
-                        <div className="form-check-inline">
+                        <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(3)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã bàn giao</div>
     </label>
                         </div>
-                        <div className="form-check-inline">
+                        <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(0)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã hủy</div>

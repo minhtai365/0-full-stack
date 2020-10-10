@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
+import { Typography, Box } from '@material-ui/core';
+// import { Pagination } from '@material-ui/lab';
+
+import Pagination from './Pagination';
 class ResultSearch extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +65,8 @@ class ResultSearch extends Component {
 
                 <div className="container">
                     <div className="row">
-                        {this.props.dataproducts.filter(y => y.title.toLowerCase().indexOf(this.props.search) !== -1).map((x, key) =>
+                        {this.props.dataproducts.filter(y =>
+                         y.title.toLowerCase().indexOf(this.props.search) !== -1).slice((this.props.page - 1) * 3, this.props.page * 3).map((x, key) =>
                             <div key={key} className="col-lg-3 col-md-6 col-12 mt-3">
                                 <div className="card" style={{ height: '100%' }}>
                                     <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
@@ -78,6 +83,13 @@ class ResultSearch extends Component {
 
                     </div>
                 </div>
+                <Box display="flex" justifyContent="flex-end">
+                            {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
+                            <Pagination id={"1"} />
+                        </Box>
+                        <Box display="flex" justifyContent="center">
+                            <Typography>page:{this.props.page}</Typography>
+                        </Box>
                 <Footer />
             </div>
         )
@@ -90,7 +102,8 @@ const mapStateToProps = (state, ownProps) => {
         dataproducts: state.dataproducts,
         datacates: state.datacates,
         datatypes: state.datatypes,
-        search: state.search
+        search: state.search,
+        page:state.page
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

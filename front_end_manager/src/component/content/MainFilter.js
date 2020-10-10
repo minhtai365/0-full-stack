@@ -5,6 +5,10 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import Carousel from '../layout/Carousel';
 import Boxicon from '../layout/Boxicon';
+import { Typography, Box } from '@material-ui/core';
+// import { Pagination } from '@material-ui/lab';
+
+import Pagination from './Pagination';
 class MainFilter extends Component {
     constructor() {
         super();
@@ -80,8 +84,11 @@ class MainFilter extends Component {
         // if(this.props.search!==''){
         //     mydt=this.props.dt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
         // }
+           var pa = 3;
+        var start = (this.props.page - 1) * pa;
+        var end = this.props.page * pa;
         return (
-            mydt.map((x, key) =>
+            mydt.slice(start, end).map((x, key) =>
                 <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
                     <div className="card card-form" style={{ height: '100%' }}>
                         <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
@@ -114,7 +121,13 @@ class MainFilter extends Component {
 
                 </div>
                 <div className="clearfix" />
-
+                <Box display="flex" justifyContent="flex-end">
+                            {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
+                            <Pagination id={'1'} />
+                        </Box>
+                        <Box display="flex" justifyContent="center">
+                            <Typography>page:{this.props.page}</Typography>
+                        </Box>
                 <Footer />
             </div>
 
@@ -126,6 +139,7 @@ const mapStateToProps = (state, ownProps) => {
         dt: state.dt,
         datacates: state.datacates,
         datatypes: state.datatypes,
+        page: state.page
         // search:state.search
     }
 }

@@ -6,19 +6,22 @@ import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import Carousel from '../layout/Carousel';
 import Boxicon from '../layout/Boxicon';
-import { Typography,Box } from '@material-ui/core';
-// import {Pagination} from '@material-ui/lab';
+import { Typography, Box } from '@material-ui/core';
+// import { Pagination } from '@material-ui/lab';
 
-import { Pagination } from '@material-ui/lab';
+import Pagination from './Pagination';
 // const getproduct = () => axios.get('/products').then(res => res.data)
 class MainRoot extends Component {
     constructor() {
         super();
         this.state = {
             types: [],
-            page:1
+            typeview: 'date',
+
         }
+
     }
+
     // async function handleSearch() {
     //     const { data } = await axios.get(`/search/users?q=${keyword}`);
     //     console.log(data);
@@ -54,9 +57,11 @@ class MainRoot extends Component {
     formatMoney(t) {
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+
     loadProducts(id) {
 
         var mydt = [];
+
         // dt=[];
         var cate = this.props.datacates.filter(x => x.typeid === id);
 
@@ -80,8 +85,23 @@ class MainRoot extends Component {
                 })
             });
         }
+        if (this.state.typeview === 'view') {
+            mydt = mydt.sort((a, b) => b.view - a.view);
+        }
+        if (this.state.typeview === 'price') {
+            mydt = mydt.sort((a, b) => a.sale - b.sale);
+        }
+        if (this.state.typeview === 'uprice') {
+            mydt = mydt.sort((a, b) => b.sale - a.sale);
+        }
+        if (this.state.typeview === 'date') {
+            mydt = mydt
+        }
 
-        return mydt.map((x, key) =>
+        var pa = 3;
+        var start = (this.props.page - 1) * pa;
+        var end = this.props.page * pa;
+        return mydt.slice(start, end).map((x, key) =>
             <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
                 <div className="card card-form" style={{ height: '100%' }}>
                     <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
@@ -97,9 +117,10 @@ class MainRoot extends Component {
         )
     }
     loadCates(id) {
+        var dt = this.props.datacates.filter(x => x.typeid === id);
         return (
 
-            this.props.datacates.filter(x => x.typeid === id).map((y, key) =>
+            dt.map((y, key) =>
                 <div key={key} className="form-check">
                     <label className="form-check-label">
                         <input type="radio" className="item-click form-check-input" name="optradio" />
@@ -109,6 +130,24 @@ class MainRoot extends Component {
                 </div>
             )
         )
+    }
+    onChose = (e) => {
+        //     console.log(e.target.value);
+        //     if(e.target.value==='view'){
+        //         console.log(e.target.value);
+        //         var dt=this.props.dt.sort((a,b)=>(a.view-b.view))
+        //         // this.setState({
+        //         //     data:this.state.data.sort((a,b)=>(a.view-b.view))
+        //         // }
+        //         // );
+
+        // }
+
+        // console.log(this.state.data);
+        this.setState({
+            // data:this.props.dt,
+            [e.target.name]: e.target.value
+        })
     }
     loadForm() {
         return (
@@ -123,9 +162,18 @@ class MainRoot extends Component {
                             </div>
                         </div>
 
-                        <div className="container">
+                        <div className="container-md">
                             <div className="col-3" style={{ float: 'left' }}>
-                                <div className="list-group">
+
+                                <select onChange={(e) => this.onChose(e)}
+                                    className="form-control ml-md-4 mb-5" defaultValue={''} name="typeview">
+                                    {/* <option value='1'>Mua</option> */}
+                                    <option value='date'>Mới nhất</option>
+                                    <option value='price'>Giá tăng dần</option>
+                                    <option value='uprice'>Giá giảm dần</option>
+                                    <option value='view'>Xem nhiều</option>
+                                </select>
+                                <div className="list-group my-sub">
                                     {this.loadCates(types._id)}
                                 </div>
                             </div>
@@ -137,22 +185,25 @@ class MainRoot extends Component {
                         </div>
                         <div className="clearfix" />
                         {/* <div className="d-flex justify-end"> */}
-                        <Box display="flex" justifyContent="flex-start">
-                        </Box>
+
                         <Box display="flex" justifyContent="flex-end">
-                        <Pagination page={this.state.page} onChange={(e)=>this.handelPage(e)} count={10} />
+                            {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
+                            <Pagination id={types._id} />
                         </Box>
-                        {/* </div> */}
-                        {/* page={page}{page} */}
+                        <Box display="flex" justifyContent="center">
+                            <Typography>page:{this.props.page}</Typography>
+                        </Box>
                     </div>
                 )}
 
             </div>
         );
     }
-    handelPage=(e)=>{
-        console.log(e.page);
+    handleChange = (event, value) => {
         // console.log(value);
+        this.setState({
+            page: value
+        })
     }
     render() {
         return (
@@ -176,6 +227,7 @@ const mapStateToProps = (state, ownProps) => {
         dataproducts: state.dataproducts,
         datacates: state.datacates,
         datatypes: state.datatypes,
+        page: state.page
         // search: state.search
     }
 }

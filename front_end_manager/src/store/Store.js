@@ -7,7 +7,8 @@ const oldState = {
     datatypes: [],
     info: [],
     // username:'',
-    search: ''
+    search: '',
+    page: 1
 }
 const myReducer = (state = oldState, action) => {
     switch (action.type) {
@@ -21,8 +22,10 @@ const myReducer = (state = oldState, action) => {
             return { ...state, datatypes: action.dt }
         case "GET_DATA_SEARCH":
             return { ...state, search: action.data }
-            case "GET_DATA_INFO":
-                return { ...state, info: action.dt }
+        case "GET_DATA_INFO":
+            return { ...state, info: action.dt }
+        case "DATA_FROM_PAGIN":
+            return { ...state, page: action.page }
         default:
             return state
     }

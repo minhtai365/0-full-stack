@@ -48,14 +48,16 @@ class Detail extends Component {
                     <div key={key} className="container content-chitiet">
                         <div className="d-flex mb-4">
                             <li className="list-ds"><Link to="index.html">Trang chủ &gt;</Link></li>
-                            <li className="list-ds"><Link to="#">Trang phục &gt;</Link></li>
+                            {/* <li className="list-ds"><Link to="#">Trang phục &gt;</Link></li> */}
                             <li className="list-ds" aria-current="page">Sản phẩm</li>
                         </div>
                         <div className="row">
                             <div className="col-md-6 col-12">
-                                <div className="row">
+                                
+                            <img src={x.imgPath} width="350" alt="Ảnh chi tiết" />
+                                {/* <div className="row">
                                     <div className="col-2 d-flex flex-column">
-                                        {/* <a color-id={27803} className="active show">
+                                        <a color-id={27803} className="active show">
                                             <img className="lazyload" data-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/420x630/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" data-zoom-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" src="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/50x75/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" />
                                         </a>
                                         <a color-id={27803} className="show">
@@ -63,16 +65,15 @@ class Detail extends Component {
                                         </a>
                                         <a color-id={27803} className="show">
                                             <img className="lazyload" data-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/420x630/gelF1xKIW8ZNq1nMrzqTkrFFHjw9PxuGd22Uurko.jpeg" data-zoom-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/gelF1xKIW8ZNq1nMrzqTkrFFHjw9PxuGd22Uurko.jpeg" src="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/50x75/gelF1xKIW8ZNq1nMrzqTkrFFHjw9PxuGd22Uurko.jpeg" />
-                                        </a> */}
+                                        </a>
                                     </div>
                                     <div>
-                                        <img src={x.imgPath} data-zoom-image="https://ferosh.vn/storage/images/5912c6ecaa460c649f8ac6c616b7b465/Mn57VG5pD2JWDa3SgS3BuHqYatDFaZCbGgqWv5ML.jpeg" alt="Ảnh chi tiết" />
                                         <div className="imageNav">
                                             <div className="icon icon-imgnext" />
                                             <div className="icon icon-imgprev" />
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="col-md-6 col-12">
                                 <ul>

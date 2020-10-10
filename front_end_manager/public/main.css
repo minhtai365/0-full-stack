@@ -134,13 +134,95 @@ body{
     border: red;
     color: rgb(94, 5, 236);
 }
-@media (max-width: 768px) {
+.my-right{
+    /* margin-left: 25rem; */
+}
+@media (max-width: 1024px) {
     .nav-link {
         text-align: center;
         padding: 0;
-        /* padding-top: 500px !important; */
-        /* width: fit-content; */
         font-size: 12px;
+    }
+}
+
+@media (max-width:768px){
+    .con{
+        font-size: 12px;
+    }
+    .nav-link{
+    
+        
+        /* text-transform: uppercase; */
+        /* margin: 0 !important; */
+        padding-left: 0 !important;
+    }
+    
+    .content-chitiet{
+        padding-top:250px;
+    }
+    .list-sub{
+        margin:0 !important
+    }
+    .my-sub{
+        margin-left: -20px;
+    }
+    /* .headroom {
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+      .headroom--unfixed {
+        position: relative;
+        transform: translateY(0);
+      }
+      .headroom--scrolled {
+        transition: transform 200ms ease-in-out !important;
+      }
+      .headroom--unpinned {
+        position: fixed;
+        transform: translateY(-50px) !important;
+      }
+      .headroom--pinned {
+        position: fixed;
+        transform: translateY(100%) !important;
+      } */
+}
+@media (max-width: 576px) {
+    .nav-link {
+        text-align: center;
+        padding: 0;
+        font-size: 10px;
+    }
+    .oka,.fa,.fas{
+        display: none !important;
+    }
+    
+}
+@media (max-width: 480px) {
+    .nav-link {
+        text-align: center;
+        padding: 0;
+        font-size: 10px;
+    }
+    /* .oka,.fa{
+        display: none !important;
+    } */
+    
+    .my-sub{
+        margin-left: -40px;
+    }
+    .br{
+        width: 100%;
+    }
+}
+@media (max-width: 320px) {
+    .nav-link {
+        text-align: center;
+        padding: 0;
+        font-size: 12px;
+    }
+    .oka,.fa{
+        display: none !important;
     }
 }
 /* 
@@ -408,7 +490,12 @@ li a{
      display: inline-block !important;
      top: -15px !important;
  }
-
+.typepagin{
+    width: 50px !important;
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px;
+}
  .card:hover .img-zoom{
     opacity: 0.8;
     transform: scale(1.07);
