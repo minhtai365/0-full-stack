@@ -94,22 +94,25 @@ class MainRoot extends Component {
         if (this.state.typeview === 'uprice') {
             mydt = mydt.sort((a, b) => b.sale - a.sale);
         }
-        if (this.state.typeview === 'date') {
-            mydt = mydt
-        }
+        // if (this.state.typeview === 'date') {
+        //     mydt = mydt
+        // }
 
-        var pa = 3;
+        var pa = 6;
         var start = (this.props.page - 1) * pa;
         var end = this.props.page * pa;
         return mydt.slice(start, end).map((x, key) =>
             <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
-                <div className="card card-form" style={{ height: '100%' }}>
+                <div className="shadow card-form">
                     <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
-                        <img className="card-img-top img-zoom" src={x.imgPath} alt="" />
-                        <div className="card-body">
-                            <h4 className="card-title">{x.title}</h4>
-                            <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt(x.price - x.sale) / x.price * 100}%</p>
+                        {/* <div className="img-cart"> */}
+                        {/* width="100%" height="100%" */}
+                        <img className="img-zoom" src={x.imgPath} alt="" />
+                        {/* </div> */}
+                        <div className="card-body body-cart ">
+                            <div className="title-cart ">{x.title}</div>
+                            <strike className="card-text text-danger ">{this.formatMoney(x.price)} VND</strike>
+                            <p className="card-text text-dark">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
                         </div>
                     </Link>
                 </div>
@@ -132,20 +135,7 @@ class MainRoot extends Component {
         )
     }
     onChose = (e) => {
-        //     console.log(e.target.value);
-        //     if(e.target.value==='view'){
-        //         console.log(e.target.value);
-        //         var dt=this.props.dt.sort((a,b)=>(a.view-b.view))
-        //         // this.setState({
-        //         //     data:this.state.data.sort((a,b)=>(a.view-b.view))
-        //         // }
-        //         // );
-
-        // }
-
-        // console.log(this.state.data);
         this.setState({
-            // data:this.props.dt,
             [e.target.name]: e.target.value
         })
     }
@@ -163,7 +153,7 @@ class MainRoot extends Component {
                         </div>
 
                         <div className="container-md">
-                            <div className="col-3" style={{ float: 'left' }}>
+                            <div className="col-3 " style={{ float: 'left' }}>
 
                                 <select onChange={(e) => this.onChose(e)}
                                     className="form-control ml-md-4 mb-5" defaultValue={''} name="typeview">
@@ -177,7 +167,7 @@ class MainRoot extends Component {
                                     {this.loadCates(types._id)}
                                 </div>
                             </div>
-                            <div className="col-9" style={{ float: 'right' }}>
+                            <div className="col-sm-9 col-12" style={{ float: 'right' }}>
                                 <div className="row">
                                     {this.loadProducts(types._id)}
                                 </div>

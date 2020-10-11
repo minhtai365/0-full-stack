@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
-import { Switch, Route, Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Footer from '../layout/Footer'
 import Header from '../layout/Header'
 class Order extends Component {
@@ -15,6 +15,9 @@ class Order extends Component {
     formatMoney(t) {
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
     componentWillMount() {
         if (sessionStorage.getItem('userID') === null) {
             alert('Vui lòng đăng nhập !!!')
@@ -86,16 +89,16 @@ class Order extends Component {
         return str;
     }
     formAll() {
-        
+        var dt;
         if(this.state.type!==5){
 
-            var dt=this.state.dt.filter(x=>x.status===this.state.type);
+            dt=this.state.dt.filter(x=>x.status===this.state.type);
         }
         else{
-           var dt=this.state.dt;
+           dt=this.state.dt;
         }
         if(dt.length===0){
-            return <img src="/emty.svg" height="300" alt="Hình"/>
+            return <img src="/emty.svg" height="300" width="100%" alt="Hình"/>
         }
 else{
         return dt.map((x, key) =>

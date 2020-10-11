@@ -15,6 +15,7 @@ import ContentCatelogys from './component/Admin/ContentCatelogys';
 import ContentProducts from './component/Admin/ContentProducts';
 import ContentOrder from './component/Admin/ContentOrder';
 import Order from './component/content/Order';
+// import Donhang from './component/Admin/Donhang';
 class App extends Component {
 
   render() {

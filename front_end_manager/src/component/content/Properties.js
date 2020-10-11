@@ -45,6 +45,9 @@ export default class Properties extends Component {
             alert(res.data.mess)
         })
     }
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
     render() {
         return (
             <div>

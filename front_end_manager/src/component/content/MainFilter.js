@@ -15,6 +15,7 @@ class MainFilter extends Component {
         this.state = {
             dt: []
         }
+        this.foc = React.createRef()
     }
     to_slug(str) {
         // Chuyển hết sang chữ thường
@@ -60,7 +61,7 @@ class MainFilter extends Component {
         });
         return <div>
             <div className="jumbotron jumbotron-fluid">
-                <div className="container">
+                <div ref={this.foc} className="container">
 
                     <h5 className="display-3 text-center">{dt.typename}</h5>
                     <hr className="my-2" />
@@ -84,7 +85,7 @@ class MainFilter extends Component {
         // if(this.props.search!==''){
         //     mydt=this.props.dt.filter(x => x.title.toLowerCase().indexOf(this.props.search) !== -1);
         // }
-           var pa = 3;
+           var pa = 6;
         var start = (this.props.page - 1) * pa;
         var end = this.props.page * pa;
         return (
@@ -96,7 +97,7 @@ class MainFilter extends Component {
                             <div className="card-body">
                                 <h4 className="card-title">{x.title}</h4>
                                 <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt(x.price - x.sale) / x.price * 100}%</p>
+                                <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm  {parseInt((x.price - x.sale) / x.price * 100)}%</p>
                             </div>
                         </Link>
                     </div>
@@ -104,15 +105,19 @@ class MainFilter extends Component {
             )
         )
     }
+    componentDidMount() {
+        window.scrollTo(0, this.foc.current.offsetTop)
+      }
+    
     render() {
         return (
             <div>
                 <Header />
                 <Carousel />
                 <hr />
-                <Boxicon />
+                <Boxicon  />
                 {this.loadTitle()}
-                <div className="container">
+                <div  className="container">
                     <div className="col-9" style={{ float: 'right' }}>
                         <div className="row">
                             {this.loadProducts()}

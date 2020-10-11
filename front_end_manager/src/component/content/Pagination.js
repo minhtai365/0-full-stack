@@ -32,7 +32,7 @@ import { connect } from "react-redux";
         mydt=props.dt
     }
     
-    if(props.id==='1'){
+    if(props.id==='0'){
         mydt=props.dataproducts.filter(y =>y.title.toLowerCase().indexOf(props.search) !== -1)
         
     }
@@ -42,7 +42,7 @@ import { connect } from "react-redux";
       <div >
         {/* <Typography>Page: {page}</Typography> */}
         {/* mydt.length%4===0? mydt.length/4: */}
-        <Pagination count={ mydt.length % 3===0? mydt.length/3:parseInt(mydt.length/3)+1} page={page} onChange={handleChange} />
+        <Pagination count={ mydt.length % 6===0? mydt.length/6:parseInt(mydt.length/6)+1} page={page} onChange={handleChange} />
       </div>
     );
   }

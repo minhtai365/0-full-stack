@@ -66,7 +66,7 @@ class ResultSearch extends Component {
                 <div className="container">
                     <div className="row">
                         {this.props.dataproducts.filter(y =>
-                         y.title.toLowerCase().indexOf(this.props.search) !== -1).slice((this.props.page - 1) * 3, this.props.page * 3).map((x, key) =>
+                         y.title.toLowerCase().indexOf(this.props.search) !== -1).slice((this.props.page - 1) * 6, this.props.page * 6).map((x, key) =>
                             <div key={key} className="col-lg-3 col-md-6 col-12 mt-3">
                                 <div className="card" style={{ height: '100%' }}>
                                     <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
@@ -74,7 +74,7 @@ class ResultSearch extends Component {
                                         <div className="card-body">
                                             <h4 className="card-title">{x.title}</h4>
                                             <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt(x.price - x.sale) / x.price * 100}%</p>
+                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm  {parseInt((x.price - x.sale) / x.price * 100)}%</p>
                                         </div>
                                     </Link>
                                 </div>
@@ -85,7 +85,7 @@ class ResultSearch extends Component {
                 </div>
                 <Box display="flex" justifyContent="flex-end">
                             {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
-                            <Pagination id={"1"} />
+                            <Pagination id={"0"} />
                         </Box>
                         <Box display="flex" justifyContent="center">
                             <Typography>page:{this.props.page}</Typography>

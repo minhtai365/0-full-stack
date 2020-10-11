@@ -18,6 +18,9 @@ class Detail extends Component {
                 // console.log(res.data);
             })
     }
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
     clickAdd = (item) => {
         if(sessionStorage.getItem("userID")===null){
             alert("Vui lòng đăng nhập để thêm vào giỏ hàng");

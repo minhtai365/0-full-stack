@@ -136,20 +136,20 @@ class Header extends Component {
             >
                 <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                     <div className="fixed-top top-nav">
-                        <div className="container-md pt-2">
+                        <div className="container-md pt-2 inf">
                             {/* <div className='con'> */}
                             
                             {/* <div className="d-flex flex-wrap justify-content-between"> */}
                             <div className="d-flex justify-content-center justify-content-lg-start con">
                                 {/* <div className="link-a px-2 oka border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
-                                <div className="link-a px-2  border-right" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+                                <div className="link-a px-2  border-right inf-lef" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
                                     {this.state.info.phone}</div>
-                                <a className="link-a px-2" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                                <a className="link-a px-2 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
                                     {this.state.info.email}</a>
                                 {/* </div> */}
                             </div>
                             <div className="d-flex justify-content-center justify-content-md-end my-right con">
-                                <div className="flex-column  ">
+                                <div className="flex-column acc ">
                                     <Link className="link-a p-2 mr-2 border-right" onClick={(e) => this.goLogin(e)} to="/login.html">
                                         <i className="fa fa-user mx-2" aria-hidden="true" />
                                         {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
@@ -200,12 +200,13 @@ class Header extends Component {
                                             return (
                                                 <li key={key} className="list-group-item nav-link btn btn-link "><a href={'#' + x._id} className="nav-link nav-bd" >{x.typename}</a>
 
-                                                    <ul className="list-group item-title list-sub position-absolute">
+                                                    <ul className="list-group list-sub position-absolute">
                                                         {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                            return (<li key={key} className="list-group-item sub-item nav-link nav-bd">
-                                                                <Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
-                                                                    onClick={() => this.sendIDCate(z._id)}>{z.catelogy}</Link>
-                                                            </li>)
+                                                            return (<Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                            onClick={() => this.sendIDCate(z._id)}>
+                                                            <li key={key} className="list-group-item sub-item nav-link nav-bd">
+                                                                 {z.catelogy}
+                                                            </li></Link>)
                                                         })}
                                                     </ul>
                                                 </li>

@@ -9,18 +9,24 @@ class Footer extends Component {
                     <div className="bg-dark text-light pt-4 pb-3 mt-5">
                         <div className="container">
                             <div className="row">
-                                <div className="col-md-4 col-6">
+                                
+                            <div className="col-md-7 col-12">
+                            <div className="row">
+                                <div className="col-md-7 col-6">
         <h5>{this.props.info.name}</h5>
                                     <p>Địa chỉ: {this.props.info.address}</p>
                                     <p>Số điện thoại: {this.props.info.phone}</p>
                                     <p>Email: {this.props.info.email}</p>
-                                    <GoogleMap/>
                                 </div>
-                                <div className="col-md-3 col-6">
+                                <div className="col-md-5 col-6">
                                     <h5>CHÍNH SÁCH</h5>
                                     <p>Chính sách thanh toán</p>
                                     <p>Chính sách đổi trả</p>
                                     <p>Chính sách giao hàng</p>
+                                </div>
+                                
+                                <GoogleMap/>
+                                </div>
                                 </div>
                                 <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>

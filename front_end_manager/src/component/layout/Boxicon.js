@@ -5,12 +5,13 @@ export default class Boxicon extends Component {
         return (
             <div>
                 <div className="container">
-                    <div className="row mt-5 text-center">
+                    <div className="row mt-5 box-icon text-center">
                         <div className="col-md-3 col-12 ">
                             <i className="fas fa-truck" style={{ fontSize: '40px' }} />
                             <div >Giao hàng toàn quốc</div>
                             <div >Nhận ship toàn quốc tất cả các sản phẩm</div>
                         </div>
+                        
                         <div className="col-md-3 col-12 ">
                             <i className="fas fa-exchange-alt" style={{ fontSize: '40px' }} />
                             <div >Đổi trả hàng</div>
