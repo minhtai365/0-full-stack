@@ -31,10 +31,10 @@ class Footer extends Component {
                                 <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>
                                     <div className="footer-content">
-                                        <button className="btn btn-link text-primary" ><i className="fab fa-facebook-f" /></button>
-                                        <button className="btn btn-link text-danger" ><i className="fab fa-youtube" /></button>
-                                        <button className="btn btn-link text-info" ><i className="fab fa-twitter" /></button>
-                                        <button className="btn btn-link text-light" ><i className="fab fa-instagram" /></button>
+                                        <button className="btn btn-link px-4 px-md-3  text-primary" ><i className="fab fa-facebook-f" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-danger" ><i className="fab fa-youtube" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-info" ><i className="fab fa-twitter" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-light" ><i className="fab fa-instagram" /></button>
                                     </div>
                                     <div className="form">
                                         <h4> Đăng ký nhận tin</h4>

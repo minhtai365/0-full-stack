@@ -12,7 +12,7 @@ export default class Forgot extends Component {
                     <div className="card mt-sm-5  bg-info">
                         <div className="row text-center ">
                             <div className="col-md-6 col-12 p-5 ">
-                                <div className="card text-white">
+                                <div className="card text-white h-10">
                                     
                                 <img src="./demo_html/img/forget.svg" height="200" alt=""/>
                                 </div>

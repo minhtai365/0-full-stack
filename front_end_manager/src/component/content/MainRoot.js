@@ -178,7 +178,7 @@ class MainRoot extends Component {
 
                         <Box display="flex" justifyContent="flex-end">
                             {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
-                            <Pagination id={types._id} />
+                           <a href={'#'+types._id}> <Pagination id={types._id} /></a>
                         </Box>
                         <Box display="flex" justifyContent="center">
                             <Typography>page:{this.props.page}</Typography>

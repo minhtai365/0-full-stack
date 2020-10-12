@@ -60,7 +60,7 @@ class MainFilter extends Component {
             }
         });
         return <div>
-            <div className="jumbotron jumbotron-fluid">
+           <div id='topage'  className="jumbotron jumbotron-fluid">
                 <div ref={this.foc} className="container">
 
                     <h5 className="display-3 text-center">{dt.typename}</h5>
@@ -91,16 +91,19 @@ class MainFilter extends Component {
         return (
             mydt.slice(start, end).map((x, key) =>
                 <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
-                    <div className="card card-form" style={{ height: '100%' }}>
-                        <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
-                            <img className="card-img-top img-zoom" src={x.imgPath} alt="" />
-                            <div className="card-body">
-                                <h4 className="card-title">{x.title}</h4>
-                                <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm  {parseInt((x.price - x.sale) / x.price * 100)}%</p>
-                            </div>
-                        </Link>
-                    </div>
+                    <div className="shadow card-form">
+                    <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
+                        {/* <div className="img-cart"> */}
+                        {/* width="100%" height="100%" */}
+                        <img className="img-zoom" src={x.imgPath} alt="" />
+                        {/* </div> */}
+                        <div className="card-body body-cart ">
+                            <div className="title-cart ">{x.title}</div>
+                            <strike className="card-text text-danger ">{this.formatMoney(x.price)} VND</strike>
+                            <p className="card-text text-dark">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
+                        </div>
+                    </Link>
+                </div>
                 </div>
             )
         )
@@ -128,7 +131,7 @@ class MainFilter extends Component {
                 <div className="clearfix" />
                 <Box display="flex" justifyContent="flex-end">
                             {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
-                            <Pagination id={'1'} />
+                            <a href="#topage"> <Pagination id={'1'} /></a>
                         </Box>
                         <Box display="flex" justifyContent="center">
                             <Typography>page:{this.props.page}</Typography>

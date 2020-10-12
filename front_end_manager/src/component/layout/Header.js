@@ -106,7 +106,7 @@ class Header extends Component {
     clickOut = () => {
         sessionStorage.removeItem("userID");
         sessionStorage.removeItem("username");
-        this.props.history.push('/index');
+        this.props.history.push('/login.html');
     }
     find = (e) => {
         if (e.key === "Enter") {
@@ -136,22 +136,22 @@ class Header extends Component {
             >
                 <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                     <div className="fixed-top top-nav">
-                        <div className="container-md pt-2 inf">
+                        <div className="container-md pt-2 px-0 inf">
                             {/* <div className='con'> */}
                             
                             {/* <div className="d-flex flex-wrap justify-content-between"> */}
                             <div className="d-flex justify-content-center justify-content-lg-start con">
-                                {/* <div className="link-a px-2 oka border-right" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
-                                <div className="link-a px-2  border-right inf-lef" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+                                {/* <div className="link-a px-2 oka right-border" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
+                                <div className="link-a px-md-2 px-1  right-border inf-lef" href={"callto:" + this.state.info.phone }><i className="fa fa-phone mx-2" aria-hidden="true" />
                                     {this.state.info.phone}</div>
-                                <a className="link-a px-2 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                                <a className="link-a px-md-2 px-1 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
                                     {this.state.info.email}</a>
                                 {/* </div> */}
                             </div>
                             <div className="d-flex justify-content-center justify-content-md-end my-right con">
                                 <div className="flex-column acc ">
-                                    <Link className="link-a p-2 mr-2 border-right" onClick={(e) => this.goLogin(e)} to="/login.html">
-                                        <i className="fa fa-user mx-2" aria-hidden="true" />
+                                    <Link className="link-a p-2 mr-2 right-border" onClick={(e) => this.goLogin(e)} to="/login.html">
+                                        <i className="far fa-user mx-2" aria-hidden="true" />
                                         {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
                                     {sessionStorage.getItem('userID') &&
                                         <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
@@ -159,7 +159,7 @@ class Header extends Component {
                                         <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
 
                                 </div>
-                                <Link className="link-a px-2 mr-2 border-right" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                                <Link className="link-a px-2 mr-2 right-border" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
                                 <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
                             </div>
                             {/* </div> */}
@@ -175,16 +175,16 @@ class Header extends Component {
                                         Minh Tài <sup>MT</sup>
                                     </div>
                                 </div>
-                                <div className="content-right sea d-flex justify-content-end">
-                                    <div className="form-inline p-1">
+                                <div className="content-right d-flex justify-content-end">
+                                    <span className="form-inline  p-1">
 
-                                        {this.state.search === '' ? <Link className=" fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
+                                        {this.state.search === '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
 
-                                        <input className="form-control shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={this.find} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
+                                        <input className=" sea  shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={this.find} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
 
-                                        {this.state.search !== '' ? <Link className=" fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
+                                        {this.state.search !== '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
 
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -202,9 +202,9 @@ class Header extends Component {
 
                                                     <ul className="list-group list-sub position-absolute">
                                                         {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                            return (<Link to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                            return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
                                                             onClick={() => this.sendIDCate(z._id)}>
-                                                            <li key={key} className="list-group-item sub-item nav-link nav-bd">
+                                                            <li  className="list-group-item sub-item nav-link nav-bd">
                                                                  {z.catelogy}
                                                             </li></Link>)
                                                         })}

@@ -84,7 +84,7 @@ router.post('/change', (req, res, next) => {
   
           })
         } else {
-          res.send('exist');
+          res.send('Username hoặc email đã tồn tại');
         }
   
       })

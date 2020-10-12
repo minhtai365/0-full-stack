@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
+import { Pagination } from '@material-ui/lab';
 
 import Model from 'react-modal';
 import NavAdmin from './NavAdmin';
@@ -12,6 +13,7 @@ export default class ContentCarts extends Component {
             datacarts: [],
             isShow: false,
             item: [],
+            page:1,
             typed:'Ngày đặt'
         }
 
@@ -112,6 +114,63 @@ export default class ContentCarts extends Component {
             typed:e.target.value
         })
     }
+    inputValue = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    find = (e) => {
+        if (e.key === "Enter") {
+        var dt=[];
+        Axios.get('/order')
+        .then(res => {
+            res.data.forEach(x=>{
+                if(x.contact.name.toLowerCase().indexOf(this.state.search) !== -1||
+                x._id.toLowerCase().indexOf(this.state.search) !== -1||
+                x.contact.cmnd.toLowerCase().indexOf(this.state.search) !== -1||
+                x.contact.phone.toLowerCase().indexOf(this.state.search) !== -1){
+                    dt.push(x);
+                }
+            })
+                this.setState({
+                    datacarts:dt
+                })
+        })
+    }
+}
+    clicksearch=()=>{
+        var dt=[];
+        Axios.get('/order')
+        .then(res => {
+            res.data.forEach(x=>{
+                if(x.contact.name.toLowerCase().indexOf(this.state.search) !== -1||
+                x._id.toLowerCase().indexOf(this.state.search) !== -1||
+                x.contact.cmnd.toLowerCase().indexOf(this.state.search) !== -1||
+                x.contact.phone.toLowerCase().indexOf(this.state.search) !== -1){
+                    dt.push(x);
+                }
+            })
+                this.setState({
+                    datacarts:dt
+                })
+        })
+        
+    }
+    clickredo=()=>{
+        Axios.get('/order')
+            .then(res => {
+                this.setState({
+                    datacarts: res.data
+                })
+            })
+        
+    }
+    handleChange = (event, value) => {
+        // console.log(value);
+        this.setState({
+            page: value
+        })
+    }
     render() {
         return (
             <div>
@@ -161,7 +220,14 @@ export default class ContentCarts extends Component {
 
                     <div className='mx-5' id="modal">
 
+                    <div className="content-right d-flex justify-content-end">
+                                    <span className="form-inline  p-1">
+                                    <div className=" sea  fas fa-redo text-dark" onClick={() => this.clickredo()}></div>
+                                        <input className=" sea  shadow-none mr-sm-2 px-3 border-0 fff" name="search" onKeyDown={(e)=>this.find(e)} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
+                                        <div className=" sea  fas fa-search text-dark" onClick={() => this.clicksearch()}></div>
 
+                                    </span>
+                                </div>
                         <table className="table table-bordered table-hover table-inverse table-responsive">
                             <thead className="thead-dark">
                                 <tr>
@@ -175,7 +241,7 @@ export default class ContentCarts extends Component {
                                     <th>Tổng cộng</th>
                                     <th>
                                         <div className="form-group">
-                                            <select  onChange={(e) => this.ischange(e)} className="form-control" name="typed" id>
+                                            <select  onChange={(e) => this.ischange(e)} className="form-control" name="typed">
                                                 <option>Ngày đặt</option>
                                                 <option>Ngày nhận</option>
                                                 <option>Ngày bàn giao</option>
@@ -188,7 +254,7 @@ export default class ContentCarts extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.datacarts.map(x => {
+                                {this.state.datacarts.slice((this.state.page - 1) * 5, this.state.page * 5).map(x => {
                                     return <tr>
                                         <td>{x._id}</td>
                                         <td>{x.contact.cmnd}</td>
@@ -215,6 +281,9 @@ export default class ContentCarts extends Component {
                         </table>
                     </div>
                 </div>
+                <div className="d-flex justify-content-end">
+                        <Pagination count={parseInt(this.state.datacarts.length / 5) + 1} page={this.state.page} onChange={this.handleChange} />
+                    </div>
             </div>
         );
     }

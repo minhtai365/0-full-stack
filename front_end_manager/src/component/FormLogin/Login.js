@@ -1,4 +1,5 @@
-
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -11,56 +12,68 @@ class Login extends Component {
             user: []
         }
     }
-    isChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name);
-        console.log(value);
-        this.setState({
-            [name]: value
-        })
-    }
+   
     isClick = (e) => {
         e.preventDefault();
+        console.log(this.props.values);
+        if(Object.values(this.props.errors).length === 0){
+            
         var item = [];
-        item.email = this.state.email;
-        item.password = this.state.pass;
+        item.email = this.props.values.email;
+        item.password = this.props.values.pass;
         this.sendDT(item.email, item.password).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res !== 'fail') {
-                sessionStorage.setItem("userID",res._id);
-                sessionStorage.setItem("username",res.username);
-                if(res.role==='1')
-                this.props.history.push('/admin.html');
-                else  this.props.history.push('/index');
+                if (res.status === true) {
+                    sessionStorage.setItem("userID", res._id);
+                    sessionStorage.setItem("username", res.name);
+                    if (res.role === '1')
+                        this.props.history.push('/admin.html');
+                    else this.props.history.push('/index');
+                }
+                else {
+                    alert('Tài khoản bị khóa !!!')
+                }
             }
             else {
                 alert("Sai tài khoản");
             }
         });
+        
+    }else{
+        alert('Dữ liệu không hợp lệ')
+    }
 
     }
     sendDT = (email, password) => axios.post('/user/login', { email, password }).then(res => res.data)
     render() {
+
         return (
             <div>
                 <Header />
-                <div className="container" style={{paddingTop:'120px'}}>
+                <div className="container-md" style={{ paddingTop: '120px' }}>
                     {/* {document.body.style.backgroundColor = "blue"} */}
                     <div className="card mt-sm-5 bg-info">
                         <div className="row text-center ">
-                            <div className="col-md-6 col-12 p-5 ">
-                                <div className="card text-white ">
-                                    <img src="./demo_html/img/login.svg"alt=""/>
+                            <div className="col-md-6 col-12 px-sm-5 px-4 py-4 ">
+                                <div className="card text-white h-10 ">
+                                    <img src="./demo_html/img/login.svg" alt="" />
                                 </div>
                             </div>
-                            <div className="col-md-6 col-12 p-5">
+                            <div className="col-md-6 col-12 px-sm-5 px-4">
                                 <h3 >Login</h3>
                                 <form>
                                     <div className="form-group">
-                                        <input type="email" onChange={this.isChange} className="form-control input-user" name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                        <input type="text"  onChange={this.props.handleChange} defaultValue={this.props.values.username}
+                                         className="form-control input-user" name="username" placeholder="Enter email address or username..." />
+                                        
+                                        <small className="form-text text-danger text-muted">{this.props.errors.username}</small>
                                     </div>
                                     <div className="form-group">
-                                        <input type="password" onChange={this.isChange} className="form-control input-user" name="pass" placeholder="Password" />
+                                        <input type="password" onChange={this.props.handleChange} className="form-control input-user"
+                                         defaultValue={this.props.values.pass} name="pass" placeholder="Password" />
+
+                                        <small className="form-text text-danger text-muted">{this.props.errors.pass}</small>
                                     </div>
                                     <div className="form-group">
                                         <div className="custom-control custom-checkbox small">
@@ -68,6 +81,7 @@ class Login extends Component {
                                             <label className="custom-control-label text-light" htmlFor="customCheck">Remember Me</label>
                                         </div>
                                     </div>
+
                                     <Link to="/index.html" onClick={this.isClick} className="btn btn-primary btn-user btn-block">Login</Link>
                                     <hr />
                                     <Link to="/index.html" className="btn btn-danger btn-user btn-block">
@@ -89,6 +103,23 @@ class Login extends Component {
         )
     }
 }
+const FormikForm = withFormik({
+    mapPropsToValues() {
+        return {
+            pass: '',
+            username:''
+        }
+    },
+    validationSchema: Yup.object().shape({
+        pass: Yup.string()
+            .required('Password is required !!!')
+            .min(6, 'Mật khẩu phải có ít nhất 6 ký tự !!!')
+            .max(18, 'Mật khẩu tối đa 18 ký tự !!!'),
+        username:Yup.string()
+        .required('Username is required!!!')
+        
+    })
+})(Login)
 // const mapDispatchToProps = (dispatch, ownProps) => {
 //     return {
 //         senduser: (user) => {
@@ -101,4 +132,4 @@ class Login extends Component {
 //         // prop: state.prop
 //     }
 // }
-export default withRouter(Login);
+export default withRouter(FormikForm);

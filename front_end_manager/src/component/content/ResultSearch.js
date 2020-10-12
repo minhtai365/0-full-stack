@@ -55,7 +55,7 @@ class ResultSearch extends Component {
         return (
             <div>
                 <Header/>
-                <div className="jumbotron jumbotron-fluid content-chitiet">
+                <div id='topage'  className="jumbotron jumbotron-fluid content-chitiet">
                     <div className="container mt-5 pt-5">
 
                         <h5 className="display-3 text-center">Kết quả tìm kiếm</h5>
@@ -68,16 +68,19 @@ class ResultSearch extends Component {
                         {this.props.dataproducts.filter(y =>
                          y.title.toLowerCase().indexOf(this.props.search) !== -1).slice((this.props.page - 1) * 6, this.props.page * 6).map((x, key) =>
                             <div key={key} className="col-lg-3 col-md-6 col-12 mt-3">
-                                <div className="card" style={{ height: '100%' }}>
-                                    <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
-                                        <img className="card-img-top img-zoom" src={x.imgPath} alt="" />
-                                        <div className="card-body">
-                                            <h4 className="card-title">{x.title}</h4>
-                                            <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm  {parseInt((x.price - x.sale) / x.price * 100)}%</p>
-                                        </div>
-                                    </Link>
-                                </div>
+                               <div className="shadow card-form">
+                    <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
+                        {/* <div className="img-cart"> */}
+                        {/* width="100%" height="100%" */}
+                        <img className="img-zoom" src={x.imgPath} alt="" />
+                        {/* </div> */}
+                        <div className="card-body body-cart ">
+                            <div className="title-cart ">{x.title}</div>
+                            <strike className="card-text text-danger ">{this.formatMoney(x.price)} VND</strike>
+                            <p className="card-text text-dark">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
+                        </div>
+                    </Link>
+                </div>
                             </div>
                         )}
 
@@ -85,7 +88,7 @@ class ResultSearch extends Component {
                 </div>
                 <Box display="flex" justifyContent="flex-end">
                             {/* <Pagination count={parseInt(this.props.dataproducts.length/2)+1} page={this.state.page} onChange={this.handleChange} /> */}
-                            <Pagination id={"0"} />
+                            <a href="#topage"> <Pagination id={'0'} /></a>
                         </Box>
                         <Box display="flex" justifyContent="center">
                             <Typography>page:{this.props.page}</Typography>

@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react'
-
+import { Pagination } from '@material-ui/lab';
 import Model from 'react-modal';
 import NavAdmin from './NavAdmin';
 export default class ContentProducts extends Component {
@@ -10,7 +10,8 @@ export default class ContentProducts extends Component {
             dataproducts: [],
             datacatelogys: [],
             isShow: false,
-            _id: ''
+            _id: '',
+            page: 1
         }
     }
     componentWillMount() {
@@ -106,12 +107,12 @@ export default class ContentProducts extends Component {
                 _id: '',
                 title: '',
                 type: '',
-                size:'',
+                size: '',
                 price: '',
                 sale: '',
                 proNumber: '',
                 imgPath: '',
-                color:'',
+                color: '',
                 catelogyid: ''
             })
         }
@@ -141,6 +142,75 @@ export default class ContentProducts extends Component {
             .catch(err => {
                 alert(err);
             })
+    }
+    inputValue = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    find = (e) => {
+        if (e.key === "Enter") {
+            var dt = [];
+            Axios.get('/products')
+                .then(res => {
+                    res.data.forEach(x => {
+                        if (x.title.toLowerCase().indexOf(this.state.search) !== -1) {
+                            dt.push(x);
+                        }
+                    })
+                    this.setState({
+                        dataproducts: dt
+                    })
+                })
+        }
+    }
+    clicksearch = () => {
+        var dt = [];
+        Axios.get('/products')
+            .then(res => {
+                res.data.forEach(x => {
+                    if (x.title.toLowerCase().indexOf(this.state.search) !== -1) {
+                        dt.push(x);
+                    }
+                })
+                this.setState({
+                    dataproducts: dt
+                })
+            })
+    }
+    clickredo = () => {
+        Axios.get('/products')
+            .then(res => {
+                this.setState({
+                    dataproducts: res.data
+                })
+            })
+
+    }
+    ischose = (e) => {
+        console.log(e.target.value);
+        var id = e.target.value;
+        if (id === 'Loại') {
+            Axios.get('/products')
+                .then(res => {
+                    this.setState({
+                        dataproducts: res.data
+                    })
+                })
+        }
+        else
+            Axios.get('/products')
+                .then(res => {
+                    this.setState({
+                        dataproducts: res.data.filter(x => x.catelogyid === id)
+                    })
+                })
+    }
+    handleChange = (event, value) => {
+        // console.log(value);
+        this.setState({
+            page: value
+        })
     }
     render() {
         return (
@@ -174,15 +244,15 @@ export default class ContentProducts extends Component {
 
                             <div className="form-group d-flex">
                                 <div>
-                                <label>Kích thước</label>
-                            <input type="text"
-                                className="form-control" onChange={this.ischange} name="size" aria-describedby="helpId" defaultValue={this.state.size || ""} />
-                            </div>
+                                    <label>Kích thước</label>
+                                    <input type="text"
+                                        className="form-control" onChange={this.ischange} name="size" aria-describedby="helpId" defaultValue={this.state.size || ""} />
+                                </div>
                                 <div>
-                                <label>Chất liệu</label>
-                            <input type="text"
-                                className="form-control" onChange={this.ischange} name="type" aria-describedby="helpId" defaultValue={this.state.type || ""} />
-                                  </div>
+                                    <label>Chất liệu</label>
+                                    <input type="text"
+                                        className="form-control" onChange={this.ischange} name="type" aria-describedby="helpId" defaultValue={this.state.type || ""} />
+                                </div>
                             </div>
                             <div className="form-group d-flex">
                                 <div>
@@ -227,6 +297,14 @@ export default class ContentProducts extends Component {
 
                     <div className='container' id="modal">
                         <button className="btn btn-primary" onClick={() => this.showModel('')} ><i className="fas fa-plus-circle"></i></button>
+                        <div className="content-right d-flex justify-content-end">
+                            <span className="form-inline  p-1">
+                                <div className=" sea  fas fa-redo text-dark" onClick={() => this.clickredo()}></div>
+                                <input className=" sea  shadow-none mr-sm-2 px-3 border-0 fff" name="search" onKeyDown={(e) => this.find(e)} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
+                                <div className=" sea  fas fa-search text-dark" onClick={() => this.clicksearch()}></div>
+
+                            </span>
+                        </div>
                         <table className="table table-bordered table-hover table-inverse table-responsive">
                             <thead className="thead-dark">
                                 <tr>
@@ -235,10 +313,23 @@ export default class ContentProducts extends Component {
                                     <th>Màu sắc</th>
                                     <th>Kích cỡ</th>
                                     <th>Chất liệu</th>
-                                    <th>Giá trước sale</th>
-                                    <th>Giá sau sale</th>
+                                    <th>Giá</th>
+                                    <th>Sale</th>
                                     <th>Số lượng</th>
-                                    <th>Loại doanh mục</th>
+                                    <th width="15%">
+                                        <div className="form-group">
+                                            <select onChange={(e) => this.ischose(e)} className="form-control" name="typed">
+                                                <option >Loại</option>
+                                                {this.state.datacatelogys.map((x, key) => {
+                                                    return <option key={key} value={x._id}>{x.catelogy}</option>
+                                                })}
+                                                {/* <option>Ngày đặt</option>
+                                                <option>Ngày nhận</option>
+                                                <option>Ngày bàn giao</option>
+                                                <option>Ngày hủy</option> */}
+                                            </select>
+                                        </div>
+                                    </th>
                                     <th>Lượt xem</th>
                                     {/* <th>Created</th> */}
                                     <th></th>
@@ -246,8 +337,8 @@ export default class ContentProducts extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.dataproducts.map(x => {
-                                    return <tr>
+                                {this.state.dataproducts.slice((this.state.page - 1) * 5, this.state.page * 5).map((x, k) => {
+                                    return <tr key={k}>
                                         <td ><img src={x.imgPath} width={50} alt="Hình ảnh sản phẩm" /></td>
                                         <td>{x.title}</td>
                                         <td>{x.color}</td>
@@ -256,8 +347,8 @@ export default class ContentProducts extends Component {
                                         <td>{x.price}</td>
                                         <td>{x.sale}</td>
                                         <td>{x.proNumber}</td>
-                                        {this.state.datacatelogys.filter(y => y._id === x.catelogyid).map(z => {
-                                            return <td>{z.catelogy}</td>
+                                        {this.state.datacatelogys.filter(y => y._id === x.catelogyid).map((z, k) => {
+                                            return <td key={k}>{z.catelogy}</td>
                                         })}
                                         <td>{x.view}</td>
                                         {/* <td>{x.created}</td> */}
@@ -271,7 +362,12 @@ export default class ContentProducts extends Component {
                             </tbody>
                         </table>
                     </div>
+
+                    
                 </div>
+                <div className="d-flex justify-content-end">
+                        <Pagination count={parseInt(this.state.dataproducts.length / 5) + 1} page={this.state.page} onChange={this.handleChange} />
+                    </div>
             </div>
         );
     }
