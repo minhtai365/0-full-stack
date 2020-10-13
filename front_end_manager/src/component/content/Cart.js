@@ -207,48 +207,7 @@ class Cart extends Component {
                                     </div>
                                 </div>
                             </div>
-    {/* <div className="row">
-        <div className="col-md-4 col-12">
-            <div className="form-group ">
-                <label >Tên</label>
-                <input type="text"
-                    className="form-control" onChange={(e) => this.ischange(e)}
-                        required name="name" defaultValue={this.state.user.name } />
-            </div>
-
-            <div className="form-group ">
-                <label >Địa chỉ</label>
-                <input type="text"
-                    className="form-control" onChange={(e) => this.ischange(e)} required name="address" placeholder="" />
-            </div>
-        </div>
-        <div className="col-md-4 col-12">
-            <div className="form-group">
-                <label >Số điện thoại</label>
-                <input type="text"
-                    className="form-control" onChange={(e) => this.ischange(e)} required name="phone" placeholder="" />
-            </div>
-            <div className="form-group">
-                <label >Quận/Huyện</label>
-                <input type="text"
-                    className="form-control" onChange={(e) => this.ischange(e)} required name="quan" placeholder="" />
-            </div>
-        </div>
-        <div className="col-md-4 col-12">
-            <div className="form-group">
-                <label >Số CMND</label>
-                <input type="id"
-                    className="form-control" onChange={(e) => this.ischange(e)} required name="cmnd" placeholder="" />
-            </div>
-            <div className="form-group">
-                <label >Thành phố/Tỉnh</label>
-                <input type="text"
-                    className="form-control" onChange={(e) => this.ischange(e)} required name="tp" placeholder="" />
-            </div>
-        </div>
-    </div>
-    */}
-    {/* </form> */}
+  
                         </div>
                     </div>
                 </div>

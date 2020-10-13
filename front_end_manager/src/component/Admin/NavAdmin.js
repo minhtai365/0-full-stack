@@ -15,12 +15,7 @@ class NavAdmin extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand fixed-top navbar-light bg-gradient-primary text-white">
-                {/* <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li className="nav-item dropdown ">
                
-                </li>
-                
-            </ul> */}
                 <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li className="list-group-item nav-link btn btn-link ">
                         <Link className="text-white" to="/index">
@@ -32,6 +27,11 @@ class NavAdmin extends Component {
                         <Link className="text-white" to="/admin.html">
                             <i className="fas fa-fw fa-tachometer-alt" />
                             <span>Info</span></Link>
+                    </li>
+                    <li className="list-group-item nav-link btn btn-link ">
+                        <Link className="text-white" to="/imgslide.html">
+                            <i className="fas fa-fw fa-tachometer-alt" />
+                            <span>Img Slide</span></Link>
                     </li>
                     <li className="list-group-item nav-link btn btn-link">
                         <Link className="text-white" to="/account.html" >

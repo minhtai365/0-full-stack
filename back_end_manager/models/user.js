@@ -13,6 +13,7 @@ var userSchema=new Schema({
     created:{type:Date,required:true},
     createdlc:{type:String,required:true},
     role:{type:String,required:true},
+    passtoken:{type:String},
     status:{type:Boolean,required:true}
 });
 module.exports=mongoose.model('User',userSchema,'users');

@@ -3,7 +3,7 @@ var router = express.Router();
 const Product = require('../models/product');
 router.get('/', function (req, res, next) {
     Product.find().sort('-created').exec((err, dt)=> {
-      res.send(dt);
+      res.status(200).send(dt);
     });
   })
   router.post('/add', (req, res, next) => {

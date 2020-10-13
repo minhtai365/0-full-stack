@@ -6,6 +6,7 @@ var Product = require('../models/product');
 var User = require('../models/user');
 var Type = require('../models/type');
 var Catelogies = require('../models/Catelogies');
+var Imgslide = require('../models/imgslide');
 
 //xóa user
 router.post('/remove', (req, res, next) => {
@@ -24,6 +25,7 @@ router.post('/remove', (req, res, next) => {
         .catch(err => {
           deleteCate(id);
           deletePro(id);
+          deleteImg(id);
         }
         )
     )
@@ -46,6 +48,12 @@ function deletePro(id) {
       res.send("remove ok");
     })
     Product.deleteMany({ catelogyid: id })
+    .then(resp => {
+      res.send("remove ok");
+    })
+}
+function deleteImg(id) {
+  Imgslide.deleteOne({ _id: id })
     .then(resp => {
       res.send("remove ok");
     })

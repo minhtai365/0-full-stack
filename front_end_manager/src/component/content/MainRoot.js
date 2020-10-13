@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Footer from '../layout/Footer';
@@ -103,7 +105,7 @@ class MainRoot extends Component {
         var end = this.props.page * pa;
         return mydt.slice(start, end).map((x, key) =>
             <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
-                <div className="shadow card-form">
+                <div className="shadow card-form card-slick">
                     <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
                         {/* <div className="img-cart"> */}
                         {/* width="100%" height="100%" */}
@@ -146,8 +148,7 @@ class MainRoot extends Component {
                     <div id={types._id} key={key}>
                         <div className="jumbotron jumbotron-fluid mt-5">
                             <div className="container">
-
-                                <h5 className="display-3 text-center">{types.typename}</h5>
+                                <div className="border-center"><span>{types.typename}</span></div>
                                 <hr className="my-2" />
                             </div>
                         </div>
@@ -156,7 +157,7 @@ class MainRoot extends Component {
                             <div className="col-3 " style={{ float: 'left' }}>
 
                                 <select onChange={(e) => this.onChose(e)}
-                                    className="form-control ml-md-4 mb-5" defaultValue={''} name="typeview">
+                                    className=" ml-md-4 mb-5" defaultValue={''} name="typeview">
                                     {/* <option value='1'>Mua</option> */}
                                     <option value='date'>Mới nhất</option>
                                     <option value='price'>Giá tăng dần</option>
@@ -196,12 +197,65 @@ class MainRoot extends Component {
         })
     }
     render() {
+        const settings = {
+            dots: true,
+            infinite: true,
+            // adaptiveHeight:true,
+            className: "slick-st",
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            // pauseOnHover: true,
+            responsive: [
+                {
+                  breakpoint: 576,
+                  settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                      slidesToShow: 1,
+                      slidesToScroll: 1
+                    }
+                  },
+            ]
+        };
         return (
             <div>
                 <Header />
                 <Carousel />
                 <hr />
                 <Boxicon />
+                <div className="jumbotron jumbotron-fluid mt-5">
+                            <div className="container">
+                                <div className="border-center"><span>Xem nhiều</span></div>
+                                <hr className="my-2" />
+                            </div>
+                        </div>
+                        
+                <div className="container-md">
+                <Slider {...settings}>
+                    {this.props.dataproducts.sort((a, b) => a.view - b.view).slice(0-6).map((x,key)=>{
+                        return <div key={key} className="col-md-10 col-12 ">
+                         <div className="shadow card-slick">
+                             <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
+                                 <img className="img-zoom" src={x.imgPath} alt="" />
+                                 <div className="card-body body-cart ">
+                                     <div className="title-cart ">{x.title}</div>
+                                     <strike className="card-text text-danger ">{this.formatMoney(x.price)} VND</strike>
+                                     <p className="card-text text-dark">{this.formatMoney(x.sale)} VND</p>
+                                 </div>
+                             </Link>
+                         </div>
+                     </div>
+                    })
+                    }
+                </Slider>
+                </div>
                 {this.loadForm()}
 
                 <Footer />

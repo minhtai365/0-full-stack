@@ -2,8 +2,57 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-
-export default class Forgot extends Component {
+import {withFormik} from 'formik';
+import * as Yup from 'yup';
+import Axios from 'axios';
+class Forgot extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            show:false
+        }
+    }
+    
+    isClick=()=>{
+        if(this.props.values.token!==''){
+            Axios.post('/user/resetpass',{
+                email:this.props.values.email,
+                token:this.props.values.token
+            })
+            .then(res=>{
+                alert(res.data.mess + ' Mật khẩu của bạn là '+ this.props.values.token);
+            })
+        }
+        else
+        if(this.props.errors.email){
+            alert('Email không hợp lệ')
+        }else{
+            Axios.get('/user')
+            .then(res=>{
+                var have=false;
+                res.data.forEach(x => {
+                    if(x.email===this.props.values.email){
+                        have=true;
+                    }
+                });
+                if(have===true){
+                    Axios.post('/user/getpass',{
+                        email:this.props.values.email
+                    })
+                    .then(res=>{
+        
+                    })
+                    this.setState({
+                        show:true
+                    })
+                }
+                else{
+                    alert('Email không tồn tại !!!')
+                }
+            })
+          
+        }
+    }
     render() {
         return (
             <div>
@@ -19,12 +68,19 @@ export default class Forgot extends Component {
                             </div>
                             <div className="col-md-6 col-12 p-5">
                                 <h3>Forgot Password</h3>
-                                <div className="form-group">
+                                {!this.state.show && <div className="form-group">
                                     <input type="email" className="form-control input-user"
-                                    name="email" aria-describedby="emailHelpId" placeholder="Enter email address..." />
+                                    name="email" onChange={this.props.handleChange} placeholder="Enter email address..." />
+                                    <small className="text-danger">{this.props.errors.email}</small>
+                                </div>}
+                                {this.state.show &&<div className="form-group">
+                                    <input type="text" className="form-control input-user"
+                                    name="token" onChange={this.props.handleChange} placeholder="Enter token..." />
+                                    <small className="text-danger">{this.props.errors.token}</small>
                                 </div>
-                                <Link to="/index" className="btn btn-primary btn-user btn-block">
-                                    Reset password</Link>
+                                }
+                                <button onClick={()=>this.isClick()} className="btn btn-primary btn-user btn-block">
+                                    Reset password</button>
                                 <hr />
                                 <Link className="small text-light" to="/register.html">Register</Link>
                                 <br />
@@ -39,3 +95,21 @@ export default class Forgot extends Component {
         )
     }
 }
+const FormikForm=withFormik({
+    mapPropsToValues(){
+        return{
+            email:'',
+            token:''
+        } 
+    },
+    validationSchema:Yup.object().shape({
+        email:Yup.string()
+        .email()
+        .required(),
+        token:Yup.string()
+        .length(6)
+        .required()
+    })
+
+})(Forgot)
+export default FormikForm

@@ -88,7 +88,7 @@ class Detail extends Component {
 
 
                                             <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt(x.price - x.sale) / x.price * 100}%</p>
+                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
 
                                         </div>
                                     </li>

@@ -1,6 +1,26 @@
+import Axios from 'axios'
 import React, { Component } from 'react'
 
 export default class Carousel extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: []
+        }
+    }
+
+    componentWillMount() {
+        var dt = async () => {
+            var data = await Axios.get('/imgslide');
+            //  console.log(data.data);
+            this.setState({
+                data: data.data
+            })
+            return data.data;
+        }
+        console.log(dt());
+
+    }
     render() {
         return (
             <div>
@@ -12,27 +32,22 @@ export default class Carousel extends Component {
                             <li data-target="#myslide" data-slide-to={2} />
                         </ol>
                         <div className="carousel-inner" role="listbox">
-                            <div className="carousel-item active">
-                                <img src="https://ferosh.vn/upload/files/NTK/am-young.jpg " width="100%" height="300px" alt="First slide" />
-                                <div className="carousel-caption d-none d-md-block">
-                                    {/* <h3>Title</h3>
+
+                            {this.state.data.map((x, key) => {
+                                if(key===0){
+                                    var cl="carousel-item active"
+                                }
+                                else{
+                                    var cl ='carousel-item'
+                                }
+                             return  <div key={key} className={cl}>
+                                    <img src={x.imgslide} width="100%" height="300px" alt="First slide" />
+                                    <div className="carousel-caption d-none d-md-block">
+                                        {/* <h3>Title</h3>
               <p>Description</p> */}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="carousel-item">
-                                <img src="https://ferosh.vn/upload/files/Banner-21six.jpg" width="100%" height="300px" alt="Second slide" />
-                                <div className="carousel-caption d-none d-md-block">
-                                    {/* <h3>Title</h3>
-              <p>Description</p> */}
-                                </div>
-                            </div>
-                            <div className="carousel-item">
-                                <img src="https://ferosh.vn/upload/files/W2-10-NA-2000X668-02.jpg" width="100%" height="300px" alt="Third slide" />
-                                <div className="carousel-caption d-none d-md-block">
-                                    {/* <h3>Title</h3>
-              <p>Description</p> */}
-                                </div>
-                            </div>
+                            })}
                         </div>
                         <a className="carousel-control-prev" href="#myslide" role="button" data-slide="prev">
                             <span className="carousel-control-prev-icon" aria-hidden="true" />

@@ -12,6 +12,7 @@ const typesRouter=require('./routes/type');
 const cartRouter=require('./routes/cart');
 const catelogysRouter=require('./routes/catelogys');
 const orderRouter=require('./routes/order');
+const imgslideRouter=require('./routes/imgslide');
 
 //connect database
 const mongoose = require('mongoose');
@@ -36,6 +37,7 @@ app.use('/catelogys', catelogysRouter);
 app.use('/cart', cartRouter);
 app.use('/types', typesRouter);
 app.use('/products', productsRouter);
+app.use('/imgslide', imgslideRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

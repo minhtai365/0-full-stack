@@ -15,6 +15,7 @@ import ContentCatelogys from './component/Admin/ContentCatelogys';
 import ContentProducts from './component/Admin/ContentProducts';
 import ContentOrder from './component/Admin/ContentOrder';
 import Order from './component/content/Order';
+import ImgSlide from './component/Admin/ImgSlide';
 // import Donhang from './component/Admin/Donhang';
 class App extends Component {
 
@@ -49,6 +50,9 @@ class App extends Component {
             </Route>
             <Route path="/orders.html">
               <ContentOrder />
+            </Route>
+            <Route path="/imgslide.html">
+              <ImgSlide />
             </Route>
           </Switch>
         </div>
