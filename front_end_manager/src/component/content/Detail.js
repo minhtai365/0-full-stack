@@ -57,7 +57,7 @@ class Detail extends Component {
                         <div className="row">
                             <div className="col-md-6 col-12">
                                 
-                            <img src={x.imgPath} width="350" alt="Ảnh chi tiết" />
+                            <img id="img" src={x.imgPath} width="350" alt="Ảnh chi tiết" />
                                 {/* <div className="row">
                                     <div className="col-2 d-flex flex-column">
                                         <a color-id={27803} className="active show">

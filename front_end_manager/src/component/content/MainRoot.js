@@ -105,8 +105,9 @@ class MainRoot extends Component {
         var end = this.props.page * pa;
         return mydt.slice(start, end).map((x, key) =>
             <div key={key} className="col-lg-4 col-md-6 col-12 mt-3">
+                
+                <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
                 <div className="shadow card-form card-slick">
-                    <Link to={"/chi-tiet/" + this.to_slug(x.title) + "/" + x._id + ".html"}>
                         {/* <div className="img-cart"> */}
                         {/* width="100%" height="100%" */}
                         <img className="img-zoom" src={x.imgPath} alt="" />
@@ -116,8 +117,9 @@ class MainRoot extends Component {
                             <strike className="card-text text-danger ">{this.formatMoney(x.price)} VND</strike>
                             <p className="card-text text-dark">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
                         </div>
-                    </Link>
                 </div>
+                
+                </Link>
             </div>
         )
     }

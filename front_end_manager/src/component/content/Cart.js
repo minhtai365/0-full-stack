@@ -23,7 +23,7 @@ class Cart extends Component {
                     var total = 0;
                     dt[0].item.map(x => {
                         total = total + parseInt(x.price * x.qty);
-                       return total
+                        return total
                     });
                     this.setState({
                         dt: dt[0],
@@ -31,11 +31,11 @@ class Cart extends Component {
                         total: total
                     })
                 }
-                else{
+                else {
                     this.setState({
-                        dt:[],
-                        item:[],
-                        total:0
+                        dt: [],
+                        item: [],
+                        total: 0
                     })
                 }
             })
@@ -99,7 +99,7 @@ class Cart extends Component {
         const { name, phone, address, tp, quan, cmnd } = this.state.user
 
         if (name === undefined || phone === undefined || cmnd === undefined || tp === undefined ||
-             address === undefined || quan === undefined) {
+            address === undefined || quan === undefined) {
 
             alert('Vui lòng nhập thông tin liên hệ !!!')
             this.props.history.push('/properties.html')
@@ -124,18 +124,90 @@ class Cart extends Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0)
-      }
+    }
+    formAll() {
+        return this.state.item.map((y, k) =>
+
+            <div key={k} className="shadow my-cart py-4 my-2">
+                
+                <div className="d-flex justify-content-between">
+
+                <Link to={"/chi-tiet/" + this.to_slug(y.name) + "/" + y.productid + ".html"} >
+                    <div className="row order-content pb-5">
+
+                            <div className="px-4 ">
+                                <img className="ml-4" src={y.img} alt="Hình" width='60' />
+                                
+                            </div>
+                            <div className="px-md-4 text-order py-lg-3">
+                                <div className="h4 name-pro">{y.name}</div>
+                                <div className="text-left text-danger">x {this.formatMoney(y.price)} VND    </div>
+                            </div>
+
+                    </div>
+
+                    </Link>
+                    <div className="px-4 order-type my-row py-lg-3">
+                         
+                        <div className="form-group sl">
+                            <select onChange={(e, id) => this.onChose(e, y.productid)}
+                                className="form-control" defaultValue={y.typeorder} name="typeorder">
+                                {/* <option value='1'>Mua</option> */}
+                                <option value='0.3'>1 Ngày</option>
+                                <option value='0.5'>3 Ngày</option>
+                                <option value='0.7'>7 Ngày</option>
+                            </select>
+                        </div>
+                        
+                        <div className="form-group sl"><span onClick={() => this.setQty(-1, y.productid)} className="triangle triangle--left"></span>
+                                    <span className="input-group-text value">{y.qty}</span>
+                                    <span onClick={() => this.setQty(1, y.productid)} className="triangle triangle--right"></span></div>
+                        <div className="text-danger sl"> {this.formatMoney(y.price)} VND</div>
+                    </div>
+                </div>
+                
+            </div>
+        )
+    }
+    to_slug(str) {
+        // Chuyển hết sang chữ thường
+        str = str.toLowerCase();
+
+        // xóa dấu
+        str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+        str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+        str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+        str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+        str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+        str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+        str = str.replace(/(đ)/g, 'd');
+
+        // Xóa ký tự đặc biệt
+        str = str.replace(/([^0-9a-z-\s])/g, '');
+
+        // Xóa khoảng trắng thay bằng ký tự -
+        str = str.replace(/(\s+)/g, '-');
+
+        // xóa phần dự - ở đầu
+        str = str.replace(/^-+/g, '');
+
+        // xóa phần dư - ở cuối
+        str = str.replace(/-+$/g, '');
+
+        // return
+        return str;
+    }
     render() {
         return (
             <div >
                 <Header />
-                <div className="container content-chitiet">
+                <div className=" content-chitiet">
                     <div className="d-flex mb-4">
                         <li className="list-ds"><Link to="/index">Trang chủ &gt;</Link></li>
                         <li className="list-ds" aria-current="page">GIỎ HÀNG</li>
                     </div>
                     <div className="text-center ">
-                        <div className="container">
+                        <div className="container-sm">
                             <h4>Giỏ hàng</h4>
                             <div className="d-flex justify-content-center">
                                 <div className="item-giohang">Trợ giúp : 0352268668</div>
@@ -144,48 +216,10 @@ class Cart extends Component {
                                 <div className="pl-2">Chính sách thanh toán </div>
                             </div>
                             <hr />
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th />
-                                        <th>Sản phẩm</th>
-                                        <th>Đơn giá</th>
-                                        <th>Số lượng</th>
-                                        <th>Mua/Thuê</th>
-                                        <th>Thành tiền</th>
-                                        <th />
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-            {this.state.item.map((x, key) =>
-                <tr key={key} >
-                    <td><img src={x.img} width='50' alt="Hình" /></td>
-                    <td>{x.name}</td>
-                    <td>{this.formatMoney(x.price)} VND</td>
-                    <td><div onClick={() => this.setQty(-1, x.productid)} className="triangle triangle--left"></div>
-                        <div className="input-group-text value">{x.qty}</div>
-                        <div onClick={() => this.setQty(1, x.productid)} className="triangle triangle--right"></div></td>
-                    <td><div className="form-group">
-                        <select onChange={(e, id) => this.onChose(e, x.productid)} 
-                        className="form-control" defaultValue={x.typeorder} name="typeorder">
-                            {/* <option value='1'>Mua</option> */}
-                            <option value='0.3'>1 Ngày</option>
-                            <option value='0.5'>3 Ngày</option>
-                            <option value='0.7'>7 Ngày</option>
-                        </select>
-                    </div></td>
-                    {this.state.id !== x._id ? <td>{this.formatMoney(parseInt(x.price * x.qty))}  VNĐ</td> :
-                        <td>{this.formatMoney(parseInt(x.qty * this.state.price))}  VNĐ</td>}
-                    <td>  <div className="text-danger" onClick={(id) => this.remove(x.productid)} >
-                        <i className="far fa-times-circle"></i>
-                        </div></td>
-                    {/* {x.buy === '0' ? <td>Mua</td> : <td>{x.buy}</td>} */}
-                </tr>
-            )}
-                                </tbody>
-                            </table>
-
+                            {/* <div className="table-responsive-sm"> */}
+                                {this.formAll()}
+                               
+                            {/* </div> */}
                             <div className="d-flex justify-content-between">
                                 <div className="text-left flex-column ">
                                     <div><label>Tên: {this.state.user.name} </label></div>
@@ -200,14 +234,14 @@ class Cart extends Component {
 
 
                                 <div className="text-right">
-                                <div>Thành tiền     :   {this.formatMoney(this.state.total)} VNĐ</div>
-                                <div>Nếu bạn không đến shop trong vòng 24h tới để thuê sản phẩm hệ thống sẽ tự động hủy đơn hàng của bạn</div>
+                                    <div className="text-danger">Thành tiền     :   {this.formatMoney(this.state.total)} VNĐ</div>
+                                    <div>Nếu bạn không đến shop trong vòng 24h tới để thuê sản phẩm hệ thống sẽ tự động hủy đơn hàng của bạn</div>
                                     <div className="">
-                                        <button onClick={(e) => this.isClick(e)} className="btn btn-primary" >Đặt hàng</button>
+                                        <button onClick={(e) => this.isClick(e)} className="btn btn-danger" >Đặt hàng</button>
                                     </div>
                                 </div>
                             </div>
-  
+
                         </div>
                     </div>
                 </div>

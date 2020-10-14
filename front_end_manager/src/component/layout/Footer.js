@@ -18,14 +18,16 @@ class Footer extends Component {
                                     <p>Số điện thoại: {this.props.info.phone}</p>
                                     <p>Email: {this.props.info.email}</p>
                                 </div>
-                                <div className="col-md-5 col-6">
+                                <div style={{}} className="col-md-5 col-6">
                                     <h5>CHÍNH SÁCH</h5>
                                     <p>Chính sách thanh toán</p>
                                     <p>Chính sách đổi trả</p>
                                     <p>Chính sách giao hàng</p>
                                 </div>
                                 
-                                <GoogleMap/>
+                                {/* <GoogleMap/> */}
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d548.3053387108054!2d108.18154096078594!3d16.06825865735994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1602664566447!5m2!1svi!2s"
+                                 style={{width:'500px',height:'300px',border:'0'}} frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                                 </div>
                                 </div>
                                 <div className="col-md-5 col-12">

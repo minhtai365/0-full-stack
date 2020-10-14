@@ -2,10 +2,12 @@ import Axios from 'axios';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
-import Headroom from 'react-headroom'
+import Headroom from 'react-headroom';
 
+import { Button, MenuItem, Menu } from '@material-ui/core';
 // import { rhythm } from 'utils/typography'
 // withRouter(
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -14,10 +16,22 @@ class Header extends Component {
             datacatelogys: [],
             dataproducts: [],
             info: [],
-            search: ''
+            search: '',
+            ishow: null
         }
 
     }
+    handleClick = (event) => {
+        this.setState({
+            ishow: event.currentTarget
+        })
+    };
+
+    handleClose = () => {
+        this.setState({
+            ishow: null
+        })
+    };
     componentWillMount() {
         Axios.get('/info')
             .then(res => {
@@ -110,7 +124,7 @@ class Header extends Component {
     }
     find = (e) => {
         if (e.key === "Enter") {
-            this.props.history.push('/index/search?search='+this.state.search)
+            this.props.history.push('/index/search?search=' + this.state.search)
             this.props.search(this.state.search)
         }
     }
@@ -128,44 +142,46 @@ class Header extends Component {
                 wrapperStyle={{ marginTop: '0' }}
                 // upTolerance="100px"
                 // downTolerance='100px'
-                
+
                 style={{
                     // marginTop: '-150px',
                     transition: 'all .5s ease-in-out'
                 }}
             >
                 <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                    <div className="fixed-top top-nav">
-                        <div className="container-md pt-2 px-0 inf">
-                            {/* <div className='con'> */}
-                            
-                            {/* <div className="d-flex flex-wrap justify-content-between"> */}
-                            <div className="d-flex justify-content-center justify-content-lg-start con">
-                                {/* <div className="link-a px-2 oka right-border" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
-                                <div className="link-a px-md-2 px-1  right-border inf-lef" href={"callto:" + this.state.info.phone }><i className="fa fa-phone mx-2" aria-hidden="true" />
-                                    {this.state.info.phone}</div>
-                                <a className="link-a px-md-2 px-1 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
-                                    {this.state.info.email}</a>
+                    <div className="fixed-top ">
+                        <div className="top-nav">
+                            <div className="container-md pt-2 px-0 inf">
+                                {/* <div className='con'> */}
+
+                                {/* <div className="d-flex flex-wrap justify-content-between"> */}
+                                <div className="d-flex justify-content-center justify-content-lg-start con">
+                                    {/* <div className="link-a px-2 oka right-border" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
+                                    <div className="link-a px-md-2 px-1  right-border inf-lef" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+                                        {this.state.info.phone}</div>
+                                    <a className="link-a px-md-2 px-1 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                                        {this.state.info.email}</a>
+                                    {/* </div> */}
+                                </div>
+                                <div className="d-flex justify-content-center justify-content-md-end my-right con">
+                                    <div className="flex-column acc ">
+                                        <Link className="link-a p-2 mr-2 right-border" onClick={(e) => this.goLogin(e)} to="/login.html">
+                                            <i className="far fa-user mx-2" aria-hidden="true" />
+                                            {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                        {sessionStorage.getItem('userID') &&
+                                            <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
+                                        {sessionStorage.getItem('userID') &&
+                                            <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
+
+                                    </div>
+                                    <Link className="link-a px-2 mr-2 right-border" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                                    <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
+                                </div>
                                 {/* </div> */}
                             </div>
-                            <div className="d-flex justify-content-center justify-content-md-end my-right con">
-                                <div className="flex-column acc ">
-                                    <Link className="link-a p-2 mr-2 right-border" onClick={(e) => this.goLogin(e)} to="/login.html">
-                                        <i className="far fa-user mx-2" aria-hidden="true" />
-                                        {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
-                                    {sessionStorage.getItem('userID') &&
-                                        <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
-                                    {sessionStorage.getItem('userID') &&
-                                        <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
-
-                                </div>
-                                <Link className="link-a px-2 mr-2 right-border" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
-                                <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
-                            </div>
-                            {/* </div> */}
                         </div>
                         <div className="center-nav">
-                            <div className="d-flex container  justify-content-between">
+                            <div className="d-flex container justify-content-between">
                                 <div className="content-left">
                                     {/* <div className="navbar-brand" >
                     ,rounded-right,rounded-bottom,rounded-left,,|rounded-top rounded-circle
@@ -176,8 +192,12 @@ class Header extends Component {
                                     </div>
                                 </div>
                                 <div className="content-right d-flex justify-content-end">
+                                    {/* my-search */}
                                     <span className="form-inline  p-1">
-
+                                        {/* <input type="text" className="my-input" placeholder="Search text"/>
+    <span className="my-span">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </span> */}
                                         {this.state.search === '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
 
                                         <input className=" sea  shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={this.find} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
@@ -190,9 +210,33 @@ class Header extends Component {
                         </div>
 
                         <div className=" bottom-nav ">
-                            <div className="container">
-                                <ul className=" row ml-auto">
-                                    <div className="row">
+                            <div className="res-nav">
+                            <div className="d-flex justify-content-end px-3">
+                            <Button aria-controls="simple-menu"  aria-haspopup="true" onClick={this.handleClick}>Menu</Button>
+                            </div>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={this.state.ishow}
+                                keepMounted
+                                open={Boolean(this.state.ishow)}
+                                onClose={this.handleClose}
+                            >
+                                <MenuItem onClick={this.handleClose}>
+                                    <Link to="/index">Trang chủ</Link></MenuItem>
+                                {this.state.datatypes.map((x, key) => {
+                                    return <MenuItem onClick={this.handleClose}><li key={key}><a href={'#' + x._id} >{x.typename}</a></li></MenuItem>
+                                })
+                                }
+
+                                <MenuItem onClick={this.handleClose}>
+                                    <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link></MenuItem>
+                                <MenuItem onClick={this.handleClose}>
+                                    <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link></MenuItem>
+                            </Menu>
+                            </div>
+                            <div className="container-md res-none">
+                                <ul className="ml-auto">
+                                    <div className="row menu-item">
                                         <li className="list-group-item nav-link btn btn-link">
                                             <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
                                         </li>
@@ -203,10 +247,10 @@ class Header extends Component {
                                                     <ul className="list-group list-sub position-absolute">
                                                         {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
                                                             return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
-                                                            onClick={() => this.sendIDCate(z._id)}>
-                                                            <li  className="list-group-item sub-item nav-link nav-bd">
-                                                                 {z.catelogy}
-                                                            </li></Link>)
+                                                                onClick={() => this.sendIDCate(z._id)}>
+                                                                <li className="list-group-item sub-item nav-link nav-bd">
+                                                                    {z.catelogy}
+                                                                </li></Link>)
                                                         })}
                                                     </ul>
                                                 </li>

@@ -26,7 +26,7 @@ class Order extends Component {
         Axios.get('/order')
             .then(res => {
                 var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                console.log(dt);
+                
                 this.setState({
                     dt: dt
                 })
@@ -102,32 +102,32 @@ class Order extends Component {
         }
 else{
         return dt.map((x, key) =>
-            <div key={key} className="bg-white shadow rounded">
+            <div key={key} className="bg-white shadow item rounded">
                 <div className="d-flex justify-content-between">
-                {x.dateca!==undefined?<div className=" pl-4">Ngày hủy :<span className="text-danger px-3">{x.datecan}</span></div>:
-                x.datecom!==undefined?<div className=" pl-4">Ngày bàn giao :<span className="text-danger px-3">{x.datecom}</span></div>:
-                x.dateget!==undefined?<div className=" pl-4">Ngày nhận :<span className="text-danger px-3">{x.dateget}</span></div>:
-                <div className=" pl-4">Ngày đặt :<span className="text-danger px-3">{x.datelc}</span></div>
+                {x.dateca!==undefined?<div className=" pl-4">Ngày hủy :<div className="text-danger ">{x.datecan}</div></div>:
+                x.datecom!==undefined?<div className=" pl-4">Ngày bàn giao :<div className="text-danger ">{x.datecom}</div></div>:
+                x.dateget!==undefined?<div className=" pl-4">Ngày nhận :<div className="text-danger ">{x.dateget}</div></div>:
+                <div className=" pl-4">Ngày đặt :<div className="text-danger ">{x.datelc}</div></div>
             }
                     
-                    <div>Trạng thái :<span className="text-danger px-3">{x.status === 1 ? "Chờ nhận" : x.status === 2 ? 'Đã nhận' :
-                        x.status === 3 ? 'Đã bàn giao' : x.status === 4 ? 'Hoàn thành' : 'Đã hủy'} </span></div>
+                    <div className="pr-3">Trạng thái :<div className="text-danger pl-1">{x.status === 1 ? "Chờ nhận" : x.status === 2 ? 'Đã nhận' :
+                        x.status === 3 ? 'Đã bàn giao' : x.status === 4 ? 'Hoàn thành' : 'Đã hủy'} </div></div>
                 </div>
 
                 {x.item.map((y, k) =>
-                    <Link to={"/chi-tiet/" + this.to_slug(y.name) + "/" + y.productid + ".html"} key={k}>
+                    <Link to={"/chi-tiet/" + this.to_slug(y.name) + "/" + y.productid + ".html"} className={"tabs tab-"+k} key={k}>
                         <hr />
                         <div className="d-flex justify-content-between">
-                            <div className="row">
+                            <div className="row order-content">
                                 <div className="px-4">
                                     <img className="ml-4" src={y.img} alt="Hình" width='60' />
                                 </div>
-                                <div className="px-4 py-3">
-                                    <div className="h4">{y.name}</div>
+                                <div className="px-md-4 text-order py-lg-3">
+                                    <div className="h4 name-pro">{y.name}</div>
                                     <div>x {y.qty}</div>
                                 </div>
                             </div>
-                            <div className="p-4">
+                            <div className="px-4 order-type py-lg-3">
                                 {y.typeorder === '1' ?
                                     <div>Mua</div> : y.typeorder === '0.7' ?
                                         <div>Thuê 7 ngày</div> : y.typeorder === '0.5' ?
@@ -139,7 +139,7 @@ else{
                     </Link>
                 )}
                 <div className="d-flex justify-content-end">
-                    Tổng số tiền :<h4 className="text-danger px-3"> {this.formatMoney(x.total)} VND</h4>
+                    Tổng số tiền :<div className="text-danger px-3 font-weight-bold"> {this.formatMoney(x.total)} VND</div>
                 </div>
                 <div className="d-flex justify-content-end">
                     {x.status === 1 && <button type="button" onClick={() => this.clickCancel(x._id, x.item)} className="btn btn-danger">Hủy</button>}
@@ -170,10 +170,10 @@ else{
 
                 </div>
                 {/* <Boxicon /> */}
-                <div className="container">
+                <div className="container-md">
                     <hr />
 
-                    <div className="d-flex justify-content-around bg-white shadow p-3 mb-5">
+                    <div className="d-flex justify-content-around bg-white shadow py-3 mb-5">
                         <div className="form-check-inline br">
                             <label className="form-check-label">
                                 <input type="radio" onChange={()=>this.changeType(5)} className="form-check-input d-none  typeshow " name="typeshow" />                                <div className="typetext">Tất cả</div>
