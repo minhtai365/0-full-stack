@@ -1,28 +1,31 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import { Link,withRouter } from 'react-router-dom';
-import Footer from '../layout/Footer';
-import Header from '../layout/Header';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useHistory, withRouter } from 'react-router-dom';
 
-class Detail extends Component {
-    formatMoney(t) {
+function Detail(props){
+    // console.log(props.match.params.id);
+    // const history=useHistory();
+    // let {id}=useParams();
+    function formatMoney(t){
         return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-    
-    componentWillMount() {
-        Axios.post('/products/viewitem', {
-            id: this.props.match.params.id
-        })
-            .then(res => {
-                // console.log(res.data);
-            })
-    }
-    componentDidMount() {
-        window.scrollTo(0, 0)
-      }
-    clickAdd = (item) => {
+    const dataproducts=useSelector(state=>state.getdata.dataproducts);
+    const info =useSelector(state=>state.getdata.info);
+
+    useEffect(() => {
+        try {
+            Axios.post('/products/viewitem', {
+                    id: props.match.params.id
+                });
+            window.scrollTo(0, 0);
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
+    function clickAdd(item){
         if(sessionStorage.getItem("userID")===null){
+            new useHistory().push('/login.html')
             alert("Vui lòng đăng nhập để thêm vào giỏ hàng");
         }
         else if(item.proNumber!==0){
@@ -31,7 +34,6 @@ class Detail extends Component {
                 product:item
             })
             .then(res=>{
-                // this.props.history.push(res.da);
                 alert(res.data);
             })
             .catch(err=>{
@@ -42,16 +44,13 @@ class Detail extends Component {
             alert('Sản phẩm hết hàng')
         }
     }
-    render() {
-        // let {id}=useParams();
         return (
             <div>
-                <Header />
-                {this.props.dataproducts.filter(y => y._id === this.props.match.params.id).map((x, key) =>
+                {/* <Header /> */}
+                {dataproducts.filter(y => y._id === props.match.params.id).map((x, key) =>
                     <div key={key} className="container content-chitiet">
                         <div className="d-flex mb-4">
-                            <li className="list-ds"><Link to="index.html">Trang chủ &gt;</Link></li>
-                            {/* <li className="list-ds"><Link to="#">Trang phục &gt;</Link></li> */}
+                            <li className="list-ds"><Link to="/index">Trang chủ &gt;</Link></li>
                             <li className="list-ds" aria-current="page">Sản phẩm</li>
                         </div>
                         <div className="row">
@@ -87,8 +86,8 @@ class Detail extends Component {
                                         <div className="desc">
 
 
-                                            <strike className="card-text">{this.formatMoney(x.price)} VND</strike>
-                                            <p className="card-text text-danger">{this.formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
+                                            <strike className="card-text">{formatMoney(x.price)} VND</strike>
+                                            <p className="card-text text-danger">{formatMoney(x.sale)} VND || Giảm {parseInt((x.price - x.sale) / x.price * 100)}%</p>
 
                                         </div>
                                     </li>
@@ -98,16 +97,16 @@ class Detail extends Component {
                                         <div id="day" className="float-left">
                                             <div >
                                                 <label className="btn btn-info">
-                                                    <div><input type="radio" value="1" name="day" onChange={this.onChose} /> 1 ngày</div>
+                                                    <div><input type="radio" value="1" name="day" onChange={onChose} /> 1 ngày</div>
                                                 </label>
                                                 <label className="btn btn-info">
-                                                    <div><input type="radio" value="3" name="day" onChange={this.onChose} /> 3 ngày</div>
+                                                    <div><input type="radio" value="3" name="day" onChange={onChose} /> 3 ngày</div>
                                                 </label>
                                                 <label className="btn btn-info">
-                                                    <div><input type="radio" value="7" name="day" onChange={this.onChose} /> 7 ngày</div>
+                                                    <div><input type="radio" value="7" name="day" onChange={onChose} /> 7 ngày</div>
                                                 </label>
                                                 <label className="btn btn-info">
-                                                    <div><input type="radio" value="0" name="day" onChange={this.onChose} /> Chọn mua</div>
+                                                    <div><input type="radio" value="0" name="day" onChange={onChose} /> Chọn mua</div>
                                                 </label>
                                             </div>
                                         </div>
@@ -149,11 +148,8 @@ class Detail extends Component {
                                     <li className="list-ds mb-4">
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <button className="btn btn-primary" onClick={()=>this.clickAdd(x)}>Thêm vào giỏ hàng</button>
+                                                <button className="btn btn-primary" onClick={()=>clickAdd(x)}>Thêm vào giỏ hàng</button>
                                             </div>
-                                            {/* <div className="col-md-6">
-                                                <button className="btn btn-secondary">Đặt thuê</button>
-                                            </div> */}
                                         </div>
                                     </li>
                                     <hr />
@@ -170,8 +166,8 @@ class Detail extends Component {
                                         <div id="doitra" className="collapse in" role="tabpanel" aria-labelledby="doitrasp">
                                             <div >
                                                 <div className="content">
-                                                    {this.props.info.dtra}
-                <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-doi-tra.html">Xem chi tiết</a></div>
+                                                    {info.dtra}
+                <div className="text-right margin-top10"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,8 +183,8 @@ class Detail extends Component {
                                             <div >
                                                 <div className="content">
                                                     
-                                                {this.props.info.ttoan}
-                <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-thanh-toan.html">Xem chi tiết</a>
+                                                {info.ttoan}
+                <div className="text-right margin-top10">
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,34 +201,20 @@ class Detail extends Component {
                                             <div >
                                                 <div className="content">
                                                    
-                                                {this.props.info.vchuyen}
-                <div className="text-right margin-top10"><a className="view-all" href="https://ferosh.vn/chinh-sach-giao-hang.html">Xem chi tiết</a>
+                                                {info.vchuyen}
+                <div className="text-right margin-top10">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <li className="list-ds">
-                          <div className="upcase share">
-                          <span>Share</span>
-                          <a className="icon icon-fb" href="#"></a>
-                          <a className="icon icon-in" href="#"></a>
-                          <a className="icon icon-mail" href="#"></a>
-                          </div>
-                      </li> */}
                                 </ul>
                             </div>
                         </div>
                     </div>)}
-                <Footer />
+                {/* <Footer /> */}
             </div>
         )
     }
-}
-const mapStateToProps = (state, ownProps) => {
-    return {
-        dataproducts: state.dataproducts,
-        info:state.info
-    }
-}
-export default connect(mapStateToProps)(withRouter(Detail))
+
+export default withRouter(Detail)

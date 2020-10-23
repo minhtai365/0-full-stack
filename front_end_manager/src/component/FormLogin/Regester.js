@@ -1,29 +1,16 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
-import { withFormik, yupToFormErrors } from 'formik';
+import { withFormik } from 'formik';
+import React, { Component } from 'react';
+import GGLogin from 'react-google-login';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import GGLogin from 'react-google-login';
 
 class Regester extends Component {
-    // isChange = (e) => {
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
 
     isClick = (e) => {
         e.preventDefault();
         if (Object.values(this.props.errors).length !== 0) {
-            console.log('ok');
             alert('Dữ liệu không hợp lệ')
         }
         else {
@@ -64,8 +51,8 @@ class Regester extends Component {
     render() {
         return (
             <div>
-                <Header />
-                <div className="container" style={{ paddingTop: '120px' }}>
+                {/* <Header /> */}
+                <div className="container" style={{ paddingTop: '100px' }}>
                     <div className="card mt-sm-5 bg-info">
                         <div className="row text-center ">
                             <div className="col-md-6 col-12 p-5 ">
@@ -139,7 +126,7 @@ class Regester extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         )
     }

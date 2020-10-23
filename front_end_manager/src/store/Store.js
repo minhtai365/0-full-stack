@@ -8,7 +8,9 @@ const oldState = {
     info: [],
     // username:'',
     search: '',
-    page: 1
+    page: 1,
+    user:'',
+    dataslides:[]
 }
 const myReducer = (state = oldState, action) => {
     switch (action.type) {
@@ -24,8 +26,10 @@ const myReducer = (state = oldState, action) => {
             return { ...state, search: action.data }
         case "GET_DATA_INFO":
             return { ...state, info: action.dt }
-        case "DATA_FROM_PAGIN":
-            return { ...state, page: action.page }
+            case "DATA_FROM_PAGIN":
+                return { ...state, page: action.page }
+                case "GET_DATA_SLIDES":
+                    return { ...state, dataslides: action.data }
         default:
             return state
     }

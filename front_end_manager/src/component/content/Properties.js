@@ -1,38 +1,27 @@
 import Axios from 'axios'
-import React, { Component } from 'react'
-import Footer from '../layout/Footer'
-import Header from '../layout/Header'
+import React, { useEffect, useState } from 'react'
+import LoadingScreen from 'react-loading-screen'
 
-export default class Properties extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dt: [],
-            showEditPass:false
-        }
-    }
-
-    componentWillMount() {
-        Axios.get('user')
-            .then(re => {
-                var dt = re.data.filter(x => x._id === sessionStorage.getItem('userID'));
-                this.setState({
-                    cmnd: dt[0].cmnd,
-                    phone: dt[0].phone,
-                    address: dt[0].address,
-                    quan: dt[0].quan,
-                    tp: dt[0].tp,
-                    name: dt[0].name
-                })
-            })
-    }
-    ischange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
+export default function Properties() {
+    const [inputvalue, setinputvalue] = useState({});
+    const [showEditPass, setShowEditPass] = useState(false)
+    const [isload, setisload] = useState(true)
+    useEffect(() => {
+        Axios.post('/user', {
+            id: sessionStorage.getItem('userID')
         })
+            .then(re => {
+                setinputvalue(re.data);
+                setisload(false)
+            })
+        window.scrollTo(0, 0)
+    }, [])
+
+    const ischange = (e) => {
+        setinputvalue({ ...inputvalue, [e.target.name]: e.target.value });
     }
-    isClickSave = () => {
-        const { phone, address, quan, tp, cmnd, name } = this.state;
+    const isClickSave = () => {
+        const { phone, address, quan, tp, cmnd, name } = inputvalue;
         Axios.post('/user/setinfo', {
             id: sessionStorage.getItem('userID'),
             cmnd: cmnd,
@@ -46,38 +35,38 @@ export default class Properties extends Component {
                 alert(res.data.mess)
             })
     }
-    isClickEdit = () => {
-        this.setState({
-            showEditPass: !this.state.showEditPass
-        })
+    const isClickEdit = () => {
+        setShowEditPass(!showEditPass);
     }
-    isClickChange=()=>{
-        
-        if(this.state.pass===undefined||this.state.newpass===undefined){
+    const isClickChange = () => {
+
+        if (inputvalue.pass === undefined || inputvalue.newpass === undefined) {
             alert('Vui lòng nhập toàn bộ các trường')
         }
-        else if(this.state.newpass !== this.state.repass){
+        else if (inputvalue.newpass !== inputvalue.repass) {
             alert("Mật khẩu chưa khớp!!!")
         }
-        else{
-            Axios.post('/user/changepass',{
-                id:sessionStorage.getItem('userID'),
-                pass:this.state.pass,
-                newpass:this.state.newpass
+        else {
+            Axios.post('/user/changepass', {
+                id: sessionStorage.getItem('userID'),
+                pass: inputvalue.pass,
+                newpass: inputvalue.newpass
             })
-            .then(res=>{
-                alert(res.data.mess);
-            })
+                .then(res => {
+                    alert(res.data.mess);
+                })
         }
     }
-    componentDidMount() {
-        window.scrollTo(0, 0)
-        
-    }
-    render() {
-        return (
+    return (
+        <LoadingScreen
+            loading={isload}
+            bgColor='#f1f1f1'
+            spinnerColor='#9ee5f8'
+            textColor='#676767'
+            logoSrc='/logo.png'
+            text='Loading.............'
+        >
             <div>
-                <Header />
                 <div className="content-chitiet">
                     <div className="container">
                         <h5 className="display-4 text-left">Thông tin cá nhân</h5>
@@ -85,86 +74,82 @@ export default class Properties extends Component {
                     </div>
                 </div>
                 <div className="container">
-                    {!this.state.showEditPass &&
+                    {!showEditPass &&
 
                         <div className="row">
                             <div className="col-md-6 col-12">
                                 <div className="form-group ">
                                     <label >Tên</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="name" defaultValue={this.state.name} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="name" defaultValue={inputvalue.name} />
                                 </div>
                                 <div className="form-group">
                                     <label >Số điện thoại</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="phone" defaultValue={this.state.phone} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="phone" defaultValue={inputvalue.phone} />
                                 </div>
                                 <div className="form-group">
                                     <label >Số CMND</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="cmnd" defaultValue={this.state.cmnd} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="cmnd" defaultValue={inputvalue.cmnd} />
                                 </div>
                             </div>
                             <div className="col-md-6 col-12">
                                 <div className="form-group">
                                     <label >Số nhà</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="address" defaultValue={this.state.address} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="address" defaultValue={inputvalue.address} />
                                 </div>
                                 <div className="form-group">
                                     <label >Quận/Huyện</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="quan" defaultValue={this.state.quan} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="quan" defaultValue={inputvalue.quan} />
                                 </div>
                                 <div className="form-group">
                                     <label >Thành phố/Tỉnh</label>
                                     <input type="text"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="tp" defaultValue={this.state.tp} />
+                                        className="form-control" onChange={(e) => ischange(e)} name="tp" defaultValue={inputvalue.tp} />
                                 </div>
 
                             </div>
 
                         </div>}
-                    {this.state.showEditPass &&
+                    {showEditPass &&
 
                         <div className="row">
                             <div className="col-md-6 col-12">
                                 <div className="form-group ">
                                     <label >Mật khẩu cũ</label>
                                     <input type="password"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="pass" />
+                                        className="form-control" onChange={(e) => ischange(e)} name="pass" />
                                 </div>
                                 <div className="form-group">
                                     <label >Mật khẩu mới</label>
                                     <input type="password"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="newpass" />
+                                        className="form-control" onChange={(e) => ischange(e)} name="newpass" />
                                 </div>
                                 <div className="form-group">
                                     <label >Nhập lại mật khẩu mới</label>
                                     <input type="password"
-                                        className="form-control" onChange={(e) => this.ischange(e)} name="repass"  />
+                                        className="form-control" onChange={(e) => ischange(e)} name="repass" />
                                 </div>
-                                
-                        <div className='d-flex justify-content-end'>
-                                <button className="btn btn-info" onClick={() => this.isClickEdit()}>Hủy</button>
-                                <button className="btn btn-primary" onClick={() => this.isClickChange()}>Lưu</button>
-                                </div> 
+
+                                <div className='d-flex justify-content-end'>
+                                    <button className="btn btn-info" onClick={() => isClickEdit()}>Hủy</button>
+                                    <button className="btn btn-primary" onClick={() => isClickChange()}>Lưu</button>
                                 </div>
+                            </div>
 
                         </div>}
 
-                    {/* <div className='d-flex justify-content-start'>
-                       
-                    </div> */}
+                    {!showEditPass &&
 
-                    {!this.state.showEditPass &&
-
-                        <div className='d-flex justify-content-end'><button className="btn btn-danger" onClick={() => this.isClickEdit()}>Đổi mật khẩu</button>
-                            <button className="btn btn-primary" onClick={() => this.isClickSave()}>Lưu</button>
+                        <div className='d-flex justify-content-end'><button className="btn btn-danger" onClick={() => isClickEdit()}>Đổi mật khẩu</button>
+                            <button className="btn btn-primary" onClick={() => isClickSave()}>Lưu</button>
                         </div>}
                 </div>
-                <Footer />
             </div>
-        )
-    }
+        </LoadingScreen>
+    )
 }
+

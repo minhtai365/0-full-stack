@@ -22,27 +22,18 @@ export default class ContentCatelogys extends Component {
                     datacatelogys: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            })
         Axios.get('/types')
             .then(res => {
                 this.setState({
                     datatypes: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            }
-            )
     }
     componentDidMount() {
         Model.setAppElement("#modal");
     }
 
     ischange = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
         this.setState({
             [e.target.name]: e.target.value
         })

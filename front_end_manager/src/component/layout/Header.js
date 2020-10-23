@@ -1,84 +1,71 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
-import { connect } from 'react-redux';
+import React, {useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
 import Headroom from 'react-headroom';
 
+import LoadingScreen from 'react-loading-screen'
 import { Button, MenuItem, Menu } from '@material-ui/core';
-// import { rhythm } from 'utils/typography'
-// withRouter(
+import { getCates, getDt, getInfo, getProducts, getSearch, getSlides, getTypes } from '../../reduxtoolkit/sliceReducer/dataSlice';
 
-class Header extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            datatypes: [],
-            datacatelogys: [],
-            dataproducts: [],
-            info: [],
-            search: '',
-            ishow: null
+function Header(props){
+    const [isload,setisload] = useState(true)
+    const [search,setsearch] = useState(null)
+    const [ishowAcc,setishowAcc] = useState(false)
+    const [ishow,setishow] = useState(false)
+    const dispatch = useDispatch();
+    const datatypes = useSelector(state => state.getdata.datatypes);
+    const dataproducts = useSelector(state => state.getdata.dataproducts);
+    const datacates = useSelector(state => state.getdata.datacates);
+    const info = useSelector(state => state.getdata.info)
+    function handleClick(event){
+        setishow(event.currentTarget)
+    };
+    function handleClickShow(event){
+        setishowAcc(event.currentTarget)
+    };
+
+   function handleClose(){
+    setishow(null);
+    setishowAcc(null);
+    };
+    useEffect(() => {
+        if(datatypes.length===0){
+            Axios.get('/info')
+            .then(res => {
+               dispatch(getInfo(res.data[0]));
+            })
+         Axios.get('/types')
+            .then(res => {
+               dispatch(getTypes(res.data));
+            }) 
+            Axios.get('/imgslide')
+            .then(res => {
+               dispatch(getSlides(res.data));
+                setisload(false)
+            })         
         }
-
+        if(dataproducts.length===0){
+            Axios.get('/products')
+            .then(res => {
+               dispatch(getProducts(res.data));
+                
+            })
+            Axios.get('/catelogys')
+            .then(res => {
+               dispatch(getCates(res.data));
+                setisload(false)
+            })
+           
+         }
+        else{
+            setisload(false)
+        }
+    }, [])
+    const sendIDCate = (id) => {
+        dispatch(getDt(id));
     }
-    handleClick = (event) => {
-        this.setState({
-            ishow: event.currentTarget
-        })
-    };
-
-    handleClose = () => {
-        this.setState({
-            ishow: null
-        })
-    };
-    componentWillMount() {
-        Axios.get('/info')
-            .then(res => {
-                this.setState({
-                    info: res.data[0]
-                })
-                this.props.sendInfo(res.data[0]);
-            })
-        Axios.get('/products')
-            .then(res => {
-                if (this.props.dataproducts.length === 0) {
-                    this.setState({
-                        dataproducts: res.data
-                    })
-                    this.props.sendProducts(res.data);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        Axios.get('/catelogys')
-            .then(res => {
-                this.setState({
-                    datacatelogys: res.data
-                })
-                this.props.sendCates(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        Axios.get('/types')
-            .then(res => {
-                this.setState({
-                    datatypes: res.data
-                })
-                this.props.sendTypes(res.data)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-    sendIDCate = (id) => {
-
-        this.props.clickItem(id);
-        // this.props.history.push('/index.html');
-    }
-    to_slug(str) {
+    function to_slug(str) {
         // Chuyển hết sang chữ thường
         str = str.toLowerCase();
 
@@ -106,202 +93,218 @@ class Header extends Component {
         // return
         return str;
     }
-    inputValue = (e) => {
+    function inputValue(e){
         // console.log(e.target.value);
-        this.setState({
-
-            [e.target.name]: e.target.value
-        })
+        setsearch(e.target.value)
     }
-    clickSearch() {
+    function clickSearch() {
         // console.log(this.state.search);
-        this.props.search(this.state.search);
+        dispatch(getSearch(search));
     }
-    clickOut = () => {
+   function clickOut(){
         sessionStorage.removeItem("userID");
         sessionStorage.removeItem("username");
-        this.props.history.push('/login.html');
+        props.history.push('/login.html');
     }
-    find = (e) => {
+    function find(e){
         if (e.key === "Enter") {
-            this.props.history.push('/index/search?search=' + this.state.search)
-            this.props.search(this.state.search)
+            props.history.push('/index/search?search=' +search)
+            dispatch(getSearch(search))
         }
     }
-    goLogin = (e) => {
+    function goLogin(e){
         if (sessionStorage.getItem('userID') !== null) {
             e.preventDefault();
         }
     }
-    render() {
+        const {location: {pathname}} = props;
+        if (pathname.slice(1,6) ==='admin') {
+            return null
+        }
         return (
-
-            <Headroom
-                // onPin={() => console.log('pinned')}
-                // onUnpin={() => console.log('unpinned')}
-                wrapperStyle={{ marginTop: '0' }}
-                // upTolerance="100px"
-                // downTolerance='100px'
-
-                style={{
-                    // marginTop: '-150px',
-                    transition: 'all .5s ease-in-out'
-                }}
+            <LoadingScreen
+                loading={isload}
+                bgColor='#f1f1f1'
+                spinnerColor='#9ee5f8'
+                textColor='#676767'
+                logoSrc='/logo.png'
+                text='Loading.............'
             >
-                <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                    <div className="fixed-top ">
-                        <div className="top-nav">
-                            <div className="container-md pt-2 px-0 inf">
-                                {/* <div className='con'> */}
+                <Headroom
+                    // onPin={() => console.log('pinned')}
+                    // onUnpin={() => console.log('unpinned')}
+                    wrapperStyle={{ marginTop: '0' }}
+                    // upTolerance="100px"
+                    // downTolerance='100px'
 
-                                {/* <div className="d-flex flex-wrap justify-content-between"> */}
-                                <div className="d-flex justify-content-center justify-content-lg-start con">
-                                    {/* <div className="link-a px-2 oka right-border" ><i className="fa fa-map-marker mx-2" aria-hidden="true" /> Liên hệ</div> */}
-                                    <div className="link-a px-md-2 px-1  right-border inf-lef" href={"callto:" + this.state.info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
-                                        {this.state.info.phone}</div>
-                                    <a className="link-a px-md-2 px-1 inf-lef" href={"mailto:" + this.state.info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
-                                        {this.state.info.email}</a>
-                                    {/* </div> */}
+                    style={{
+                        // marginTop: '-150px',
+                        transition: 'all .5s ease-in-out'
+                    }}
+                >
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                        <div className="fixed-top ">
+                            <div className="top-nav">
+                                <div className="container-md pt-2 px-0">
+                                    <div className="d-flex justify-content-center justify-content-lg-start con">
+                                        <div className="link-a px-md-2 px-1  right-border inf-lef" href={"callto:" + info.phone}><i className="fa fa-phone mx-2" aria-hidden="true" />
+                                            {info.phone}
+                                        </div>
+                                        <a className="link-a px-md-2 px-1 inf-lef" href={"mailto:" + info.email}><i className="fa fa-envelope mx-2" aria-hidden="true" />
+                                            {info.email}</a>
+
+                                    </div>
+                                    <div className="content-left  res-nav">
+                                        <div className="logo text-light">
+                                            Minh Tài <sup>MT</sup>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-center justify-content-md-end my-right con res-none">
+                                        <div className="flex-column acc res-none">
+                                            <Link className="link-a p-2 mr-2 right-border" onClick={(e) => goLogin(e)} to="/login.html">
+                                                <i className="far fa-user mx-2" aria-hidden="true" />
+                                                {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                            {sessionStorage.getItem('userID') &&
+                                                <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
+                                            {sessionStorage.getItem('userID') &&
+                                                <div onClick={() => clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
+
+                                        </div>
+                                        <Link className="link-a px-2 mr-2 right-border res-none" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                                        <Link className="link-a mr-2 res-none" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
+                                    </div>
                                 </div>
-                                <div className="d-flex justify-content-center justify-content-md-end my-right con">
-                                    <div className="flex-column acc ">
-                                        <Link className="link-a p-2 mr-2 right-border" onClick={(e) => this.goLogin(e)} to="/login.html">
-                                            <i className="far fa-user mx-2" aria-hidden="true" />
-                                            {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                            </div>
+                            <div className="center-nav">
+                                <div className="d-flex  justify-content-around">
+                                    <div className="content-left res-none">
+                                        <div className="logo">
+                                            Minh Tài <sup>MT</sup>
+                                        </div>
+                                    </div>
+                                    <div className=" d-flex content-sea justify-content-between">
+                                        <div className='res-nav'>
+                                            <Button aria-controls="simple-menu" className="menu-bu " aria-haspopup="true" onClick={handleClick}><i className=" pt-1 m-0 fas fa-ellipsis-v"></i></Button>
+
+                                        </div>
+                                        <div className=" content-sea">
+                                            {search === '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search'></Link> : ''}
+
+                                            <input className=" sea  shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={find} onChange={(e) => inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
+
+                                            {search !== '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => dispatch(getSearch(search))}></Link> : ''}
+
+                                        </div>
+                                        <div className='res-nav'>
+                                            <Button aria-controls="simple-account" className="accou-bu" aria-haspopup="true" onClick={handleClickShow}><i className="pt-1 fas mr-2 fa-user-circle"></i></Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className=" bottom-nav ">
+                                <div className="res-nav">
+                                    <div className="d-flex justify-content-end px-3">
+                                    </div>
+                                    <Menu
+                                        id="simple-menu"
+                                        anchorEl={ishow}
+                                        keepMounted
+                                        open={Boolean(ishow)}
+                                        onClose={handleClose}
+                                    >
+                                        <MenuItem onClick={handleClose}>
+                                            <Link to="/index">Trang chủ</Link></MenuItem>
+                                        {datatypes.map((x, key) => {
+                                            return <MenuItem key={key} onClick={handleClose}><a href={'/index#' + x._id} >{x.typename}</a></MenuItem>
+                                        })
+                                        }
+
+                                        <MenuItem onClick={handleClose}>
+                                            <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link></MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link></MenuItem>
+                                    </Menu>
+                                </div>
+                                <div className="res-nav ml-auto">
+                                    <Menu
+                                        id="simple-account"
+                                        anchorEl={ishowAcc}
+                                        keepMounted
+                                        open={Boolean(ishowAcc)}
+                                        onClose={handleClose}
+                                    >
+                                        <MenuItem onClick={handleClose}>
+                                            <Link onClick={(e) => goLogin(e)} to="/login.html">
+                                                <i className="fas mr-2 fa-user-circle"></i>
+                                                {sessionStorage.getItem('username') !== null ? sessionStorage.getItem('username') : "Tài khoản"}</Link>
+                                        </MenuItem>
                                         {sessionStorage.getItem('userID') &&
-                                            <Link to="/properties.html" className="link-a p-2 text-left logout">Thông tin</Link>}
+                                            <MenuItem onClick={handleClose}>
+                                                <Link to="/properties.html"><i className="fas mr-2 fa-info-circle"></i>Thông tin</Link></MenuItem>}
+
+                                        <MenuItem onClick={handleClose}>
+                                            <Link to="/cart.html"> <i className="fas mr-2 fa-shopping-bag"></i>Giỏ hàng</Link>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+
+                                            <Link to="/u/order"> <i className="fas mr-2 fa-shipping-fast"></i>Đơn hàng</Link>
+                                        </MenuItem>
                                         {sessionStorage.getItem('userID') &&
-                                            <div onClick={() => this.clickOut()} className="link-a p-2 text-left logout">Đăng xuất</div>}
 
-                                    </div>
-                                    <Link className="link-a px-2 mr-2 right-border" to="/cart.html"> <i className="fas mx-2 fa-shopping-bag"></i>Giỏ hàng</Link>
-                                    <Link className="link-a mr-2" to="/u/order"> <i className="fas mx-2 fa-shipping-fast"></i>Đơn hàng</Link>
+                                            <MenuItem onClick={handleClose}>
+                                                <Link to="/login.html" onClick={() => clickOut()}><i className="fas mr-2 fa-sign-out-alt"></i>Đăng xuất</Link>
+                                            </MenuItem>
+                                        }
+                                    </Menu>
+
                                 </div>
-                                {/* </div> */}
+
+
+                                <div className="container-md res-none">
+                                    <ul className="ml-auto">
+                                        <div className="row menu-item">
+                                            <li className="list-group-item nav-link btn btn-link">
+                                                <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
+                                            </li>
+                                            {datatypes.map((x, key) => {
+                                                return (
+                                                    <li key={key} className="list-group-item nav-link btn btn-link "><a href={'#' + x._id} className="nav-link nav-bd" >{x.typename}</a>
+
+                                                        <ul className="list-group list-sub position-absolute">
+                                                            {datacates.filter(y => y.typeid === x._id).map((z, key) => {
+                                                                return (<Link key={key} to={"/index/" + to_slug(z.catelogy) + "/" + z._id + ".html"}
+                                                                    onClick={() => sendIDCate(z._id)}
+                                                                    >
+                                                                    <li className="list-group-item sub-item nav-link nav-bd">
+                                                                        {z.catelogy}
+                                                                    </li></Link>)
+                                                            })}
+                                                        </ul>
+                                                    </li>
+                                                )
+                                            })}
+
+                                            <li className="list-group-item nav-link btn btn-link ">
+                                                <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link>
+                                            </li>
+                                            <li className="list-group-item nav-link btn btn-link ">
+                                                <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div className="center-nav">
-                            <div className="d-flex container justify-content-between">
-                                <div className="content-left">
-                                    {/* <div className="navbar-brand" >
-                    ,rounded-right,rounded-bottom,rounded-left,,|rounded-top rounded-circle
-                    <i className="fas fa-store icon-logo" aria-hidden="true" />
-                </div> */}
-                                    <div className="logo">
-                                        Minh Tài <sup>MT</sup>
-                                    </div>
-                                </div>
-                                <div className="content-right d-flex justify-content-end">
-                                    {/* my-search */}
-                                    <span className="form-inline  p-1">
-                                        {/* <input type="text" className="my-input" placeholder="Search text"/>
-    <span className="my-span">
-      <i class="fa fa-search" aria-hidden="true"></i>
-    </span> */}
-                                        {this.state.search === '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
-
-                                        <input className=" sea  shadow-none mr-sm-2 border-0 fff" name="search" onKeyDown={this.find} onChange={(e) => this.inputValue(e)} type="text" placeholder="Nhập tên sản phẩm cần tìm ...." />
-
-                                        {this.state.search !== '' ? <Link className=" sea  fas fa-search text-dark" to='/index/search' onClick={() => this.props.search(this.state.search)}></Link> : ''}
-
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className=" bottom-nav ">
-                            <div className="res-nav">
-                            <div className="d-flex justify-content-end px-3">
-                            <Button aria-controls="simple-menu"  aria-haspopup="true" onClick={this.handleClick}>Menu</Button>
-                            </div>
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={this.state.ishow}
-                                keepMounted
-                                open={Boolean(this.state.ishow)}
-                                onClose={this.handleClose}
-                            >
-                                <MenuItem onClick={this.handleClose}>
-                                    <Link to="/index">Trang chủ</Link></MenuItem>
-                                {this.state.datatypes.map((x, key) => {
-                                    return <MenuItem onClick={this.handleClose}><li key={key}><a href={'#' + x._id} >{x.typename}</a></li></MenuItem>
-                                })
-                                }
-
-                                <MenuItem onClick={this.handleClose}>
-                                    <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link></MenuItem>
-                                <MenuItem onClick={this.handleClose}>
-                                    <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link></MenuItem>
-                            </Menu>
-                            </div>
-                            <div className="container-md res-none">
-                                <ul className="ml-auto">
-                                    <div className="row menu-item">
-                                        <li className="list-group-item nav-link btn btn-link">
-                                            <Link className="nav-link nav-bd" to="/index">Trang chủ</Link>
-                                        </li>
-                                        {this.state.datatypes.map((x, key) => {
-                                            return (
-                                                <li key={key} className="list-group-item nav-link btn btn-link "><a href={'#' + x._id} className="nav-link nav-bd" >{x.typename}</a>
-
-                                                    <ul className="list-group list-sub position-absolute">
-                                                        {this.state.datacatelogys.filter(y => y.typeid === x._id).map((z, key) => {
-                                                            return (<Link key={key} to={"/index/" + this.to_slug(z.catelogy) + "/" + z._id + ".html"}
-                                                                onClick={() => this.sendIDCate(z._id)}>
-                                                                <li className="list-group-item sub-item nav-link nav-bd">
-                                                                    {z.catelogy}
-                                                                </li></Link>)
-                                                        })}
-                                                    </ul>
-                                                </li>
-                                            )
-                                        })}
-
-                                        <li className="list-group-item nav-link btn btn-link ">
-                                            <Link to="/index" className="nav-link nav-bd " >Bảng giá</Link>
-                                        </li>
-                                        <li className="list-group-item nav-link btn btn-link ">
-                                            <Link to="/index" className="nav-link nav-bd" >Hướng dẫn dịch vụ</Link>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
 
 
-                </nav>
-            </Headroom>
+                    </nav>
+                </Headroom>
+
+            </LoadingScreen>
         )
     }
-}
-const mapStateToProps = (state, ownProps) => {
-    return {
-        dataproducts: state.dataproducts,
-        username: state.username
-    }
-}
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        clickItem: (id) => {
-            dispatch({ type: 'GET_ID_CATELOGY', id: id })
-        },
-        sendCates: (dt) => {
-            dispatch({ type: 'GET_DATA_CATELOGYS', dt: dt })
-        },
-        sendTypes: (dt) => {
-            dispatch({ type: 'GET_DATA_TYPES', dt: dt })
-        },
-        sendProducts: (data) => {
-            dispatch({ type: 'GET_DATA_PRODUCTS', data })
-        },
-        sendInfo: (dt) => {
-            dispatch({ type: 'GET_DATA_INFO', dt })
-        },
-        search: (data) => {
-            dispatch({ type: 'GET_DATA_SEARCH', data })
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))
+
+export default withRouter(Header)
+

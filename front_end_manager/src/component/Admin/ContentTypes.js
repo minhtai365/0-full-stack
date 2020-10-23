@@ -22,10 +22,6 @@ export default class ContentTypes extends Component {
                     datatypes: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            }
-            )
     }
 
     componentDidMount() {

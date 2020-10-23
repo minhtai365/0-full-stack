@@ -1,36 +1,27 @@
-import { withFormik } from 'formik';
-import * as Yup from 'yup';
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import Footer from '../layout/Footer';
-import Header from '../layout/Header';
+import { withFormik } from 'formik';
+import React from 'react';
 // import FBLogin from 'react-facebook-login';
 import GGLogin from 'react-google-login';
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            user: []
-        }
-    }
-
-    isClick = (e) => {
+import { Link, withRouter } from 'react-router-dom';
+import * as Yup from 'yup';
+function Login(props) {
+const isClick = (e) => {
         e.preventDefault();
-        if (Object.values(this.props.errors).length === 0) {
+        if (Object.values(props.errors).length === 0) {
             var item = [];
-            item.username = this.props.values.username;
-            item.password = this.props.values.pass;
+            item.username = props.values.username;
+            item.password = props.values.pass;
 
-            this.sendDT(item.username, item.password).then(res => {
-                // console.log(res);
+            sendDT(item.username, item.password).then(res => {
                 if (res !== 'fail') {
                     if (res.status === true) {
                         sessionStorage.setItem("userID", res._id);
                         sessionStorage.setItem("username", res.name);
-                        if (res.role === '1')
-                            this.props.history.push('/admin.html');
-                        else this.props.history.push('/index');
+                        if (res.role === '1'){
+                            props.history.push('/admin');
+                        }
+                        else props.history.push('/index');
                     }
                     else {
                         alert('Tài khoản bị khóa !!!')
@@ -46,7 +37,7 @@ class Login extends Component {
         }
 
     }
-    sendDT = (username, password) => axios.post('/user/login', { username, password }).then(res => res.data)
+    const sendDT = (username, password) => axios.post('/user/login', { username, password }).then(res => res.data)
     //     resFB = (res) => {
     //         console.log(res);
     //     }
@@ -55,20 +46,19 @@ class Login extends Component {
     //     fields='name,email,picture'
     //     callback={this.resFB}
     // />
-    resGG = (res) => {
+    const resGG = (res) => {
         var item=[];
         item.email= res.profileObj.email;
         item.pass = res.profileObj.googleId;
         if(item !==[]){
-            this.sendDT(item.email, item.pass).then(res => {
-                // console.log(res);
+            sendDT(item.email, item.pass).then(res => {
                 if (res !== 'fail') {
                     if (res.status === true) {
                         sessionStorage.setItem("userID", res._id);
                         sessionStorage.setItem("username", res.name);
                         if (res.role === '1')
-                            this.props.history.push('/admin.html');
-                        else this.props.history.push('/index');
+                            props.history.push('/admin.html');
+                        else props.history.push('/index');
                     }
                     else {
                         alert('Tài khoản bị khóa !!!')
@@ -80,17 +70,15 @@ class Login extends Component {
             });
         }
     }
-    render() {
-
         return (
             <div>
-                <Header />
-                <div className="container-md" style={{ paddingTop: '120px' }}>
+                {/* <Header /> */}
+                <div className="container-md" style={{ paddingTop: '100px' }}>
                     {/* {document.body.style.backgroundColor = "blue"} */}
                     <div className="card mt-sm-5 bg-info">
                         <div className="row text-center ">
                             <div className="col-md-6 col-12 px-sm-5 px-4 py-4 ">
-                                <div className="card text-white ">
+                                <div className="card h-10 text-white ">
                                     <img src="./demo_html/img/login.svg" alt="" />
                                 </div>
                             </div>
@@ -98,16 +86,16 @@ class Login extends Component {
                                 <h3 >Login</h3>
                                 <form>
                                     <div className="form-group">
-                                        <input type="text" onChange={this.props.handleChange} defaultValue={this.props.values.username}
+                                        <input type="text" onChange={props.handleChange} defaultValue={props.values.username}
                                             className="form-control input-user" name="username" placeholder="Enter email address or username..." />
 
-                                        <small className="form-text text-danger text-muted">{this.props.errors.username}</small>
+                                        <small className="form-text text-danger text-muted">{props.errors.username}</small>
                                     </div>
                                     <div className="form-group">
-                                        <input type="password" onChange={this.props.handleChange} className="form-control input-user"
-                                            defaultValue={this.props.values.pass} name="pass" placeholder="Password" />
+                                        <input type="password" onChange={props.handleChange} className="form-control input-user"
+                                            defaultValue={props.values.pass} name="pass" placeholder="Password" />
 
-                                        <small className="form-text text-danger text-muted">{this.props.errors.pass}</small>
+                                        <small className="form-text text-danger text-muted">{props.errors.pass}</small>
                                     </div>
                                     <div className="form-group">
                                         <div className="custom-control custom-checkbox small">
@@ -116,7 +104,7 @@ class Login extends Component {
                                         </div>
                                     </div>
 
-                                    <Link to="/index.html" onClick={this.isClick} className="btn btn-primary btn-user btn-block">Login</Link>
+                                    <Link to="/index.html" onClick={isClick} className="btn btn-primary btn-user btn-block">Login</Link>
                                     <hr />
 
                                     {/* <Link to="/index.html" className="btn btn-danger btn-user btn-block">
@@ -124,8 +112,8 @@ class Login extends Component {
 
                                     <GGLogin
                                         clientId="538190497449-25f8o6rrd2mdob2mt7v04phithg25rap.apps.googleusercontent.com"
-                                        onSuccess={this.resGG}
-                                        onFailure={this.resGG}
+                                        onSuccess={resGG}
+                                        onFailure={resGG}
                                         render={renderProps => (
                                             <button className="px-5 btn btn-danger btn-user btn-block" onClick={renderProps.onClick} disabled={renderProps.disabled}>
                                                 <i className="fab fa-google fa-fw" />
@@ -144,11 +132,11 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         )
     }
-}
+
 const FormikForm = withFormik({
     mapPropsToValues() {
         return {

@@ -16,9 +16,9 @@ const imgslideRouter=require('./routes/imgslide');
 
 //connect database
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/manager-product', { useNewUrlParser: true, useUnifiedTopology: true });
+// process.env.DATA_URL_MONGOOSE
+mongoose.connect(process.env.DATA_URL_MONGOOSE||'mongodb://localhost:27017/manager-product', { useNewUrlParser: true, useUnifiedTopology: true });
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

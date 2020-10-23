@@ -21,10 +21,6 @@ export default class ImgSlide extends Component {
                     imgdata: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            }
-            )
     }
     ischange = (e) => {
         this.setState({

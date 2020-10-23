@@ -1,12 +1,22 @@
+import Axios from 'axios';
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom';
 
 class NavAdmin extends Component {
     componentWillMount() {
-        if (sessionStorage.getItem('userID') !== '5f5c99dbd2571c0cbc9f44f9') {
-            alert('Truy cập bị từ chối!!!');
-            this.props.history.push('/index');
-        }
+        var kq=false;
+        Axios.get('/user')
+        .then(res=>{
+            res.data.filter(x=>{
+                if(x._id===sessionStorage.getItem('userID') && x.role==='1')
+                kq=true
+            })
+            if (kq===false) {
+                alert('Truy cập bị từ chối!!!');
+                this.props.history.push('/index');
+            }
+        })
+      
     }
     clickOut = () => {
         sessionStorage.removeItem("userID");
@@ -24,17 +34,17 @@ class NavAdmin extends Component {
                         </Link>
                     </li>
                     <li className="list-group-item nav-link btn btn-link ">
-                        <Link className="text-white" to="/admin.html">
+                        <Link className="text-white" to="/admin">
                             <i className="fas fa-fw fa-tachometer-alt" />
                             <span>Info</span></Link>
                     </li>
                     <li className="list-group-item nav-link btn btn-link ">
-                        <Link className="text-white" to="/imgslide.html">
+                        <Link className="text-white" to="/admin/imgslide.html">
                             <i className="fas fa-fw fa-tachometer-alt" />
                             <span>Img Slide</span></Link>
                     </li>
                     <li className="list-group-item nav-link btn btn-link">
-                        <Link className="text-white" to="/account.html" >
+                        <Link className="text-white" to="/admin/account.html" >
                             <i className="fas fa-fw fa-wrench" />
                             <span>Tài khoản</span>
                         </Link>
@@ -43,26 +53,26 @@ class NavAdmin extends Component {
                         <span>Sản phẩm</span>
                         <ul className="list-group item-title list-sub position-absolute">
                             <li className="nav-item item-con">
-                                <Link className="nav-link text-white" to="/types.html">
+                                <Link className="nav-link text-white" to="/admin/types.html">
                                     <i className="fas fa-fw fa-table" />
                                     <span>Loại sản phẩm</span></Link>
                             </li>
                             <div className="gachtrang" />
                             <li className="nav-item item-con">
-                                <Link className="nav-link text-white" to="/catelogys.html">
+                                <Link className="nav-link text-white" to="/admin/catelogys.html">
                                     <i className="fas fa-fw fa-table" />
                                     <span>Doanh mục sản phẩm</span></Link>
                             </li>
                             <div className="gachtrang" />
                             <li className="nav-item item-con">
-                                <Link className="nav-link text-white" to="/products.html">
+                                <Link className="nav-link text-white" to="/admin/products.html">
                                     <i className="fas fa-fw fa-table" />
                                     <span>Tất cả sản phẩm</span></Link>
                             </li>
                         </ul>
                     </li>
                     <li className="list-group-item nav-link btn btn-link ">
-                        <Link className="text-white" to="/orders.html">
+                        <Link className="text-white" to="/admin/orders.html">
                             <i className="fas fa-fw fa-chart-area" />
                             <span>Đơn hàng</span></Link>
                     </li>

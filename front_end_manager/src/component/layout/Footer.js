@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import GoogleMap from './GoogleMap';
-class Footer extends Component {
-    render() {
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+// import GoogleMap from './GoogleMap';
+
+function Footer(props) {
+    const info= useSelector(state =>state.getdata.info);
+    const {location: {pathname}} = props;
+        if (pathname.slice(1,6) ==='admin') {
+            return null
+        }
         return (
             <div>
                 <div>
@@ -13,10 +19,10 @@ class Footer extends Component {
                             <div className="col-md-7 col-12">
                             <div className="row">
                                 <div className="col-md-7 col-6">
-        <h5>{this.props.info.name}</h5>
-                                    <p>Địa chỉ: {this.props.info.address}</p>
-                                    <p>Số điện thoại: {this.props.info.phone}</p>
-                                    <p>Email: {this.props.info.email}</p>
+        <h5>{info.name}</h5>
+                                    <p>Địa chỉ: {info.address}</p>
+                                    <p>Số điện thoại: {info.phone}</p>
+                                    <p>Email: {info.email}</p>
                                 </div>
                                 <div style={{}} className="col-md-5 col-6">
                                     <h5>CHÍNH SÁCH</h5>
@@ -27,16 +33,20 @@ class Footer extends Component {
                                 
                                 {/* <GoogleMap/> */}
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d548.3053387108054!2d108.18154096078594!3d16.06825865735994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1602664566447!5m2!1svi!2s"
-                                 style={{width:'500px',height:'300px',border:'0'}} frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                 style={{width:'500px',height:'300px',border:'0'}} frameBorder="0" aria-hidden="false" tabIndex="0"/>
                                 </div>
                                 </div>
                                 <div className="col-md-5 col-12">
                                     <h3>Kết nối với chúng tôi</h3>
                                     <div className="footer-content">
-                                        <button className="btn btn-link px-4 px-md-3  text-primary" ><i className="fab fa-facebook-f" /></button>
-                                        <button className="btn btn-link px-4 px-md-3 text-danger" ><i className="fab fa-youtube" /></button>
-                                        <button className="btn btn-link px-4 px-md-3 text-info" ><i className="fab fa-twitter" /></button>
-                                        <button className="btn btn-link px-4 px-md-3 text-light" ><i className="fab fa-instagram" /></button>
+                                        <button className="btn btn-link px-4 px-md-3  text-primary" >
+                                            <i className="fab fa-facebook-f" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-danger" >
+                                            <i className="fab fa-youtube" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-info" >
+                                            <i className="fab fa-twitter" /></button>
+                                        <button className="btn btn-link px-4 px-md-3 text-light" >
+                                            <i className="fab fa-instagram" /></button>
                                     </div>
                                     <div className="form">
                                         <h4> Đăng ký nhận tin</h4>
@@ -46,7 +56,8 @@ class Footer extends Component {
                                         <form>
                                             <div className="form-group">
                                                 <label >Email</label>
-                                                <input type="email" className="form-control" aria-describedby="emailHelpId" placeholder="Your email" />
+                                                <input type="email" className="form-control"
+                                                 aria-describedby="emailHelpId" placeholder="Your email" />
                                             </div>
                                             <button type="submit" className="btn btn-primary">Submit</button>
                                         </form>
@@ -68,10 +79,6 @@ class Footer extends Component {
             </div>
         )
     }
-}
-const mapStateToProps = (state, ownProps) => {
-    return {
-        info:state.info
-    }
-}
-export default connect(mapStateToProps)(Footer)
+    
+
+export default withRouter(Footer)

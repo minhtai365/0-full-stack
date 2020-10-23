@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import MainFilter from './MainFilter'
 import MainRoot from './MainRoot'
 import ResultSearch from './ResultSearch'
 
-export default class Main extends Component {
-    render() {
+export default function Main() {
         return (
             <div>
                 
@@ -17,4 +16,4 @@ export default class Main extends Component {
             </div>
         )
     }
-}
+

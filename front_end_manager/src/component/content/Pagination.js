@@ -1,19 +1,25 @@
 import React,{ useState } from "react";
 import {Pagination} from '@material-ui/lab';
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPage } from "../../reduxtoolkit/sliceReducer/dataSlice";
 
  function Paginationn(props) {
+    const dispatch = useDispatch();
+    const dt = useSelector(state => state.getdata.dt);
+    const dataproducts = useSelector(state => state.getdata.dataproducts);
+    const datacates = useSelector(state => state.getdata.datacates);
+    const search = useSelector(state => state.getdata.search);
     const [page, setPage] = useState(1);
     const handleChange = (event, value) => {
       setPage(value);
+      
+    dispatch(getPage(value));
     };
     
     var mydt = [];
-    var cate = props.datacates.filter(x => x.typeid === props.id);
-
-
+    var cate = datacates.filter(x => x.typeid === props.id);
     cate.forEach(cate => {
-        props.dt.forEach(pro => {
+        dt.forEach(pro => {
             if (pro.catelogyid === cate._id) {
                 mydt.push(pro);
             }
@@ -21,7 +27,7 @@ import { connect } from "react-redux";
     });
     if (mydt.length === 0) {
         cate.forEach(cate => {
-            props.dataproducts.forEach(pro => {
+            dataproducts.forEach(pro => {
                 if (pro.catelogyid === cate._id) {
                     mydt.push(pro);
                 }
@@ -29,15 +35,13 @@ import { connect } from "react-redux";
         });
     }
     if(props.id==='1'){
-        mydt=props.dt
+        mydt=dt
     }
     
     if(props.id==='0'){
-        mydt=props.dataproducts.filter(y =>y.title.toLowerCase().indexOf(props.search) !== -1)
+        mydt=dataproducts.filter(y =>y.title.toLowerCase().indexOf(search) !== -1)
         
     }
-    props.dataPagin(page);
-    // console.log(mydt);
     return (
       <div >
         {/* <Typography>Page: {page}</Typography> */}
@@ -46,20 +50,5 @@ import { connect } from "react-redux";
       </div>
     );
   }
-  const mapStateToProps = (state, ownProps) => {
-    return {
-        dt: state.dt,
-        dataproducts: state.dataproducts,
-        datacates: state.datacates,
-        datatypes: state.datatypes,
-        search: state.search
-    }
-}
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        dataPagin: (page) => {
-            dispatch({type:'DATA_FROM_PAGIN',page})
-        }
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Paginationn)
+ 
+export default Paginationn

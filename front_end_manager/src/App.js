@@ -8,14 +8,10 @@ import Detail from './component/content/Detail';
 import Main from './component/content/Main';
 import Cart from './component/content/Cart';
 import Properties from './component/content/Properties';
-import InfoAdmin from './component/Admin/InfoAdmin';
-import ContentAccount from './component/Admin/ContentAccount';
-import ContentTypes from './component/Admin/ContentTypes';
-import ContentCatelogys from './component/Admin/ContentCatelogys';
-import ContentProducts from './component/Admin/ContentProducts';
-import ContentOrder from './component/Admin/ContentOrder';
 import Order from './component/content/Order';
-import ImgSlide from './component/Admin/ImgSlide';
+import Footer from './component/layout/Footer';
+import Header from './component/layout/Header';
+import Admin from './component/Admin/Admin';
 // import Donhang from './component/Admin/Donhang';
 class App extends Component {
 
@@ -23,7 +19,10 @@ class App extends Component {
     return (
       <Router>
         <div>
+          
+        <Header/>
           <Switch>
+            
             <Route path="/" exact>
               <Redirect to="/index" />
             </Route>
@@ -37,24 +36,13 @@ class App extends Component {
             <Route path="/index" component={Main} />
             <Route path="/cart.html" exact component={Cart} />
             <Route path="/u/order" exact component={Order} />
-            <Route path="/admin.html" exact component={InfoAdmin} />
-            <Route path="/account.html" exact component={ContentAccount} />
-            <Route path="/types.html">
-              <ContentTypes />
-            </Route>
-            <Route path="/catelogys.html">
-              <ContentCatelogys />
-            </Route>
-            <Route path="/products.html">
-              <ContentProducts />
-            </Route>
-            <Route path="/orders.html">
-              <ContentOrder />
-            </Route>
-            <Route path="/imgslide.html">
-              <ImgSlide />
-            </Route>
+
+           
           </Switch>
+          
+          <Footer/>
+          
+          <Route path="/admin" component={Admin} />
         </div>
       </Router>
     );

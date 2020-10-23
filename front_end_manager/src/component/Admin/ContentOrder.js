@@ -25,9 +25,6 @@ export default class ContentCarts extends Component {
                     datacarts: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            })
     }
     changShow() {
         Axios.get('/order')
@@ -37,16 +34,12 @@ export default class ContentCarts extends Component {
                     isShow: !this.state.isShow
                 })
             })
-            .catch(err => {
-                console.log(err);
-            })
     }
     componentDidMount() {
         Model.setAppElement("#modal");
     }
     showModel = (id, status) => {
         var dt = this.state.datacarts.filter(x => x._id === id);
-        console.log(dt[0].item);
         this.setState({
             item: dt[0].item,
             orderID: id,
@@ -166,7 +159,6 @@ export default class ContentCarts extends Component {
         
     }
     handleChange = (event, value) => {
-        // console.log(value);
         this.setState({
             page: value
         })

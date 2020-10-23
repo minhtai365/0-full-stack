@@ -21,27 +21,17 @@ export default class ContentProducts extends Component {
                     dataproducts: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            }
-            )
         Axios.get('/catelogys')
             .then(res => {
                 this.setState({
                     datacatelogys: res.data
                 })
             })
-            .catch(err => {
-                console.log(err);
-            }
-            )
     }
     componentDidMount() {
         Model.setAppElement("#modal");
     }
     ischange = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -84,7 +74,6 @@ export default class ContentProducts extends Component {
 
 
     showModel = (id) => {
-        console.log(id);
         if (id !== '') {
             this.state.dataproducts.forEach(element => {
                 if (element._id === id) {
@@ -188,7 +177,6 @@ export default class ContentProducts extends Component {
 
     }
     ischose = (e) => {
-        console.log(e.target.value);
         var id = e.target.value;
         if (id === 'Loại') {
             Axios.get('/products')
@@ -207,7 +195,6 @@ export default class ContentProducts extends Component {
                 })
     }
     handleChange = (event, value) => {
-        // console.log(value);
         this.setState({
             page: value
         })

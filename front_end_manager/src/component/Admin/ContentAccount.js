@@ -16,10 +16,6 @@ class ContentAccount extends Component {
           datauser: res.data
         })
       })
-      .catch(err => {
-        console.log(err);
-      }
-      )
   }
   remove = (id) => {
     Axios.post('/remove', {

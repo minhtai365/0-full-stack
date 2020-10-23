@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+// "proxy": "https://app-first-0.herokuapp.com/"
 export default class Boxicon extends Component {
     render() {
         return (

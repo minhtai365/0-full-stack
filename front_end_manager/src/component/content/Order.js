@@ -1,103 +1,66 @@
 import Axios from 'axios';
-import React, { Component } from 'react'
-import { Link, withRouter } from 'react-router-dom';
-import Footer from '../layout/Footer'
-import Header from '../layout/Header'
-class Order extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dt: [],
-            type:5
-        }
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory, withRouter } from 'react-router-dom';
+import {to_slug,formatMoney} from '../layout/FormatSlug';
+function Order(props) {
+    const [type, settype] = useState(5);
+    const [dt, setDt] = useState([]);
+    
+    const history=useHistory();
+    
+    function getdt(){  Axios.post('/order', {
+        id: sessionStorage.getItem('userID')
+    })
+        .then(res => {
+            var dt = res.data;
+            setDt(dt)
+        });
     }
-
-    formatMoney(t) {
-        return t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    componentDidMount() {
-        window.scrollTo(0, 0)
-      }
-    componentWillMount() {
+    useEffect(() => {
         if (sessionStorage.getItem('userID') === null) {
             alert('Vui lòng đăng nhập !!!')
-            this.props.history.push('/index')
+            history.push('/login.html')
+            // props.history.push('/login.html')
+        }else{
+            getdt();
         }
-        Axios.get('/order')
-            .then(res => {
-                var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                
-                this.setState({
-                    dt: dt
-                })
-            })
-    }
-    clickCancel = (id, item) => {
+      
+        window.scrollTo(0, 0);
+       
+    }, []);
+    const clickCancel = (id, item) => {
         Axios.post("/order/cancel", {
+            userid:sessionStorage.getItem('userID'),
             id: id,
             item: item
         })
             .then(res => {
-                alert(res.data.mess);
-                Axios.get('/order')
-                    .then(res => {
-                        var dt = res.data.filter(x => x.userid === sessionStorage.getItem('userID'));
-                        console.log(dt);
-                        this.setState({
-                            dt: dt
-                        })
-
-                    })
+                alert('ok');
+                var dt = res.data;
+                setDt(dt)
             })
     }
     
-    clickAddCart = (item) => {
-        Axios.post('/cart/again', {
-            item: item,
-            userid: sessionStorage.getItem('userID')
-        })
-            .then(res => {
-                alert(res.data.mess);
-            })
-    }
-    to_slug(str) {
-        // Chuyển hết sang chữ thường
-        str = str.toLowerCase();
+    // const clickAddCart = (item) => {
+    //     Axios.post('/cart/again', {
+    //         item: item,
+    //         userid: sessionStorage.getItem('userID')
+    //     })
+    //         .then(res => {
+    //             alert(res.data.mess);
+    //         })
+    // }
+ 
+    function formAll() {
+        var dtt;
+        if(type!==5){
 
-        // xóa dấu
-        str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
-        str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
-        str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
-        str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
-        str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
-        str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
-        str = str.replace(/(đ)/g, 'd');
-
-        // Xóa ký tự đặc biệt
-        str = str.replace(/([^0-9a-z-\s])/g, '');
-
-        // Xóa khoảng trắng thay bằng ký tự -
-        str = str.replace(/(\s+)/g, '-');
-
-        // xóa phần dự - ở đầu
-        str = str.replace(/^-+/g, '');
-
-        // xóa phần dư - ở cuối
-        str = str.replace(/-+$/g, '');
-
-        // return
-        return str;
-    }
-    formAll() {
-        var dt;
-        if(this.state.type!==5){
-
-            dt=this.state.dt.filter(x=>x.status===this.state.type);
+            dtt=dt.filter(x=>x.status===type);
         }
         else{
-           dt=this.state.dt;
+           dtt=dt;
         }
-        if(dt.length===0){
+        if(dtt.length===0){
             return <img src="/emty.svg" height="300" width="100%" alt="Hình"/>
         }
 else{
@@ -115,7 +78,7 @@ else{
                 </div>
 
                 {x.item.map((y, k) =>
-                    <Link to={"/chi-tiet/" + this.to_slug(y.name) + "/" + y.productid + ".html"} className={"tabs tab-"+k} key={k}>
+                    <Link to={"/chi-tiet/" + to_slug(y.name) + "/" + y.productid + ".html"} className={"tabs tab-"+k} key={k}>
                         <hr />
                         <div className="d-flex justify-content-between">
                             <div className="row order-content">
@@ -132,19 +95,19 @@ else{
                                     <div>Mua</div> : y.typeorder === '0.7' ?
                                         <div>Thuê 7 ngày</div> : y.typeorder === '0.5' ?
                                             <div>Thuê 3 ngày</div> : <div>Thuê 1 ngày</div>}
-                                <div> {this.formatMoney(y.price)} VND</div>
+                                <div> {formatMoney(y.price)} VND</div>
                             </div>
                         </div>
                         <hr />
                     </Link>
                 )}
                 <div className="d-flex justify-content-end">
-                    Tổng số tiền :<div className="text-danger px-3 font-weight-bold"> {this.formatMoney(x.total)} VND</div>
+                    Tổng số tiền :<div className="text-danger px-3 font-weight-bold"> {formatMoney(x.total)} VND</div>
                 </div>
                 <div className="d-flex justify-content-end">
-                    {x.status === 1 && <button type="button" onClick={() => this.clickCancel(x._id, x.item)} className="btn btn-danger">Hủy</button>}
-                    {/* {x.status === 0 && <button type="button" onClick={() => this.clickAddCart(x.item)} className="btn btn-danger">Thêm giỏ hàng</button>} */}
-                    {/* {x.status === 3 && <button type="button" onClick={() => this.clickComplete(x._id)} className="btn btn-primary">Xác nhận đã nhận được hàng</button>} */}
+                    {x.status === 1 && <button type="button" onClick={() => clickCancel(x._id, x.item)} className="btn btn-danger">Hủy</button>}
+                    {/* {x.status === 0 && <button type="button" onClick={() => clickAddCart(x.item)} className="btn btn-danger">Thêm giỏ hàng</button>} */}
+                    {/* {x.status === 3 && <button type="button" onClick={() => clickComplete(x._id)} className="btn btn-primary">Xác nhận đã nhận được hàng</button>} */}
                     {/* <button type="button" className="btn btn-primary">Đã nhận</button> */}
                 </div>
 
@@ -154,15 +117,13 @@ else{
         )
     }
     }
-    changeType=(id)=>{
-       this.setState({
-           type:id
-       })
+   const changeType=(id)=>{
+       settype(id)
     }
-    render() {
+    
         return (
             <div >
-                <Header  />
+                {/* <Header  /> */}
                 <div  className="content-chitiet">
 
                 </div>
@@ -176,36 +137,36 @@ else{
                     <div className="d-flex justify-content-around bg-white shadow py-3 mb-5">
                         <div className="form-check-inline br">
                             <label className="form-check-label">
-                                <input type="radio" onChange={()=>this.changeType(5)} className="form-check-input d-none  typeshow " name="typeshow" />                                <div className="typetext">Tất cả</div>
+                                <input type="radio" onChange={()=>changeType(5)} className="form-check-input d-none  typeshow " name="typeshow" />                                <div className="typetext">Tất cả</div>
     </label>
                         </div>
                         <div className="form-check-inline br">
                             <label className="form-check-label">
-                                <input type="radio" onChange={()=>this.changeType(1)} className="form-check-input d-none  typeshow" name="typeshow" />
+                                <input type="radio" onChange={()=>changeType(1)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Chờ bạn đến nhận</div>
     </label>
                         </div>
                         <div className="form-check-inline br">
                             <label className="form-check-label">
-                                <input type="radio" onChange={()=>this.changeType(2)} className="form-check-input d-none  typeshow" name="typeshow" />
+                                <input type="radio" onChange={()=>changeType(2)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã nhận</div>
     </label>
                         </div>
                         <div className="form-check-inline br">
                             <label className="form-check-label">
-                                <input type="radio" onChange={()=>this.changeType(3)} className="form-check-input d-none  typeshow" name="typeshow" />
+                                <input type="radio" onChange={()=>changeType(3)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã bàn giao</div>
     </label>
                         </div>
                         <div className="form-check-inline br">
                             <label className="form-check-label">
-                                <input type="radio" onChange={()=>this.changeType(0)} className="form-check-input d-none  typeshow" name="typeshow" />
+                                <input type="radio" onChange={()=>changeType(0)} className="form-check-input d-none  typeshow" name="typeshow" />
                                 <div className="typetext">Đã hủy</div>
     </label>
                         </div>
                     </div>
 
-                    {this.formAll()}
+                    {formAll()}
 
                     {/* <div className="d-flex justify-content-around">
                         <Link to="/u/order">Tất cả</Link>
@@ -231,10 +192,9 @@ else{
                         </Route>
                     </Switch> */}
                 </div>
-                <Footer />
+                {/* <Footer /> */}
 
             </div>
         )
     }
-}
 export default withRouter(Order)

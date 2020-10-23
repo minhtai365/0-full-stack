@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import Footer from '../layout/Footer';
-import Header from '../layout/Header';
-import {withFormik} from 'formik';
-import * as Yup from 'yup';
 import Axios from 'axios';
+import { withFormik } from 'formik';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
 class Forgot extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +54,7 @@ class Forgot extends Component {
     render() {
         return (
             <div>
-                <Header />
+                {/* <Header /> */}
                 <div className="container content-chitiet">
                     <div className="card mt-sm-5  bg-info">
                         <div className="row text-center ">
@@ -89,7 +87,7 @@ class Forgot extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         
         )
